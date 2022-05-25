@@ -73,8 +73,8 @@ public:
 	vfloat GetTempAmplitude(void) {return TempAmplitude;} //!< Return periodic temperature variation amplitude.
 	void SetTempPeriod(vfloat TempPeriodIn) {TempPeriod = TempPeriodIn;} //!< Set the period at which temperature varies. @param[in] TempPeriodIn Desired temperature variation period in seconds.
 	vfloat GetTempPeriod(void) {return TempPeriod;} //!< Return current base temperature.
-	//void SetNeuralWeights(std::string weights) {NeuralWeights = weights;} //!<Set neural net weights
-	//std::string GetNeuralWeights(void) {return NeuralWeights;} //!<Return neural net weights
+	void SetNeuralWeights(std::string weights) {Weights = weights;} //!<Set neural net weights
+	std::string GetNeuralWeights(void) {return Weights;} //!<Return neural net weights
 
 	float UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj = NULL); //!< Updates the current temperature based on provided simulation time.
 	vfloat GetCurTemp() {return CurTemp;} //!< Returns the current temperature of the environment. (degrees C)
@@ -92,7 +92,7 @@ private:
 	bool TempEnabled; //overall flag for temperature calculations
 	bool VaryTempEnabled; //is periodic variation of temperature on?
 	vfloat TempBase, TempAmplitude, TempPeriod; //degress celcius
-	VX_Distributed controller; //controller
+	std::string Weights; //neural weights
 
 	vfloat CurTemp; //updated based on time... (for phase 0... individual materials now have their own current temp
 
