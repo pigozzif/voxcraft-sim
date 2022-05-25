@@ -29,7 +29,7 @@ CVX_Distributed::~CVX_Distributed(void)
   delete mlp;
 }
 
-void CVX_Distributed::UpdateMatTemp(CVX_Object* pObjUpdate, double TempBase) const
+void CVX_Distributed::UpdateMatTemp(CVX_Object* pObjUpdate, double TempBase)
 {
   for (int i = 0; i < (int)pObjUpdate->GetNumMaterials(); ++i) {
     double* sensors = (double*) malloc(sizeof(double));
