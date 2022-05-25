@@ -50,8 +50,8 @@ void CVX_Distributed::UpdateMatTemp(CVX_Object* pObjUpdate, double TempBase)
 double* CVX_Distributed::GetLastSignals(int i, CVX_Object* pObjUpdate) const
 {
   double* signals = (double*) malloc(sizeof(double) * 4);
-  Vec3D<>* currPoint;
-  pObjUpdate->GetXYZ(currPoint, i);
+  Vec3D<> currPoint;
+  pObjUpdate->GetXYZ(&currPoint, i);
   /*int idx = pObjUpdate->GetIndex(currPoint->x + 1, currPoint->y, currPoint->z);
   if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
     signals[0] = lastSignals[idx][0];
