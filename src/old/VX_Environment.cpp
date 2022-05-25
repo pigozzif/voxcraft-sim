@@ -34,6 +34,8 @@ CVX_Environment::CVX_Environment(void)
 	TempBase = 25; //degress celcius
 	TempPeriod = 0.1; //in seconds
 	CurTemp = 25;
+	Weights = "";
+	Controller = NULL;
 }
 
 CVX_Environment::~CVX_Environment(void)
@@ -93,6 +95,9 @@ void CVX_Environment::WriteXML(CXML_Rip* pXML)
 		pXML->Element("VaryTempEnabled", VaryTempEnabled);
 		pXML->Element("TempPeriod", TempPeriod);
 		pXML->UpLevel();
+	
+		pXML->DownLevel("Neural");
+		pXML->Element("NeuralWeights", Weights);
 	pXML->UpLevel();
 	
 //	if(!OnlyBCs) pObj->WriteXML(pXML);
@@ -169,6 +174,11 @@ bool CVX_Environment::ReadXML(CXML_Rip* pXML, std::string* RetMessage) //pXML po
 		if (!pXML->FindLoadElement("TempPeriod", &TempPeriod)) TempPeriod = 0.1;
 		CurTemp = TempBase;
 
+		pXML->UpLevel();
+	}
+	
+	if (pXML->FindElement("Neural")){
+	        if (!pXML->FindLoadElement("NeuralWeights", &Weights)) Weights = "";
 		pXML->UpLevel();
 	}
 
@@ -327,14 +337,18 @@ void CVX_Environment::RemoveDisconnected(void) //removes regions not connected t
 float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj)
 {
 	CVX_Object* pObjUpdate = pObj;
+	if (Controller == NULL) {
+	  Controller = new VX_Distributed(5, (int)pObjUpdate->GetNumMaterials(), Weights);
+	}
 	if (pUpdateInObj) pObjUpdate = pUpdateInObj; //necessary b/c of how simulation is set up with a local un-modifiable CVX_Object
 
 	if (VaryTempEnabled){
 		if (TempPeriod == 0) return 0.0f; //avoid NaNs.
 		CurTemp = TempBase + TempAmplitude*sin(2*3.1415926/TempPeriod*time);	//update the global temperature
-		for (int i = 0; i<(int)pObjUpdate->GetNumMaterials(); i++){ //now update the individual temperatures of each material (they can each have a different temperature)
-			pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + TempAmplitude*sin((2*3.1415926f/TempPeriod) * time + pObjUpdate->GetBaseMat(i)->GetMatTempPhase()));	//and update each one
-		}
+		Controller->UpdateMatTemp();
+		//for (int i = 0; i<(int)pObjUpdate->GetNumMaterials(); i++){ //now update the individual temperatures of each material (they can each have a different temperature)
+		//	pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + TempAmplitude*sin((2*3.1415926f/TempPeriod) * time + pObjUpdate->GetBaseMat(i)->GetMatTempPhase()));	//and update each one
+		//}
 	}
 	else {
 		CurTemp = TempBase + TempAmplitude;
