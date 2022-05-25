@@ -52,28 +52,28 @@ double* CVX_Distributed::GetLastSignals(int i, CVX_Object* pObjUpdate) const
   double* signals = (double*) malloc(sizeof(double) * 4);
   Vec3D<> currPoint;
   pObjUpdate->GetXYZ(&currPoint, i);
-  int idx = pObjUpdate->GetIndex(currPoint->x + 1, currPoint->y, currPoint->z);
+  int idx = pObjUpdate->GetIndex(currPoint.x + 1, currPoint.y, currPoint.z);
   if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
     signals[0] = lastSignals[idx][0];
   }
   else {
     signals[0] = 0.0;
   }
-  idx = pObjUpdate->GetIndex(currPoint->x - 1, currPoint->y, currPoint->z);
+  idx = pObjUpdate->GetIndex(currPoint.x - 1, currPoint.y, currPoint.z);
   if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
     signals[1] = lastSignals[idx][1];
   }
   else {
     signals[1] = 0.0;
   }
-  idx = pObjUpdate->GetIndex(currPoint->x, currPoint->y + 1, currPoint->z);
+  idx = pObjUpdate->GetIndex(currPoint.x, currPoint.y + 1, currPoint.z);
   if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
     signals[2] = lastSignals[idx][2];
   }
   else {
     signals[2] = 0.0;
   }
-  idx = pObjUpdate->GetIndex(currPoint->x, currPoint->y - 1, currPoint->z);
+  idx = pObjUpdate->GetIndex(currPoint.x, currPoint.y - 1, currPoint.z);
   if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
     signals[3] = lastSignals[idx][3];
   }
