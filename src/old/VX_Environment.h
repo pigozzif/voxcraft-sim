@@ -13,6 +13,7 @@ See <http://www.opensource.org/licenses/lgpl-3.0.html> for license details.
 
 #include "VX_FRegion.h"
 #include "VX_Object.h"
+#include "VX_Distributed.h"
 #include <string>
 
 #define BC_GLIND_OFF 100000000
