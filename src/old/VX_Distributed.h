@@ -11,7 +11,7 @@ public:
   CVX_Distributed(const int numInputs, const int numMaterials, const std::string weights);
   ~CVX_Distributed(void);
 
-  void UpdateMatTemp(CVX_Object* pObjUpdate) const;
+  void UpdateMatTemp(CVX_Object* pObjUpdate, double TempBase) const;
   double* GetLastSignals(int i, CVX_Object* pObjUpdate) const;
 
 private:
