@@ -93,6 +93,7 @@ private:
 	bool VaryTempEnabled; //is periodic variation of temperature on?
 	vfloat TempBase, TempAmplitude, TempPeriod; //degress celcius
 	std::string Weights; //neural weights
+	VX_Distributed Controller;
 
 	vfloat CurTemp; //updated based on time... (for phase 0... individual materials now have their own current temp
 
