@@ -1,8 +1,8 @@
 #include "VX_Distributed.h"
 #include "Vec3D.h"
+#include "VX_Object.h"
 #include <algorithm>
 #include <stdlib.h>
-#include <iostream>
 
 CVX_Distributed::CVX_Distributed(const int numInputs, const int numMaterials, const std::string weights)
 {
