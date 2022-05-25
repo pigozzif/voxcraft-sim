@@ -10,6 +10,7 @@ See <http://www.opensource.org/licenses/lgpl-3.0.html> for license details.
 
 #include "VX_Environment.h"
 #include "VX_Distributed.h"
+#include <iostream>
 
 #ifdef USE_OPEN_GL
 #ifdef QT_GUI_LIB
@@ -346,6 +347,7 @@ float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj)
 	if (VaryTempEnabled){
 		if (TempPeriod == 0) return 0.0f; //avoid NaNs.
 		CurTemp = TempBase + TempAmplitude*sin(2*3.1415926/TempPeriod*time);	//update the global temperature
+		std::cout << Weights << std::endl;
 		//Controller->UpdateMatTemp(pObjUpdate, TempBase);
 		//for (int i = 0; i<(int)pObjUpdate->GetNumMaterials(); i++){ //now update the individual temperatures of each material (they can each have a different temperature)
 		//	pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + TempAmplitude*sin((2*3.1415926f/TempPeriod) * time + pObjUpdate->GetBaseMat(i)->GetMatTempPhase()));	//and update each one
