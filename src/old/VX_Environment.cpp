@@ -339,7 +339,7 @@ float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj)
 {
 	CVX_Object* pObjUpdate = pObj;
 	if (Controller == NULL) {
-	  Controller = new VX_Distributed(5, (int)pObjUpdate->GetNumMaterials(), Weights);
+	  Controller = new CVX_Distributed(5, (int)pObjUpdate->GetNumMaterials(), Weights);
 	}
 	if (pUpdateInObj) pObjUpdate = pUpdateInObj; //necessary b/c of how simulation is set up with a local un-modifiable CVX_Object
 
