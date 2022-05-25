@@ -9,6 +9,7 @@ See <http://www.opensource.org/licenses/lgpl-3.0.html> for license details.
 *******************************************************************************/
 
 #include "VX_Environment.h"
+#include "VX_Distributed.h"
 
 #ifdef USE_OPEN_GL
 #ifdef QT_GUI_LIB
