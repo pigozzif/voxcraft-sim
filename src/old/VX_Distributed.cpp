@@ -52,7 +52,7 @@ double* CVX_Distributed::GetLastSignals(int i, CVX_Object* pObjUpdate) const
   double* signals = (double*) malloc(sizeof(double) * 4);
   Vec3D<>* currPoint;
   pObjUpdate->GetXYZ(currPoint, i);
-  int idx = pObjUpdate->GetIndex(currPoint->x + 1, currPoint->y, currPoint->z);
+  /*int idx = pObjUpdate->GetIndex(currPoint->x + 1, currPoint->y, currPoint->z);
   if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
     signals[0] = lastSignals[idx][0];
   }
@@ -80,5 +80,6 @@ double* CVX_Distributed::GetLastSignals(int i, CVX_Object* pObjUpdate) const
   else {
     signals[3] = 0.0;
   }
-  return signals;
+  return signals;*/
+  return lastSignals[i];
 }
