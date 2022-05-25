@@ -2,6 +2,7 @@
 #define CVX_DISTRIBUTED_H
 
 #include "VX_MLP.h"
+#include "VX_Object.h"
 #include <string>
 
 class CVX_Distributed
