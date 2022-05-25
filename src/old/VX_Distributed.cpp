@@ -47,7 +47,7 @@ void CVX_Distributed::UpdateMatTemp(CVX_Object* pObjUpdate) const
   }
 }
 
-double* GetLastSignals(int i, CVX_Object* pObjUpdate) const
+double* CVX_Distributed::GetLastSignals(int i, CVX_Object* pObjUpdate) const
 {
   double* signals = (double*) malloc(sizeof(double) * 4);
   Vec3D<>* currPoint;
