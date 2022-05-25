@@ -2,14 +2,16 @@
 #define CVX_DISTRIBUTED_H
 
 #include "VX_MLP.h"
+#include <string>
 
 class CVX_Distributed
 {
 public:
-  CVX_Distributed(const int numInputs, const int numOutputs, const int numMaterials);
+  CVX_Distributed(const int numInputs, const int numMaterials, const std::string weights);
   ~CVX_Distributed(void);
 
-  void UpdateMatTemp(CVX_Object* pObjUpdate);
+  void UpdateMatTemp(CVX_Object* pObjUpdate) const;
+  double* GetLastSignals(int i, CVX_Object* pObjUpdate) const;
 
 private:
   int numMaterials;

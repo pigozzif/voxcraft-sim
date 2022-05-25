@@ -1,25 +1,46 @@
 #include "VX_MLP.h"
-#include <vector>
+#include <string>
 #include <math.h>
 #include <stdlib.h>
 
-CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs)
+CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs, const std::string weights)
 {
-  std::vector<double> layer;
-  layer.push_back(2.0);
-  layer.push_back(1.0);
-  layer.push_back(1.0);
-  layer.push_back(3.0);
-  this->weights.push_back(layer);
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
+  SetWeights(weights);
 }
 
 CVX_MLP::~CVX_MLP(void)
 {
+  for (int i = 0; i < numOutputs; ++i) {
+    delete weights[i];
+  }
+  delete[] weights;
 }
 
-double* CVX_MLP::Apply(double* inputs)
+void CVX_MLP::SetWeights(const std::string weights)
+{
+  this->weights = (double**) malloc(sizeof(double*) * numOutputs);
+  for (int i = 0; i < numOutputs; ++i) {
+    this->weights[i] = (double*) malloc(sizeof(double) * (numInputs + 1));
+  }
+  std::string delim = ",";
+  std::size_t start = 0U;
+  std::size_t end = weights.find(delim);
+  int i = 0;
+  int j = 0;
+  while (end != std::string::npos) {
+    this->weights[i][j++] = atof(weights.substr(start, end - start).c_str());
+    if (j >= numInputs + 1) {
+      j = 0;
+      ++i;
+    }
+    start = end + delim.length();
+    end = weights.find(delim, start);
+  }
+}
+
+double* CVX_MLP::Apply(double* inputs) const
 {
   //apply input activation
   for (int i = 0; i < numInputs; ++i)
