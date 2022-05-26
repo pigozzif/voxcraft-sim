@@ -12,9 +12,9 @@ public:
   CVX_Distributed(const int numInputs, const int numVoxels, const std::string weights);
   ~CVX_Distributed(void);
 
-  void UpdateMatTemp(CVX_Object* pObjUpdate, CVX_Voxel* voxel);
+  void UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel);
   void UpdateLastSignals(void);
-  double* GetLastSignals(int i, CVX_Object* pObjUpdate) const;
+  double* GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const;
 
 private:
   int numVoxels;
