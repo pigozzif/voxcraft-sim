@@ -45,7 +45,7 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
     std::copy(signals, signals + 4, inputs + mlp->getNumInputs() - 4);
     double* outputs = mlp->Apply(inputs);
     //pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + outputs[0]);
-    std::cout << i << ": ";
+    std::cout << pObj->GetIndex(voxel->ix, voxel->iy, voxel->iz) << ": ";
     for (int k = 0; k < 6; ++k) {
       std::cout << outputs[k] << " ";
     }
@@ -69,7 +69,7 @@ double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) cons
   //pObjUpdate->GetXYZ(&currPoint, i);
   for (int dir = 0; dir < 4; ++dir) {
     CVX_Voxel* adjVoxel = voxel->adjacentVoxel((CVX_Voxel::linkDirection)dir);
-    signals[dir] = lastSignals[pObj->GetIndex(adjVoxel->ix, adjVoxel->iy, adjVoxel->iz)];
+    signals[dir] = lastSignals[pObj->GetIndex(adjVoxel->ix, adjVoxel->iy, adjVoxel->iz)][dir];
   }
   /*int idx = pObjUpdate->GetIndex(currPoint.x + 1, currPoint.y, currPoint.z);
   if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
