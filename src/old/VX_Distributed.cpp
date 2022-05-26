@@ -65,12 +65,13 @@ void CVX_Distributed::UpdateLastSignals(void)
 double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const
 {
   double* signals = (double*) malloc(sizeof(double) * 4);
+  return signals;
   //Vec3D<>* currPoint = new Vec3D<>(voxel->ix, voxel->iy, voxel->iz);
   //pObjUpdate->GetXYZ(&currPoint, i);
-  for (int dir = 0; dir < 4; ++dir) {
-    CVX_Voxel* adjVoxel = voxel->adjacentVoxel((CVX_Voxel::linkDirection)dir);
-    signals[dir] = lastSignals[pObj->GetIndex(adjVoxel->ix, adjVoxel->iy, adjVoxel->iz)][dir];
-  }
+  //for (int dir = 0; dir < 4; ++dir) {
+  //  CVX_Voxel* adjVoxel = voxel->adjacentVoxel((CVX_Voxel::linkDirection)dir);
+  //  signals[dir] = lastSignals[pObj->GetIndex(adjVoxel->ix, adjVoxel->iy, adjVoxel->iz)][dir];
+  //}
   /*int idx = pObjUpdate->GetIndex(currPoint.x + 1, currPoint.y, currPoint.z);
   if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
     signals[0] = lastSignals[idx][0];
@@ -99,5 +100,5 @@ double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) cons
   else {
     signals[3] = 0.0;
   }*/
-  return signals;
+  //return signals;
 }
