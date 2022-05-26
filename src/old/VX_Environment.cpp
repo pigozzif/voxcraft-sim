@@ -358,6 +358,7 @@ float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj)
 			pObjUpdate->GetBaseMat(i)->SetCurMatTemp(CurTemp); //...update each one
 		}
 	}*/
+	std::cout << CurTemp << std::endl;
 	return CurTemp;
 }
 
