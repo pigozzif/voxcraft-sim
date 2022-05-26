@@ -341,11 +341,11 @@ float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_
 {
 	CVX_Object* pObjUpdate = pObj;
 	if (Controller == NULL) {
-	  Controller = new CVX_Distributed(5, (int)pObjUpdate->GetNumMaterials(), Weights);
+	  Controller = new CVX_Distributed(5, (int)pObjUpdate->GetStArraySize(), Weights);
 	}
 	if (pUpdateInObj) pObjUpdate = pUpdateInObj; //necessary b/c of how simulation is set up with a local un-modifiable CVX_Object
 
-	if (VaryTempEnabled){
+	if (VaryTempEnabled && voxel->matid == 1){
 		if (TempPeriod == 0) return 0.0f; //avoid NaNs.
 		//CurTemp = TempBase + TempAmplitude*sin(2*3.1415926/TempPeriod*time);	//update the global temperature
 		CurTemp = TempBase + TempAmplitude*Controller->UpdateVoxelTemp(pObjUpdate, voxel);
@@ -354,7 +354,7 @@ float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_
 		//}
 	}
 	else {
-		CurTemp = TempBase + TempAmplitude;
+		CurTemp = TempBase;// + TempAmplitude;
 		for (int i = 0; i<pObj->GetNumMaterials(); i++){ //for each material...
 			pObjUpdate->GetBaseMat(i)->SetCurMatTemp(CurTemp); //...update each one
 		}
