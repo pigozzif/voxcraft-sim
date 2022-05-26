@@ -10,6 +10,7 @@ See <http://www.opensource.org/licenses/lgpl-3.0.html> for license details.
 
 #include "VX_Environment.h"
 #include "VX_Distributed.h"
+#include "VX_Voxel.h"
 #include <iostream>
 
 #ifdef USE_OPEN_GL
