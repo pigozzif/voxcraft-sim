@@ -347,7 +347,7 @@ float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_
 	if (VaryTempEnabled){
 		if (TempPeriod == 0) return 0.0f; //avoid NaNs.
 		//CurTemp = TempBase + TempAmplitude*sin(2*3.1415926/TempPeriod*time);	//update the global temperature
-		CurTemp = TempBase + TempAmplitude*Controller->UpdateVoxelTemp(pObjUpdate, voxel, 0.0);
+		CurTemp = TempBase + TempAmplitude*Controller->UpdateVoxelTemp(pObjUpdate, voxel);
 		//for (int i = 0; i<(int)pObjUpdate->GetNumMaterials(); i++){ //now update the individual temperatures of each material (they can each have a different temperature)
 		//	pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + TempAmplitude*sin((2*3.1415926f/TempPeriod) * time + pObjUpdate->GetBaseMat(i)->GetMatTempPhase()));	//and update each one
 		//}
