@@ -3,6 +3,7 @@
 #include "VX_Object.h"
 #include <algorithm>
 #include <stdlib.h>
+#include <cstdlib.h>
 
 CVX_Distributed::CVX_Distributed(const int numInputs, const int numMaterials, const std::string weights)
 {
@@ -13,7 +14,10 @@ CVX_Distributed::CVX_Distributed(const int numInputs, const int numMaterials, co
   for (int i = 0; i < numMaterials; ++i) {
     lastSignals[i] = (double*) malloc(sizeof(double) * 4);
     currSignals[i] = (double*) malloc(sizeof(double) * 4);
-    std::fill(lastSignals[i], lastSignals[i] + 4, 0.0);
+    //std::fill(lastSignals[i], lastSignals[i] + 4, 0.0);
+    for (int j = 0; j < 4; ++j) {
+      lastSignals[i][j] = rand() % RAND_MAX;
+    }
     std::fill(currSignals[i], currSignals[i] + 4, 0.0);
   }
 }
