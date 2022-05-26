@@ -69,8 +69,8 @@ double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) cons
   //Vec3D<>* currPoint = new Vec3D<>(voxel->ix, voxel->iy, voxel->iz);
   //pObjUpdate->GetXYZ(&currPoint, i);
   //for (int dir = 0; dir < 4; ++dir) {
-  //  CVX_Voxel* adjVoxel = voxel->adjacentVoxel((CVX_Voxel::linkDirection)dir);
-  //  signals[dir] = lastSignals[pObj->GetIndex(adjVoxel->ix, adjVoxel->iy, adjVoxel->iz)][dir];
+  //  CVX_Voxel* adjVoxel = voxel->adjacentVoxel((CVX_Voxel::linkDirection)dir); 
+  //  signals[dir] = (adjVoxel == NULL) ? 0.0 : lastSignals[pObj->GetIndex(adjVoxel->ix, adjVoxel->iy, adjVoxel->iz)][dir];
   //}
   /*int idx = pObjUpdate->GetIndex(currPoint.x + 1, currPoint.y, currPoint.z);
   if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
