@@ -1,6 +1,7 @@
 #include "VX_Distributed.h"
 #include "Vec3D.h"
 #include "VX_Object.h"
+#include "VX_Voxel.h"
 #include <algorithm>
 #include <stdlib.h>
 #include <cstdlib>
