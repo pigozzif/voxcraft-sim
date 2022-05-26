@@ -44,6 +44,7 @@ void CVX_Distributed::UpdateMatTemp(CVX_Object* pObjUpdate, double TempBase)
     std::copy(signals, signals + 4, inputs + mlp->getNumInputs() - 4);
     double* outputs = mlp->Apply(inputs);
     pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + outputs[0]);
+    std::cout << outputs[0] << std::endl;
     std::copy(outputs + 2, outputs + mlp->getNumOutputs(), currSignals[i]);
   }
   for (int i = 0; i < (int)pObjUpdate->GetNumMaterials(); ++i) {
