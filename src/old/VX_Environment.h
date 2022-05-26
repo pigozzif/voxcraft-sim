@@ -77,6 +77,7 @@ public:
 	vfloat GetTempPeriod(void) {return TempPeriod;} //!< Return current base temperature.
 	void SetNeuralWeights(std::string weights) {Weights = weights;} //!<Set neural net weights
 	std::string GetNeuralWeights(void) {return Weights;} //!<Return neural net weights
+	CVX_Distributed* GetController(void) {return Controller;}
 
 	float UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj = NULL, CVX_Voxel* voxel = NULL); //!< Updates the current temperature based on provided simulation time.
 	vfloat GetCurTemp() {return CurTemp;} //!< Returns the current temperature of the environment. (degrees C)
