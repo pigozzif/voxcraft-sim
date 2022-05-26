@@ -3,7 +3,7 @@
 #include "VX_Object.h"
 #include <algorithm>
 #include <stdlib.h>
-#include <cstdlib.h>
+#include <cstdlib>
 
 CVX_Distributed::CVX_Distributed(const int numInputs, const int numMaterials, const std::string weights)
 {
