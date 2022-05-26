@@ -55,7 +55,7 @@ double CVX_Distributed::UpdateMatTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   return outputs[0];
 }
 
-void CVX_Distributed::UpdateSignals(void)
+void CVX_Distributed::UpdateLastSignals(void)
 {
   for (int i = 0; i < numVoxels; ++i) {
     std::copy(currSignals[i], currSignals[i] + 4, lastSignals[i]);
