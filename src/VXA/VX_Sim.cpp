@@ -480,7 +480,7 @@ void CVX_Sim::UpdateMatTemps(void) // updates expansions for each material
             }
         }
     }
-    pEnv->Controller->UpdateLastSignals();	
+    pEnv->GetController()->UpdateLastSignals();	
 }
 
 void CVX_Sim::SetGravityAccel(float grav) { Vx.setGravity(-grav / 9.80665); }
