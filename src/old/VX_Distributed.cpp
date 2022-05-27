@@ -113,11 +113,8 @@ CVX_TouchSensor::~TouchSensor(void) {}
 
 CVX_TouchSensor::touchState CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, linkDirection dir) const
 {
-  if (target->material->matid == 0) {
+  if (target->material->matid == 0 || source->adjacentVoxel(dir) == target) {
     return NO_CONTACT;
-  }
-  else if (source->adjacentVoxel(dir) == target) {
-    return LINKED;
   }
   linkAxis axis = CVX_Voxel::toAxis(dir);
   double baseSize = source->baseSize(axis);
