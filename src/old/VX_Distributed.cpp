@@ -107,9 +107,9 @@ double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) cons
   return signals;
 }
 
-CVX_TouchSensor::TouchSensor(void) {}
+CVX_TouchSensor::CVX_TouchSensor(void) {}
 
-CVX_TouchSensor::~TouchSensor(void) {}
+CVX_TouchSensor::~CVX_TouchSensor(void) {}
 
 CVX_TouchSensor::touchState CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, linkDirection dir) const
 {
