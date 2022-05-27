@@ -42,7 +42,7 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Sim* sim, CVX_Object* pObj, CVX_Voxe
     double* sensors = (double*) malloc(sizeof(double) * 6);
   for (int i = 0; i < 6; ++i) {
     Vec3D<double>* offset = touchSensor->getOffset((CVX_Voxel::linkDirection)i);
-    sensors[i] = touchSensor->sense(voxel, sim->Vx.voxel((int)voxel->pos.x + offset->x, (int)voxel->pos.y + offset->y, (int)voxel->pos.z + offset->z)), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
+    sensors[i] = touchSensor->sense(voxel, sim->Vx.voxel((int)voxel->pos.x + offset->x, (int)voxel->pos.y + offset->y, (int)voxel->pos.z + offset->z), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
   }
   sensors[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
     double* signals = GetLastSignals(voxel, pObj);
@@ -114,7 +114,7 @@ CVX_TouchSensor::~CVX_TouchSensor(void) {}
 
 double CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::linkDirection dir) const
 {
-  if (target->material.matid == 0 || source->adjacentVoxel(dir) == target) {
+  if (target->matid == 0 || source->adjacentVoxel(dir) == target) {
     return -1.0;
   }
   linkAxis axis = CVX_Voxel::toAxis(dir);
