@@ -111,10 +111,10 @@ CVX_TouchSensor::CVX_TouchSensor(void) {}
 
 CVX_TouchSensor::~CVX_TouchSensor(void) {}
 
-CVX_TouchSensor::touchState CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, linkDirection dir) const
+double CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, linkDirection dir) const
 {
   if (target->material->matid == 0 || source->adjacentVoxel(dir) == target) {
-    return NO_CONTACT;
+    return -1.0;
   }
   linkAxis axis = CVX_Voxel::toAxis(dir);
   double baseSize = source->baseSize(axis);
@@ -122,7 +122,7 @@ CVX_TouchSensor::touchState CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel*
   double sourcePos = (isPositive) ? source->pos[axis] : - source->pos[axis];
   double targetPos = (isPositive) ? - target->pos[axis] : target->pos[axis];
   double penetration = baseSize/2 - source->mat->normaSize()/2 + sourcePos + targetPos;
-  return (penetration > 0) ? CONTACT : NO_CONTACT;
+  return (penetration > 0) ? 1.0 : -1.0;
 }
 
 Vec3D<double>* CVX_TouchSensor::getOffset(linkDirection dir) const
