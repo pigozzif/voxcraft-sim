@@ -29,7 +29,6 @@ class CVX_TouchSensor
 public:
   enum touchState {
     CONTACT=1,
-    LINKED=0,
     NO_CONTACT=-1
   }
   
