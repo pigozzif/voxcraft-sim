@@ -12,8 +12,8 @@ public:
   CVX_TouchSensor(void);
   ~CVX_TouchSensor(void);
   
-  double sense(CVX_Voxel* source, CVX_Voxel* target, linkDirection dir) const;
-  Vec3D<double>* getOffset(linkDirection dir) const;
+  double sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::linkDirection dir) const;
+  Vec3D<double>* getOffset(CVX_Voxel::linkDirection dir) const;
 };
 
 class CVX_Distributed
