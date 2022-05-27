@@ -11,7 +11,6 @@ See <http://www.opensource.org/licenses/lgpl-3.0.html> for license details.
 #include "VX_Environment.h"
 #include "VX_Distributed.h"
 #include "VX_Voxel.h"
-#include "VX_Sim.h"
 #include <iostream>
 
 #ifdef USE_OPEN_GL
@@ -338,7 +337,7 @@ void CVX_Environment::RemoveDisconnected(void) //removes regions not connected t
 	Visited = NULL;
 }
 
-float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_Voxel* voxel, CVX_Sim* sim)
+float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_Voxel* voxel)
 {
 	CVX_Object* pObjUpdate = pObj;
 	if (Controller == NULL) {
@@ -350,7 +349,7 @@ float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_
 	if (VaryTempEnabled && voxel->matid == 1){
 		if (TempPeriod == 0) return 0.0f; //avoid NaNs.
 		//CurTemp = TempBase + TempAmplitude*sin(2*3.1415926/TempPeriod*time);	//update the global temperature
-		CurTemp = TempBase + TempAmplitude*Controller->UpdateVoxelTemp(sim, pObjUpdate, voxel);
+		CurTemp = TempBase + TempAmplitude*Controller->UpdateVoxelTemp(pObjUpdate, voxel);
 		//for (int i = 0; i<(int)pObjUpdate->GetNumMaterials(); i++){ //now update the individual temperatures of each material (they can each have a different temperature)
 		//	pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + TempAmplitude*sin((2*3.1415926f/TempPeriod) * time + pObjUpdate->GetBaseMat(i)->GetMatTempPhase()));	//and update each one
 		//}
