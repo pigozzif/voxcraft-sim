@@ -21,6 +21,23 @@ private:
   CVX_MLP* mlp;
   double** lastSignals;
   double** currSignals;
+  CVX_TouchSensor touchSensor;
+};
+
+class CVX_TouchSensor
+{
+public:
+  enum touchState {
+    CONTACT=1,
+    LINKED=0,
+    NO_CONTACT=-1
+  }
+  
+  CVX_TouchSensor(void);
+  ~CVX_TouchSensor(void);
+  
+  touchState sense(CVX_Voxel* source, CVX_Voxel* target, linkDirection dir) const;
+  Vec3D<double>* getOffset(linkDirection dir) const;
 };
 
 #endif //CVX_DISTRIBUTED_H
