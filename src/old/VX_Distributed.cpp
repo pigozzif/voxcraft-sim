@@ -133,13 +133,13 @@ Vec3D<double>* CVX_TouchSensor::getOffset(linkDirection dir) const
   switch (dir) {
     case 0:
       return new Vec3D<double>(1,0,0);
-    case 0:
+    case 1:
       return new Vec3D<double>(-1,0,0);
-    case 0:
+    case 2:
       return new Vec3D<double>(0,1,0);
-    case 0:
+    case 3:
       return new Vec3D<double>(0,-1,0);
-    case 0:
+    case 4:
       return new Vec3D<double>(0,0,1);
     default:
       return new Vec3D<double>(0,0,-1);
