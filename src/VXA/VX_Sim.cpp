@@ -474,7 +474,7 @@ void CVX_Sim::UpdateMatTemps(void) // updates expansions for each material
                 float thisTemp = 0;
                 if (pV != NULL) {
                     if (IsFeatureEnabled(VXSFEAT_TEMPERATURE))
-                        pV->setTemperature(pEnv->UpdateCurTemp(CurTime, &LocalVXC, pV, this) - pEnv->GetTempBase()); // pEnv->GetTempAmplitude());
+                        pV->setTemperature(pEnv->UpdateCurTemp(CurTime, &LocalVXC, pV) - pEnv->GetTempBase()); // pEnv->GetTempAmplitude());
                     else
                         pV->setTemperature(0);
                 }
