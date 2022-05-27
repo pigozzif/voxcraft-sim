@@ -26,6 +26,7 @@ public:
   double UpdateVoxelTemp(CVX_Sim* sim, CVX_Object* pObj, CVX_Voxel* voxel);
   void UpdateLastSignals(void);
   double* GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const;
+  void setSim(CVX_Sim* sim) {this->sim = sim;}
 
 private:
   int numVoxels;
@@ -33,6 +34,7 @@ private:
   double** lastSignals;
   double** currSignals;
   CVX_TouchSensor* touchSensor;
+  CVX_Sim* sim;
 };
 
 #endif //CVX_DISTRIBUTED_H
