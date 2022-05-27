@@ -107,11 +107,11 @@ double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) cons
   return signals;
 }
 
-CVX_TouchSensor::TouchSensor() {}
+CVX_TouchSensor::TouchSensor(void) {}
 
-CVX_TouchSensor::~TouchSensor() {}
+CVX_TouchSensor::~TouchSensor(void) {}
 
-CVX_TouchSensor::touchState CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, linkDirection dir) 
+CVX_TouchSensor::touchState CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, linkDirection dir) const
 {
   if (target->material->matid == 0) {
     return NO_CONTACT;
@@ -128,7 +128,7 @@ CVX_TouchSensor::touchState CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel*
   return (penetration > 0) ? CONTACT : NO_CONTACT;
 }
 
-Vec3D<double>* CVX_TouchSensor::getOffset(linkDirection dir) 
+Vec3D<double>* CVX_TouchSensor::getOffset(linkDirection dir) const
 {
   switch (dir) {
     case 0:
