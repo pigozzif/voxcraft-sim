@@ -2,6 +2,7 @@
 #include "Vec3D.h"
 #include "VX_Object.h"
 #include "VX_Voxel.h"
+#include "VX_Sim.h"
 #include <algorithm>
 #include <stdlib.h>
 #include <cstdlib>
@@ -21,7 +22,7 @@ CVX_Distributed::CVX_Distributed(const int numInputs, const int numVoxels, const
     }
     std::fill(currSignals[i], currSignals[i] + 4, 0.0);
   }
-  touchSensor = new TouchSensor();
+  touchSensor = new CVX_TouchSensor();
 }
 
 CVX_Distributed::~CVX_Distributed(void)
