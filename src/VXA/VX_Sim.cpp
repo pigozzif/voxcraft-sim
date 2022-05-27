@@ -466,7 +466,7 @@ bool CVX_Sim::IsVolumeEffectsEnabled() {
 
 void CVX_Sim::UpdateMatTemps(void) // updates expansions for each material
 {
-    if (pEnv->GetController() != NULL) pEnv->GetController()->setSim(Vx);
+    if (pEnv->GetController() != NULL) pEnv->GetController()->setSim(&Vx);
     for (int iz = Vx.indexMinZ(); iz <= Vx.indexMaxZ(); iz++) {
         for (int iy = Vx.indexMinY(); iy <= Vx.indexMaxY(); iy++) {
             for (int ix = Vx.indexMinX(); ix <= Vx.indexMaxX(); ix++) {
