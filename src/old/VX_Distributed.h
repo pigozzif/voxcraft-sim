@@ -4,6 +4,7 @@
 #include "VX_MLP.h"
 #include "VX_Object.h"
 #include "VX_Voxel.h"
+#include "VX_Sim.h"
 #include <string>
 
 class CVX_TouchSensor
