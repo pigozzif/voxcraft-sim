@@ -23,6 +23,7 @@ CVX_Distributed::CVX_Distributed(const int numInputs, const int numVoxels, const
     std::fill(currSignals[i], currSignals[i] + 4, 0.0);
   }
   touchSensor = new CVX_TouchSensor();
+  sim = NULL;
 }
 
 CVX_Distributed::~CVX_Distributed(void)
@@ -36,7 +37,7 @@ CVX_Distributed::~CVX_Distributed(void)
   delete mlp;
 }
 
-double CVX_Distributed::UpdateVoxelTemp(CVX_Sim* sim, CVX_Object* pObj, CVX_Voxel* voxel)
+double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
 {
   //for (int i = 0; i < (int)pObjUpdate->GetNumMaterials(); ++i) {
     double* sensors = (double*) malloc(sizeof(double) * 6);
