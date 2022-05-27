@@ -32,7 +32,7 @@ private:
   CVX_MLP* mlp;
   double** lastSignals;
   double** currSignals;
-  CVX_TouchSensor touchSensor;
+  CVX_TouchSensor* touchSensor;
 };
 
 #endif //CVX_DISTRIBUTED_H
