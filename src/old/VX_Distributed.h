@@ -4,7 +4,7 @@
 #include "VX_MLP.h"
 #include "VX_Object.h"
 #include "VX_Voxel.h"
-#include "VX_Sim.h"
+#include "Voxelyze.h"
 #include <string>
 
 class CVX_TouchSensor
@@ -26,7 +26,7 @@ public:
   double UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel);
   void UpdateLastSignals(void);
   double* GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const;
-  void setSim(CVX_Sim* sim) {this->sim = sim;}
+  void setSim(CVoxelyze* sim) {this->sim = sim;}
 
 private:
   int numVoxels;
@@ -34,7 +34,7 @@ private:
   double** lastSignals;
   double** currSignals;
   CVX_TouchSensor* touchSensor;
-  CVX_Sim* sim;
+  CVoxelyze* sim;
 };
 
 #endif //CVX_DISTRIBUTED_H
