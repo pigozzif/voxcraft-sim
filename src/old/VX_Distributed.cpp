@@ -10,7 +10,7 @@
 CVX_Distributed::CVX_Distributed(const int numInputs, const int numVoxels, const std::string weights, CVoxelyze* sim)
 {
   this->numVoxels = numVoxels;
-  mlp = new CVX_MLP(numInputs, 6, weights);
+  mlp = new CVX_MLP(numInputs, 8, weights);
   lastSignals = (double**) malloc(sizeof(double*) * numVoxels);
   currSignals = (double**) malloc(sizeof(double*) * numVoxels);
   for (int i = 0; i < numVoxels; ++i) {
@@ -20,7 +20,7 @@ CVX_Distributed::CVX_Distributed(const int numInputs, const int numVoxels, const
     for (int j = 0; j < 6; ++j) {
       lastSignals[i][j] = 1;
     }
-    std::fill(currSignals[i], currSignals[i] + 4, 0.0);
+    std::fill(currSignals[i], currSignals[i] + 6, 0.0);
   }
   touchSensor = new CVX_TouchSensor();
   this->sim = sim;
@@ -50,8 +50,8 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   
     double* signals = GetLastSignals(voxel, pObj);
     double* inputs = new double[mlp->getNumInputs()];
-    std::copy(sensors, sensors + mlp->getNumInputs() - 4, inputs);
-    std::copy(signals, signals + 4, inputs + mlp->getNumInputs() - 4);
+    std::copy(sensors, sensors + mlp->getNumInputs() - 6, inputs);
+    std::copy(signals, signals + 4, inputs + mlp->getNumInputs() - 6);
     double* outputs = mlp->Apply(inputs);
     //pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + outputs[0]);
     std::cout << pObj->GetIndex(voxel->ix, voxel->iy, voxel->iz) << ": ";
@@ -67,19 +67,19 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   free(signals);
   free(inputs);
   free(outputs);
-  return outputs[0];
+  return actuation;
 }
 
 void CVX_Distributed::UpdateLastSignals(void)
 {
   for (int i = 0; i < numVoxels; ++i) {
-    std::copy(currSignals[i], currSignals[i] + 4, lastSignals[i]);
+    std::copy(currSignals[i], currSignals[i] + 6, lastSignals[i]);
   }
 }
 
 double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const
 {
-  double* signals = (double*) malloc(sizeof(double) * 4);
+  double* signals = (double*) malloc(sizeof(double) * 6);
   //Vec3D<>* currPoint = new Vec3D<>(voxel->ix, voxel->iy, voxel->iz);
   //pObjUpdate->GetXYZ(&currPoint, i);
   for (int dir = 0; dir < 6; ++dir) {
