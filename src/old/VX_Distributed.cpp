@@ -48,6 +48,7 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
     sensors[i] = touchSensor->sense(voxel, voxel/*sim->voxel((int)voxel->pos.x + offset->x, (int)voxel->pos.y + offset->y, (int)voxel->pos.z + offset->z)*/, (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
   }
   sensors[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
+  
     double* signals = GetLastSignals(voxel, pObj);
     double* inputs = new double[mlp->getNumInputs()];
     std::copy(sensors, sensors + mlp->getNumInputs() - 4, inputs);
@@ -61,6 +62,12 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
     std::cout << std::endl;
     std::copy(outputs + 2, outputs + mlp->getNumOutputs(), currSignals[pObj->GetIndex(voxel->ix, voxel->iy, voxel->iz)]);
   //}
+  
+  double actuation = outputs[0];
+  free(sensors);
+  free(signals);
+  free(inputs);
+  free(outputs);
   return outputs[0];
 }
 
