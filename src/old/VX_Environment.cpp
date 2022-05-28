@@ -341,7 +341,7 @@ float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_
 {
 	CVX_Object* pObjUpdate = pObj;
 	if (Controller == NULL) {
-	  Controller = new CVX_Distributed(5, pObjUpdate->GetStArraySize(), Weights);
+	  Controller = new CVX_Distributed(10, pObjUpdate->GetStArraySize(), Weights);
 	  std::cout << pObjUpdate->GetStArraySize() << std::endl;
 	}
 	if (pUpdateInObj) pObjUpdate = pUpdateInObj; //necessary b/c of how simulation is set up with a local un-modifiable CVX_Object
