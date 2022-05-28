@@ -115,15 +115,16 @@ CVX_TouchSensor::~CVX_TouchSensor(void) {}
 
 double CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::linkDirection dir) const
 {
+  return 0.0;
   if (target == NULL || target->matid == 0 || source->adjacentVoxel(dir) == target) {
     return -1.0;
   }
-  linkAxis axis = CVX_Voxel::toAxis(dir);
-  double baseSize = source->baseSize(axis);
-  bool isPositive = CVX_Voxel::isPositive(dir);
-  double sourcePos = (isPositive) ? source->pos[axis] : - source->pos[axis];
-  double targetPos = (isPositive) ? - target->pos[axis] : target->pos[axis];
-  double penetration = baseSize/2 - source->mat->nominalSize()/2 + sourcePos + targetPos;
+  //linkAxis axis = CVX_Voxel::toAxis(dir);
+  //double baseSize = source->baseSize(axis);
+  //bool isPositive = CVX_Voxel::isPositive(dir);
+  //double sourcePos = (isPositive) ? source->pos[axis] : - source->pos[axis];
+  //double targetPos = (isPositive) ? - target->pos[axis] : target->pos[axis];
+  double penetration = 0.0;//baseSize/2 - source->mat->nominalSize()/2 + sourcePos + targetPos;
   return (penetration > 0) ? 1.0 : -1.0;
 }
 
