@@ -14,10 +14,10 @@ CVX_Distributed::CVX_Distributed(const int numInputs, const int numVoxels, const
   lastSignals = (double**) malloc(sizeof(double*) * numVoxels);
   currSignals = (double**) malloc(sizeof(double*) * numVoxels);
   for (int i = 0; i < numVoxels; ++i) {
-    lastSignals[i] = (double*) malloc(sizeof(double) * 4);
-    currSignals[i] = (double*) malloc(sizeof(double) * 4);
+    lastSignals[i] = (double*) malloc(sizeof(double) * 6);
+    currSignals[i] = (double*) malloc(sizeof(double) * 6);
     //std::fill(lastSignals[i], lastSignals[i] + 4, 0.0);
-    for (int j = 0; j < 4; ++j) {
+    for (int j = 0; j < 6; ++j) {
       lastSignals[i][j] = 1;
     }
     std::fill(currSignals[i], currSignals[i] + 4, 0.0);
@@ -82,7 +82,7 @@ double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) cons
   double* signals = (double*) malloc(sizeof(double) * 4);
   //Vec3D<>* currPoint = new Vec3D<>(voxel->ix, voxel->iy, voxel->iz);
   //pObjUpdate->GetXYZ(&currPoint, i);
-  for (int dir = 0; dir < 4; ++dir) {
+  for (int dir = 0; dir < 6; ++dir) {
     CVX_Voxel* adjVoxel = voxel->adjacentVoxel((CVX_Voxel::linkDirection)dir); 
     signals[dir] = (adjVoxel) ? lastSignals[pObj->GetIndex(adjVoxel->ix, adjVoxel->iy, adjVoxel->iz)][dir] : 0.0;
   }
