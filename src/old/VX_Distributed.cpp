@@ -7,20 +7,20 @@
 #include <stdlib.h>
 #include <cstdlib>
 
-CVX_Distributed::CVX_Distributed(const int numInputs, const int numVoxels, const std::string weights, CVoxelyze* sim)
+CVX_Distributed::CVX_Distributed(const int numVoxels, const std::string weights, CVoxelyze* sim)
 {
   this->numVoxels = numVoxels;
-  mlp = new CVX_MLP(numInputs, 8, weights);
+  mlp = new CVX_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
   lastSignals = (double**) malloc(sizeof(double*) * numVoxels);
   currSignals = (double**) malloc(sizeof(double*) * numVoxels);
   for (int i = 0; i < numVoxels; ++i) {
-    lastSignals[i] = (double*) malloc(sizeof(double) * 6);
-    currSignals[i] = (double*) malloc(sizeof(double) * 6);
+    lastSignals[i] = (double*) malloc(sizeof(double) * NUM_SIGNALS);
+    currSignals[i] = (double*) malloc(sizeof(double) * NUM_SIGNALS);
     //std::fill(lastSignals[i], lastSignals[i] + 4, 0.0);
-    for (int j = 0; j < 6; ++j) {
+    for (int j = 0; j < NUM_SIGNALS; ++j) {
       lastSignals[i][j] = 1;
     }
-    std::fill(currSignals[i], currSignals[i] + 6, 0.0);
+    std::fill(currSignals[i], currSignals[i] + NUM_SIGNALS, 0.0);
   }
   touchSensor = new CVX_TouchSensor();
   this->sim = sim;
@@ -41,7 +41,7 @@ CVX_Distributed::~CVX_Distributed(void)
 double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
 {
   //for (int i = 0; i < (int)pObjUpdate->GetNumMaterials(); ++i) {
-    double* sensors = (double*) malloc(sizeof(double) * 6);
+    double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
   for (int i = 0; i < 6; ++i) {
     Vec3D<double>* offset = touchSensor->getOffset((CVX_Voxel::linkDirection)i);
     sensors[i] = touchSensor->sense(voxel, sim->voxel(voxel->pos.x + offset->x, voxel->pos.y + offset->y, voxel->pos.z + offset->z), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
@@ -50,12 +50,12 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   
     double* signals = GetLastSignals(voxel, pObj);
     double* inputs = new double[mlp->getNumInputs()];
-    std::copy(sensors, sensors + mlp->getNumInputs() - 6, inputs);
-    std::copy(signals, signals + 4, inputs + mlp->getNumInputs() - 6);
+    std::copy(sensors, sensors + NUM_SENSORS, inputs);
+    std::copy(signals, signals + NUM_SIGNALS, inputs + NUM_SENSORS);
     double* outputs = mlp->Apply(inputs);
     //pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + outputs[0]);
     std::cout << pObj->GetIndex(voxel->ix, voxel->iy, voxel->iz) << ": ";
-    for (int k = 0; k < 6; ++k) {
+    for (int k = 0; k < NUM_SIGNALS; ++k) {
       std::cout << signals[k] << " ";
     }
     std::cout << std::endl;
@@ -73,16 +73,16 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
 void CVX_Distributed::UpdateLastSignals(void)
 {
   for (int i = 0; i < numVoxels; ++i) {
-    std::copy(currSignals[i], currSignals[i] + 6, lastSignals[i]);
+    std::copy(currSignals[i], currSignals[i] + NUM_SIGNALS, lastSignals[i]);
   }
 }
 
 double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const
 {
-  double* signals = (double*) malloc(sizeof(double) * 6);
+  double* signals = (double*) malloc(sizeof(double) * NUM_SIGNALS);
   //Vec3D<>* currPoint = new Vec3D<>(voxel->ix, voxel->iy, voxel->iz);
   //pObjUpdate->GetXYZ(&currPoint, i);
-  for (int dir = 0; dir < 6; ++dir) {
+  for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
     CVX_Voxel* adjVoxel = voxel->adjacentVoxel((CVX_Voxel::linkDirection)dir); 
     signals[dir] = (adjVoxel) ? lastSignals[pObj->GetIndex(adjVoxel->ix, adjVoxel->iy, adjVoxel->iz)][dir] : 0.0;
   }
