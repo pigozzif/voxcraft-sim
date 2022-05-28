@@ -11,6 +11,7 @@ See <http://www.opensource.org/licenses/lgpl-3.0.html> for license details.
 #include "VX_Environment.h"
 #include "VX_Distributed.h"
 #include "VX_Voxel.h"
+#include "Voxelyze.h"
 #include <iostream>
 
 #ifdef USE_OPEN_GL
@@ -337,13 +338,19 @@ void CVX_Environment::RemoveDisconnected(void) //removes regions not connected t
 	Visited = NULL;
 }
 
+void CVX_Environment::InitController(CVoxelyze* sim)
+{
+  Controller = new CVX_Distributed(10, pObj->GetStArraySize(), Weights);
+  Controller->sim = sim;
+}
+
 float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_Voxel* voxel)
 {
 	CVX_Object* pObjUpdate = pObj;
-	if (Controller == NULL) {
-	  Controller = new CVX_Distributed(10, pObjUpdate->GetStArraySize(), Weights);
-	  std::cout << pObjUpdate->GetStArraySize() << std::endl;
-	}
+	//if (Controller == NULL) {
+	//  Controller = new CVX_Distributed(10, pObjUpdate->GetStArraySize(), Weights);
+	//  std::cout << pObjUpdate->GetStArraySize() << std::endl;
+	//}
 	if (pUpdateInObj) pObjUpdate = pUpdateInObj; //necessary b/c of how simulation is set up with a local un-modifiable CVX_Object
 
 	if (VaryTempEnabled && voxel->matid == 1){
