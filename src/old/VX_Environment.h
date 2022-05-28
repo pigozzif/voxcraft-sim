@@ -15,6 +15,7 @@ See <http://www.opensource.org/licenses/lgpl-3.0.html> for license details.
 #include "VX_Object.h"
 #include "VX_Distributed.h"
 #include "VX_Voxel.h"
+#include "Voxelyze.h"
 #include <string>
 
 #define BC_GLIND_OFF 100000000
@@ -78,6 +79,7 @@ public:
 	void SetNeuralWeights(std::string weights) {Weights = weights;} //!<Set neural net weights
 	std::string GetNeuralWeights(void) {return Weights;} //!<Return neural net weights
 	CVX_Distributed* GetController(void) {return Controller;}
+	void InitController(CVoxelyze* sim);
 
 	float UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj = NULL, CVX_Voxel* voxel = NULL); //!< Updates the current temperature based on provided simulation time.
 	vfloat GetCurTemp() {return CurTemp;} //!< Returns the current temperature of the environment. (degrees C)
