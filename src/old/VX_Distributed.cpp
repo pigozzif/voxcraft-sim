@@ -29,11 +29,11 @@ CVX_Distributed::CVX_Distributed(const int numInputs, const int numVoxels, const
 CVX_Distributed::~CVX_Distributed(void)
 {
   for (int i = 0; i < numVoxels; ++i) {
-    delete lastSignals[i];
-    delete currSignals[i];
+    free(lastSignals[i]);
+    free(currSignals[i]);
   }
-  delete[] lastSignals;
-  delete[] currSignals;
+  free(lastSignals);
+  free(currSignals);
   delete mlp;
   sim = NULL;
 }
