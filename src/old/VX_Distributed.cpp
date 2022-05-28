@@ -119,15 +119,15 @@ double CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::l
   std::cout << "we are here" << std::endl;
   if (!target || !source) return -1.0;
   //std::cout << dir << " " << source->pos.x << source->pos.y << source->pos.z << " " << target->pos.x << target->pos.y << target->pos.z << std::endl;
-  //if (target == NULL || target->matid == 0 || target == source->adjacentVoxel(dir)) {
-  //  return -1.0;
-  //}
-  //linkAxis axis = CVX_Voxel::toAxis(dir);
-  //double baseSize = source->baseSize(axis);
-  //bool isPositive = CVX_Voxel::isPositive(dir);
-  //double sourcePos = (isPositive) ? source->pos[axis] : - source->pos[axis];
-  //double targetPos = (isPositive) ? - target->pos[axis] : target->pos[axis];
-  double penetration = 0.0;//baseSize/2 - source->mat->nominalSize()/2 + sourcePos + targetPos;
+  if (!target || target->matid == 0 || target == source->adjacentVoxel(dir)) {
+    return -1.0;
+  }
+  linkAxis axis = CVX_Voxel::toAxis(dir);
+  double baseSize = source->baseSize(axis);
+  bool isPositive = CVX_Voxel::isPositive(dir);
+  double sourcePos = (isPositive) ? source->pos[axis] : - source->pos[axis];
+  double targetPos = (isPositive) ? - target->pos[axis] : target->pos[axis];
+  double penetration = baseSize/2 - source->mat->nominalSize()/2 + sourcePos + targetPos;
   return (penetration > 0) ? 1.0 : -1.0;
 }
 
