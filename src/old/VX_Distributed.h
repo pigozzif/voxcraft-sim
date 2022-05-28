@@ -20,13 +20,12 @@ public:
 class CVX_Distributed
 {
 public:
-  CVX_Distributed(const int numInputs, const int numVoxels, const std::string weights);
+  CVX_Distributed(const int numInputs, const int numVoxels, const std::string weights, CVoxelyze* sim);
   ~CVX_Distributed(void);
 
   double UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel);
   void UpdateLastSignals(void);
   double* GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const;
-  void setSim(CVoxelyze* sim) {this->sim = sim;}
 
 private:
   int numVoxels;
