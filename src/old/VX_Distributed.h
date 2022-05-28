@@ -7,6 +7,9 @@
 #include "Voxelyze.h"
 #include <string>
 
+#define NUM_SENSORS 6
+#define NUM_SIGNALS 6
+
 class CVX_TouchSensor
 {
 public:
@@ -20,7 +23,7 @@ public:
 class CVX_Distributed
 {
 public:
-  CVX_Distributed(const int numInputs, const int numVoxels, const std::string weights, CVoxelyze* sim);
+  CVX_Distributed(const int numVoxels, const std::string weights, CVoxelyze* sim);
   ~CVX_Distributed(void);
 
   double UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel);
