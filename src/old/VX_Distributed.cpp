@@ -115,7 +115,6 @@ CVX_TouchSensor::~CVX_TouchSensor(void) {}
 
 double CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::linkDirection dir) const
 {
-  return 0.0;
   if (target == NULL || target->matid == 0 || source->adjacentVoxel(dir) == target) {
     return -1.0;
   }
