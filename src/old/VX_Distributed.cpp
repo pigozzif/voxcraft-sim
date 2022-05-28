@@ -18,7 +18,7 @@ CVX_Distributed::CVX_Distributed(const int numInputs, const int numVoxels, const
     currSignals[i] = (double*) malloc(sizeof(double) * 4);
     //std::fill(lastSignals[i], lastSignals[i] + 4, 0.0);
     for (int j = 0; j < 4; ++j) {
-      lastSignals[i][j] = (rand() % RAND_MAX) * 2 - 1;
+      lastSignals[i][j] = 1;
     }
     std::fill(currSignals[i], currSignals[i] + 4, 0.0);
   }
