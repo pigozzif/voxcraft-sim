@@ -35,6 +35,7 @@ CVX_Distributed::~CVX_Distributed(void)
   delete[] lastSignals;
   delete[] currSignals;
   delete mlp;
+  sim = NULL;
 }
 
 double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
@@ -76,7 +77,7 @@ double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) cons
   //pObjUpdate->GetXYZ(&currPoint, i);
   for (int dir = 0; dir < 4; ++dir) {
     CVX_Voxel* adjVoxel = voxel->adjacentVoxel((CVX_Voxel::linkDirection)dir); 
-    signals[dir] = (adjVoxel == NULL) ? 0.0 : lastSignals[pObj->GetIndex(adjVoxel->ix, adjVoxel->iy, adjVoxel->iz)][dir];
+    signals[dir] = (adjVoxel) ? lastSignals[pObj->GetIndex(adjVoxel->ix, adjVoxel->iy, adjVoxel->iz)][dir] : 0.0;
   }
   /*int idx = pObjUpdate->GetIndex(currPoint.x + 1, currPoint.y, currPoint.z);
   if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
@@ -116,7 +117,7 @@ CVX_TouchSensor::~CVX_TouchSensor(void) {}
 double CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::linkDirection dir) const
 {
   std::cout << "we are here" << std::endl;
-  if (target == NULL || source == NULL) return -1.0;
+  if (!target || !source) return -1.0;
   //std::cout << dir << " " << source->pos.x << source->pos.y << source->pos.z << " " << target->pos.x << target->pos.y << target->pos.z << std::endl;
   //if (target == NULL || target->matid == 0 || target == source->adjacentVoxel(dir)) {
   //  return -1.0;
