@@ -115,7 +115,8 @@ CVX_TouchSensor::~CVX_TouchSensor(void) {}
 
 double CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::linkDirection dir) const
 {
-  std::cout << dir << " " << source->pos << " " << target->pos << std::endl;
+  if (target == NULL) return -1.0;
+  std::cout << dir << " " << source->pos.x << source->pos.y << source->pos.z << " " << target->pos.x << target->pos.y << target->pos.z << std::endl;
   if (target == NULL || target->matid == 0 || target == source->adjacentVoxel(dir)) {
     return -1.0;
   }
