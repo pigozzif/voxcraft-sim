@@ -13,9 +13,9 @@ CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs, const std::string we
 CVX_MLP::~CVX_MLP(void)
 {
   for (int i = 0; i < numOutputs; ++i) {
-    delete weights[i];
+    free(weights[i]);
   }
-  delete[] weights;
+  free(weights);
 }
 
 void CVX_MLP::SetWeights(const std::string weights)
