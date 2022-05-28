@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <cstdlib>
 
-CVX_Distributed::CVX_Distributed(const int numInputs, const int numVoxels, const std::string weights)
+CVX_Distributed::CVX_Distributed(const int numInputs, const int numVoxels, const std::string weights, CVoxelyze* sim)
 {
   this->numVoxels = numVoxels;
   mlp = new CVX_MLP(numInputs, 6, weights);
@@ -23,7 +23,7 @@ CVX_Distributed::CVX_Distributed(const int numInputs, const int numVoxels, const
     std::fill(currSignals[i], currSignals[i] + 4, 0.0);
   }
   touchSensor = new CVX_TouchSensor();
-  sim = NULL;
+  this->sim = sim;
 }
 
 CVX_Distributed::~CVX_Distributed(void)
