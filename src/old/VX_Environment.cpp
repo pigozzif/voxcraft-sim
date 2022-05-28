@@ -340,8 +340,7 @@ void CVX_Environment::RemoveDisconnected(void) //removes regions not connected t
 
 void CVX_Environment::InitController(CVoxelyze* sim)
 {
-  Controller = new CVX_Distributed(10, pObj->GetStArraySize(), Weights);
-  Controller->sim = sim;
+  Controller = new CVX_Distributed(10, pObj->GetStArraySize(), Weights, sim);
 }
 
 float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_Voxel* voxel)
