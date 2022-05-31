@@ -42,9 +42,9 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
 {
   //for (int i = 0; i < (int)pObjUpdate->GetNumMaterials(); ++i) {
     double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
-  for (int i = 0; i < 6; ++i) {
+  for (int i = 0; i < NUM_SENSORS; ++i) {
     Vec3D<double>* offset = touchSensor->getOffset((CVX_Voxel::linkDirection)i);
-    sensors[i] = touchSensor->sense(voxel, sim->voxel(voxel->pos / voxel->nominalSize() + offset), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
+    sensors[i] = touchSensor->sense(voxel, sim->voxel(voxel->pos / voxel->material()->nominalSize() + offset), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
   }
   
     double* signals = GetLastSignals(voxel, pObj);
