@@ -54,7 +54,7 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
     std::copy(signals, signals + NUM_SIGNALS, inputs + NUM_SENSORS);
     double* outputs = mlp->Apply(inputs);
     //pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + outputs[0]);
-    std::cout << "(" << voxel->ix << "," << voxel->iy << "," << voxel->iz << ") ";
+    std::cout << "(" << voxel->ix << "," << voxel->iy << "," << voxel->iz << ") " << std::endl;
     for (int k = 0; k < NUM_SIGNALS; ++k) {
       std::cout << sensors[k] << " ";
     }
@@ -123,10 +123,10 @@ CVX_TouchSensor::~CVX_TouchSensor(void) {}
 
 double CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::linkDirection dir) const
 {
-  std::cout << "we are here" << std::endl;
   if (!target || target->matid == 0 || target == source->adjacentVoxel(dir)) {
     return -1.0;
   }
+  std::cout << "we are here" << std::cout << " (" << voxel->ix << "," << voxel->iy << "," << voxel->iz << ") " << std::endl;
   linkAxis axis = CVX_Voxel::toAxis(dir);
   double baseSize = source->baseSize(axis);
   bool isPositive = CVX_Voxel::isPositive(dir);
