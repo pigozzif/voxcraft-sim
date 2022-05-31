@@ -44,7 +44,8 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
     double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
   for (int i = 0; i < NUM_SENSORS; ++i) {
     Vec3D<double>* offset = touchSensor->getOffset((CVX_Voxel::linkDirection)i);
-    sensors[i] = touchSensor->sense(voxel, sim->voxel(voxel->pos / voxel->material()->nominalSize() + offset), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
+    double s = voxel->material()->nominalSize();
+    sensors[i] = touchSensor->sense(voxel, sim->voxel(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
   }
   
     double* signals = GetLastSignals(voxel, pObj);
@@ -125,15 +126,15 @@ double CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::l
   if (!target || target->matid == 0) {
     return -1.0;
   }
-  //std::cout << "check:" << " (" << target->matid << ") " << std::endl;
-  else if (target == source->adjacentVoxel(dir)) {
+  std::cout << "we are here:" << " (" << source->ix << "," << source->iy << "," << source->iz << ") " << " (" << target->ix << "," << target->iy << "," << target->iz << ") " << std::endl;
+  if (target == source->adjacentVoxel(dir)) {
     return 0.0;
   }
   else if (dir == CVX_Voxel::linkDirection::Z_NEG && source->floorPenetration() >= 0) {
     return 1.0;
   }
   std::cout << "check:" << " (" << target->matid << ") " << std::endl;
-  std::cout << "we are here:" << " (" << target->ix << "," << target->iy << "," << target->iz << ") " << std::endl;
+  std::cout << "we are here again" << std::endl;
   linkAxis axis = CVX_Voxel::toAxis(dir);
   double baseSize = source->baseSize(axis);
   bool isPositive = CVX_Voxel::isPositive(dir);
