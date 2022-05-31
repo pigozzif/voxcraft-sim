@@ -123,7 +123,7 @@ CVX_TouchSensor::~CVX_TouchSensor(void) {}
 double CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::linkDirection dir) const
 {
   if (dir == linkDirection::Z_NEG) {
-    return (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
+    return (source->floorPenetration() >= 0) ? 1.0 : -1.0;
   }
   else if (!target || target->matid == 0) {
     return -1.0;
