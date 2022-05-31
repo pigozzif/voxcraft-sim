@@ -56,7 +56,7 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
     //pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + outputs[0]);
     std::cout << "(" << voxel->ix << "," << voxel->iy << "," << voxel->iz << ") ";
     for (int k = 0; k < NUM_SIGNALS; ++k) {
-      std::cout << signals[k] << " ";
+      std::cout << sensors[k] << " ";
     }
     std::cout << std::endl;
     std::copy(outputs + 2, outputs + mlp->getNumOutputs(), currSignals[pObj->GetIndex(voxel->ix, voxel->iy, voxel->iz)]);
