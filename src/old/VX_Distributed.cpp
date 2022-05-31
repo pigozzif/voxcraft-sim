@@ -40,6 +40,7 @@ CVX_Distributed::~CVX_Distributed(void)
 
 double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
 {
+  std::cout << sim->voxelCount() << std::endl;
   //for (int i = 0; i < (int)pObjUpdate->GetNumMaterials(); ++i) {
     double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
   for (int i = 0; i < NUM_SENSORS; ++i) {
