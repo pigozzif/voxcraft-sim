@@ -122,15 +122,15 @@ CVX_TouchSensor::~CVX_TouchSensor(void) {}
 
 double CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::linkDirection dir) const
 {
-  if (dir == CVX_Voxel::linkDirection::Z_NEG) {
-    return (source->floorPenetration() >= 0) ? 1.0 : -1.0;
-  }
-  else if (!target || target->matid == 0) {
+  if (!target || target->matid == 0) {
     return -1.0;
   }
   //std::cout << "check:" << " (" << target->matid << ") " << std::endl;
   else if (target == source->adjacentVoxel(dir)) {
     return 0.0;
+  }
+  else if (dir == CVX_Voxel::linkDirection::Z_NEG && source->floorPenetration() >= 0) {
+    return 1.0;
   }
   std::cout << "check:" << " (" << target->matid << ") " << std::endl;
   std::cout << "we are here:" << " (" << target->ix << "," << target->iy << "," << target->iz << ") " << std::endl;
