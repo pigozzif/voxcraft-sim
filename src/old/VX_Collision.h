@@ -36,6 +36,7 @@ public:
 
 	CVX_Voxel* voxel1() const {return pV1;} //!<One voxel of this potential collision pair.
 	CVX_Voxel* voxel2() const {return pV2;} //!<The other voxel of this potential collision pair.
+	Vec3D<float> force() const {return force;} //!<The repulsion force between the two voxels.
 
 	static float envelopeRadius; //!<The collision envelope radius that these two voxels collide at. Even though voxels are cubic, a spherical collision envelope is used for computation efficiency. Values are multiplied by the length of an edge of the voxel to determine the actual collision radius. Values less than 0.5 or greater than 0.866 are probably of limited use. Prefer around 0.625 (default).
 
