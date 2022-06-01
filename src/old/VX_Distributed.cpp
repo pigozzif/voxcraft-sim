@@ -42,30 +42,28 @@ CVX_Distributed::~CVX_Distributed(void)
 
 double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
 {
-  std::cout << sim->voxelCount() << std::endl;
   //for (int i = 0; i < (int)pObjUpdate->GetNumMaterials(); ++i) {
     double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
   std::fill(sensors, sensors + NUM_SENSORS, -1.0);
   std::vector<CVX_Collision*> collisions = std::vector<CVX_Collision*>();
-  std::cout << "num collision: " << sim->collisionsList.size() << std::endl;
   for (CVX_Collision* collision : sim->collisionsList) {
     if (collision->voxel1() == voxel || collision->voxel2() == voxel) {
       collisions.push_back(collision);
     }
   }
-  std::cout << "current collisions: " << collisions.size() << std::endl;
+  
   for (CVX_Collision* collision : collisions) {
-    //if (collision->force == Vec3D<float>(0,0,0)) {
-    //  continue;
-    //}
+    if (collision->force() == Vec3D<float>(0,0,0)) {
+      continue;
+    }
     for (int i = 0; i < NUM_SENSORS; ++i) {
       Vec3D<double>* offset = touchSensor->getOffset((CVX_Voxel::linkDirection)i);
       double s = voxel->material()->nominalSize();
-      //CVX_Voxel* other = (collision->voxel1() == voxel) ? collision->voxel2() : collision->voxel1();
-      //if (Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
-      //    Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
-      //  sensors[i] = 1.0;//touchSensor->sense(voxel, sim->voxel(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
-      //}
+      CVX_Voxel* other = (collision->voxel1() == voxel) ? collision->voxel2() : collision->voxel1();
+      if (Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
+          Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
+        sensors[i] = 1.0;//touchSensor->sense(voxel, sim->voxel(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
+      }
     }
   }
   
