@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <stdlib.h>
 #include <cstdlib>
+#include <vector>
 
 CVX_Distributed::CVX_Distributed(const int numVoxels, const std::string weights, CVoxelyze* sim)
 {
@@ -43,10 +44,17 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   std::cout << sim->voxelCount() << std::endl;
   //for (int i = 0; i < (int)pObjUpdate->GetNumMaterials(); ++i) {
     double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
+  std::vector<CVX_Collision*> collisions = std::vector<CVX_Collision*>();
+  for (CVX_Collision* collision : sim->collisions) {
+    if (collision->pV1 == voxel || collision->pV2 == voxel) {
+      collisions.push_back(collision);
+    }
+  }
+  std::cout << collisions.size() << std::endl;
   for (int i = 0; i < NUM_SENSORS; ++i) {
     Vec3D<double>* offset = touchSensor->getOffset((CVX_Voxel::linkDirection)i);
     double s = voxel->material()->nominalSize();
-    sensors[i] = touchSensor->sense(voxel, sim->voxel(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
+    sensors[i] = 0.0;//touchSensor->sense(voxel, sim->voxel(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
   }
   
     double* signals = GetLastSignals(voxel, pObj);
