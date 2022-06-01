@@ -148,16 +148,16 @@ Vec3D<float>* CVX_Distributed::getOffset(CVX_Voxel::linkDirection dir) const
 {
   switch (dir) {
     case 0:
-      return new Vec3D<double>(1,0,0);
+      return new Vec3D<float>(1,0,0);
     case 1:
-      return new Vec3D<double>(-1,0,0);
+      return new Vec3D<float>(-1,0,0);
     case 2:
-      return new Vec3D<double>(0,1,0);
+      return new Vec3D<float>(0,1,0);
     case 3:
-      return new Vec3D<double>(0,-1,0);
+      return new Vec3D<float>(0,-1,0);
     case 4:
-      return new Vec3D<double>(0,0,1);
+      return new Vec3D<float>(0,0,1);
     default:
-      return new Vec3D<double>(0,0,-1);
+      return new Vec3D<float>(0,0,-1);
   }
 }
