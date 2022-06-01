@@ -138,6 +138,10 @@ double CVX_Distributed::sense(CVX_Voxel* voxel, double* sensors) const
       }
     }
   }
+  
+  if (voxel->iz == 0) {
+    sensors[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
+  }
 }
 
 Vec3D<float>* CVX_Distributed::getOffset(CVX_Voxel::linkDirection dir) const
