@@ -115,7 +115,7 @@ double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) cons
   return signals;
 }
 
-double CVX_Distributed::sense(CVX_Voxel* voxel, double* sensors) const
+void CVX_Distributed::sense(CVX_Voxel* voxel, double* sensors) const
 {
   std::vector<CVX_Collision*> collisions = std::vector<CVX_Collision*>();
   for (CVX_Collision* collision : sim->collisionsList) {
