@@ -53,7 +53,7 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   }
   
   for (CVX_Collision* collision : collisions) {
-    if (collision->force() == Vec3D<float>(0,0,0)) {
+    if (collision->getForce() == Vec3D<float>(0,0,0)) {
       continue;
     }
     for (int i = 0; i < NUM_SENSORS; ++i) {
