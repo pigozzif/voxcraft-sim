@@ -103,7 +103,7 @@ double CVX_Distributed::updateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   std::fill(sensors, sensors + NUM_SENSORS, -1.0);
   sense(voxel, sensors);
   
-  double* signals = GetLastSignals(voxel, pObj);
+  double* signals = getLastSignals(voxel, pObj);
   double* inputs = new double[mlp->getNumInputs()];
   std::copy(sensors, sensors + NUM_SENSORS, inputs);
   std::copy(signals, signals + NUM_SIGNALS, inputs + NUM_SENSORS);
@@ -153,7 +153,7 @@ void CVX_Distributed::sense(CVX_Voxel* voxel, double* sensors) const
       CVX_Voxel* other = (collision->voxel1() == voxel) ? collision->voxel2() : collision->voxel1();
       if (Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
           Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
-        sensors[i] = 1.0;//touchSensor->sense(voxel, sim->voxel(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
+        sensors[i] = 1.0;
       }
     }
   }
