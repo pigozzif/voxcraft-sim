@@ -10,6 +10,25 @@
 #define NUM_SENSORS 6
 #define NUM_SIGNALS 6
 
+class CVX_MLP
+{
+public:
+  CVX_MLP(const int numInputs, const int numOutputs, const std::string weights);
+  ~CVX_MLP(void);
+
+  double* apply(double* inputs) const;
+  inline int getNumInputs() const { return numInputs; }
+  inline int getNumOutputs() const { return numOutputs; }
+
+  double** getWeights() const { return weights; };
+  void setWeights(const std::string weights);
+
+private:
+  int numInputs;
+  int numOutputs;
+  double** weights;
+};
+
 class CVX_Distributed
 {
 public:
