@@ -21,7 +21,7 @@ public:
   double* GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const;
   void sense(CVX_Voxel* voxel, double* sensors) const;
   
-  static Vec3D<float>* getOffset(CVX_Voxel::linkDirection dir) const;
+  Vec3D<float>* getOffset(CVX_Voxel::linkDirection dir) const;
 
 private:
   int numVoxels;
