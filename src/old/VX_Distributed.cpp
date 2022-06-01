@@ -54,7 +54,9 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   }
   std::cout << collisions.size() << std::endl;
   for (CVX_Collision* collision : collisions) {
-    if (collision->force == )
+    //if (collision->force == Vec3D<float>(0,0,0)) {
+    //  continue;
+    //}
     for (int i = 0; i < NUM_SENSORS; ++i) {
       Vec3D<double>* offset = touchSensor->getOffset((CVX_Voxel::linkDirection)i);
       double s = voxel->material()->nominalSize();
