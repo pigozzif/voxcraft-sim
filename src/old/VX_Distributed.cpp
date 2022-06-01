@@ -46,7 +46,7 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   //for (int i = 0; i < (int)pObjUpdate->GetNumMaterials(); ++i) {
     double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
   std::vector<CVX_Collision*> collisions = std::vector<CVX_Collision*>();
-  std::cout << sim->collisionsList << std::endl;
+  std::cout << sim->collisionsList.size() << std::endl;
   for (CVX_Collision* collision : sim->collisionsList) {
     if (collision->voxel1() == voxel || collision->voxel2() == voxel) {
       collisions.push_back(collision);
@@ -54,6 +54,7 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   }
   std::cout << collisions.size() << std::endl;
   for (CVX_Collision* collision : collisions) {
+    if (collision->force == )
     for (int i = 0; i < NUM_SENSORS; ++i) {
       Vec3D<double>* offset = touchSensor->getOffset((CVX_Voxel::linkDirection)i);
       double s = voxel->material()->nominalSize();
