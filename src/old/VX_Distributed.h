@@ -16,9 +16,9 @@ public:
   CVX_Distributed(const int numVoxels, const std::string weights, CVoxelyze* sim);
   ~CVX_Distributed(void);
 
-  double UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel);
-  void UpdateLastSignals(void);
-  double* GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const;
+  double updateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel);
+  void updateLastSignals(void);
+  double* getLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const;
   void sense(CVX_Voxel* voxel, double* sensors) const;
   
   Vec3D<float>* getOffset(CVX_Voxel::linkDirection dir) const;
