@@ -18,7 +18,6 @@ CVX_Distributed::CVX_Distributed(const int numVoxels, const std::string weights,
   for (int i = 0; i < numVoxels; ++i) {
     lastSignals[i] = (double*) malloc(sizeof(double) * NUM_SIGNALS);
     currSignals[i] = (double*) malloc(sizeof(double) * NUM_SIGNALS);
-    //std::fill(lastSignals[i], lastSignals[i] + 4, 0.0);
     for (int j = 0; j < NUM_SIGNALS; ++j) {
       lastSignals[i][j] = 1;
     }
@@ -39,26 +38,17 @@ CVX_Distributed::~CVX_Distributed(void)
   sim = NULL;
 }
 
-double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
+double CVX_Distributed::updateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
 {
-  //for (int i = 0; i < (int)pObjUpdate->GetNumMaterials(); ++i) {
-    double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
+  double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
   std::fill(sensors, sensors + NUM_SENSORS, -1.0);
   sense(voxel, sensors);
   
-    double* signals = GetLastSignals(voxel, pObj);
-    double* inputs = new double[mlp->getNumInputs()];
-    std::copy(sensors, sensors + NUM_SENSORS, inputs);
-    std::copy(signals, signals + NUM_SIGNALS, inputs + NUM_SENSORS);
-    double* outputs = mlp->Apply(inputs);
-    //pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + outputs[0]);
-    std::cout << "(" << voxel->pos.x << "," << voxel->pos.y << "," << voxel->pos.z << ") ";
-    for (int k = 0; k < NUM_SIGNALS; ++k) {
-      std::cout << sensors[k] << " ";
-    }
-    std::cout << std::endl;
-    std::copy(outputs + 2, outputs + mlp->getNumOutputs(), currSignals[pObj->GetIndex(voxel->ix, voxel->iy, voxel->iz)]);
-  //}
+  double* signals = GetLastSignals(voxel, pObj);
+  double* inputs = new double[mlp->getNumInputs()];
+  std::copy(sensors, sensors + NUM_SENSORS, inputs);
+  std::copy(signals, signals + NUM_SIGNALS, inputs + NUM_SENSORS);
+  double* outputs = mlp->Apply(inputs);
   
   double actuation = outputs[0];
   free(sensors);
@@ -68,50 +58,20 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   return actuation;
 }
 
-void CVX_Distributed::UpdateLastSignals(void)
+void CVX_Distributed::updateLastSignals(void)
 {
   for (int i = 0; i < numVoxels; ++i) {
     std::copy(currSignals[i], currSignals[i] + NUM_SIGNALS, lastSignals[i]);
   }
 }
 
-double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const
+double* CVX_Distributed::getLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const
 {
   double* signals = (double*) malloc(sizeof(double) * NUM_SIGNALS);
-  //Vec3D<>* currPoint = new Vec3D<>(voxel->ix, voxel->iy, voxel->iz);
-  //pObjUpdate->GetXYZ(&currPoint, i);
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
     CVX_Voxel* adjVoxel = voxel->adjacentVoxel((CVX_Voxel::linkDirection)dir); 
     signals[dir] = (adjVoxel) ? lastSignals[pObj->GetIndex(adjVoxel->ix, adjVoxel->iy, adjVoxel->iz)][dir] : 0.0;
   }
-  /*int idx = pObjUpdate->GetIndex(currPoint.x + 1, currPoint.y, currPoint.z);
-  if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
-    signals[0] = lastSignals[idx][0];
-  }
-  else {
-    signals[0] = 0.0;
-  }
-  idx = pObjUpdate->GetIndex(currPoint.x - 1, currPoint.y, currPoint.z);
-  if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
-    signals[1] = lastSignals[idx][1];
-  }
-  else {
-    signals[1] = 0.0;
-  }
-  idx = pObjUpdate->GetIndex(currPoint.x, currPoint.y + 1, currPoint.z);
-  if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
-    signals[2] = lastSignals[idx][2];
-  }
-  else {
-    signals[2] = 0.0;
-  }
-  idx = pObjUpdate->GetIndex(currPoint.x, currPoint.y - 1, currPoint.z);
-  if (idx != -1 && pObjUpdate->Structure.GetData(idx) != 0) {
-    signals[3] = lastSignals[idx][3];
-  }
-  else {
-    signals[3] = 0.0;
-  }*/
   return signals;
 }
 
