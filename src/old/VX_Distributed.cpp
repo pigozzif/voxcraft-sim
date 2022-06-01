@@ -47,7 +47,7 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
     double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
   std::vector<CVX_Collision*> collisions = std::vector<CVX_Collision*>();
   for (CVX_Collision* collision : sim->collisions) {
-    if (collision->pV1 == voxel || collision->pV2 == voxel) {
+    if (collision->voxel1() == voxel || collision->voxel2() == voxel) {
       collisions.push_back(collision);
     }
   }
