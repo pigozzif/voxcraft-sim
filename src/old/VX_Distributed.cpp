@@ -24,7 +24,6 @@ CVX_Distributed::CVX_Distributed(const int numVoxels, const std::string weights,
     }
     std::fill(currSignals[i], currSignals[i] + NUM_SIGNALS, 0.0);
   }
-  touchSensor = new CVX_TouchSensor();
   this->sim = sim;
 }
 
@@ -45,27 +44,7 @@ double CVX_Distributed::UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   //for (int i = 0; i < (int)pObjUpdate->GetNumMaterials(); ++i) {
     double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
   std::fill(sensors, sensors + NUM_SENSORS, -1.0);
-  std::vector<CVX_Collision*> collisions = std::vector<CVX_Collision*>();
-  for (CVX_Collision* collision : sim->collisionsList) {
-    if (collision->voxel1() == voxel || collision->voxel2() == voxel) {
-      collisions.push_back(collision);
-    }
-  }
-  
-  for (CVX_Collision* collision : collisions) {
-    if (collision->getForce() == Vec3D<float>(0,0,0)) {
-      continue;
-    }
-    for (int i = 0; i < NUM_SENSORS; ++i) {
-      Vec3D<double>* offset = touchSensor->getOffset((CVX_Voxel::linkDirection)i);
-      double s = voxel->material()->nominalSize();
-      CVX_Voxel* other = (collision->voxel1() == voxel) ? collision->voxel2() : collision->voxel1();
-      if (Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
-          Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
-        sensors[i] = 1.0;//touchSensor->sense(voxel, sim->voxel(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
-      }
-    }
-  }
+  sense(voxel, sensors);
   
     double* signals = GetLastSignals(voxel, pObj);
     double* inputs = new double[mlp->getNumInputs()];
@@ -136,34 +115,32 @@ double* CVX_Distributed::GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) cons
   return signals;
 }
 
-CVX_TouchSensor::CVX_TouchSensor(void) {}
-
-CVX_TouchSensor::~CVX_TouchSensor(void) {}
-
-double CVX_TouchSensor::sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::linkDirection dir) const
+double CVX_Distributed::sense(CVX_Voxel* voxel, double* sensors) const
 {
-  if (!target || target->matid == 0) {
-    return -1.0;
+  std::vector<CVX_Collision*> collisions = std::vector<CVX_Collision*>();
+  for (CVX_Collision* collision : sim->collisionsList) {
+    if (collision->voxel1() == voxel || collision->voxel2() == voxel) {
+      collisions.push_back(collision);
+    }
   }
-  std::cout << "we are here:" << " (" << source->ix << "," << source->iy << "," << source->iz << ") " << " (" << target->ix << "," << target->iy << "," << target->iz << ") " << std::endl;
-  if (target == source->adjacentVoxel(dir)) {
-    return 0.0;
+  
+  for (CVX_Collision* collision : collisions) {
+    if (collision->getForce() == Vec3D<float>(0,0,0)) {
+      continue;
+    }
+    for (int i = 0; i < NUM_SENSORS; ++i) {
+      Vec3D<float>* offset = getOffset((CVX_Voxel::linkDirection)i);
+      double s = voxel->material()->nominalSize();
+      CVX_Voxel* other = (collision->voxel1() == voxel) ? collision->voxel2() : collision->voxel1();
+      if (Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
+          Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
+        sensors[i] = 1.0;//touchSensor->sense(voxel, sim->voxel(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z), (CVX_Voxel::linkDirection)i);//voxel->temp;//pObjUpdate->GetBaseMat(i)->GetCurMatTemp();
+      }
+    }
   }
-  else if (dir == CVX_Voxel::linkDirection::Z_NEG && source->floorPenetration() >= 0) {
-    return 1.0;
-  }
-  std::cout << "check:" << " (" << target->matid << ") " << std::endl;
-  std::cout << "we are here again" << std::endl;
-  linkAxis axis = CVX_Voxel::toAxis(dir);
-  double baseSize = source->baseSize(axis);
-  bool isPositive = CVX_Voxel::isPositive(dir);
-  double sourcePos = (isPositive) ? source->pos[axis] : - source->pos[axis];
-  double targetPos = (isPositive) ? - target->pos[axis] : target->pos[axis];
-  double penetration = baseSize/2 - source->mat->nominalSize()/2 + sourcePos + targetPos;
-  return (penetration > 0) ? 1.0 : -1.0;
 }
 
-Vec3D<double>* CVX_TouchSensor::getOffset(CVX_Voxel::linkDirection dir) const
+Vec3D<float>* CVX_Distributed::getOffset(CVX_Voxel::linkDirection dir) const
 {
   switch (dir) {
     case 0:
