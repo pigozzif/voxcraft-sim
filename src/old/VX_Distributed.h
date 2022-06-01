@@ -1,7 +1,6 @@
 #ifndef CVX_DISTRIBUTED_H
 #define CVX_DISTRIBUTED_H
 
-#include "VX_MLP.h"
 #include "VX_Object.h"
 #include "VX_Voxel.h"
 #include "Voxelyze.h"
