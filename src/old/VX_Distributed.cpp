@@ -3,6 +3,7 @@
 #include "VX_Object.h"
 #include "VX_Voxel.h"
 #include "Voxelyze.h"
+#include "VX_Collision.h"
 #include <algorithm>
 #include <stdlib.h>
 #include <cstdlib>
