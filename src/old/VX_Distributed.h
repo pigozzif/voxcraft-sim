@@ -10,16 +10,6 @@
 #define NUM_SENSORS 6
 #define NUM_SIGNALS 6
 
-class CVX_TouchSensor
-{
-public:
-  CVX_TouchSensor(void);
-  ~CVX_TouchSensor(void);
-  
-  double sense(CVX_Voxel* source, CVX_Voxel* target, CVX_Voxel::linkDirection dir) const;
-  Vec3D<double>* getOffset(CVX_Voxel::linkDirection dir) const;
-};
-
 class CVX_Distributed
 {
 public:
@@ -29,13 +19,15 @@ public:
   double UpdateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel);
   void UpdateLastSignals(void);
   double* GetLastSignals(CVX_Voxel* voxel, CVX_Object* pObj) const;
+  void sense(CVX_Voxel* voxel, double* sensors) const;
+  
+  static Vec3D<float>* getOffset(CVX_Voxel::linkDirection dir) const;
 
 private:
   int numVoxels;
   CVX_MLP* mlp;
   double** lastSignals;
   double** currSignals;
-  CVX_TouchSensor* touchSensor;
   CVoxelyze* sim;
 };
 
