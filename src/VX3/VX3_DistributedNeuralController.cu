@@ -23,16 +23,16 @@ __device__ void VX3_MLP::init(const int numInputs, const int numOutputs, const s
 {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
-  //setWeights(weights);
+  setWeights(weights);
 }
 
-/*__device__ void CVX_MLP::setWeights(const std::string weights)
+__device__ void CVX_MLP::setWeights(const std::string weights)
 {
   VcudaMalloc((void **) this->weights, sizeof(double*) * numOutputs);
   for (int i = 0; i < numOutputs; ++i) {
     VcudaMalloc((void **) this->weights[i], sizeof(double) * (numInputs + 1));
   }
-  std::string delim = ",";
+  /*std::string delim = ",";
   std::size_t start = 0U;
   std::size_t end = weights.find(delim);
   int i = 0;
@@ -46,7 +46,7 @@ __device__ void VX3_MLP::init(const int numInputs, const int numOutputs, const s
     start = end + delim.length();
     end = weights.find(delim, start);
   }
-}
+}*/
 
 /*__device__ double* CVX_MLP::apply(double* inputs) const
 {
