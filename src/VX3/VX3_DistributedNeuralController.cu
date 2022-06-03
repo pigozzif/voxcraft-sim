@@ -11,20 +11,20 @@
 #include <string>
 #include <map>
 
+CVX_MLP::~CVX_MLP(void)
+{
+  for (int i = 0; i < numOutputs; ++i) {
+    MycudaFree(weights[i]);
+  }
+  MycudaFree(weights);
+}
+
 __device__ void VX3_MLP::init(const int numInputs, const int numOutputs, const std::string weights)
 {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
   //setWeights(weights);
 }
-
-/*CVX_MLP::~CVX_MLP(void)
-{
-  for (int i = 0; i < numOutputs; ++i) {
-    MycudaFree(weights[i]);
-  }
-  MycudaFree(weights);
-}*/
 
 /*__device__ void CVX_MLP::setWeights(const std::string weights)
 {
