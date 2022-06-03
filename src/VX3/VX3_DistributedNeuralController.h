@@ -2,6 +2,7 @@
 #define CVX_DISTRIBUTED_H
 
 #include "VX3_Voxel.h"
+#include "VX3.cuh"
 #include "VX3_VoxelyzeKernel.cuh"
 #include <string>
 #include <map>
@@ -39,7 +40,7 @@ public:
   __device__ double* getLastSignals(CVX_Voxel* voxel) const;
   __device__ void sense(CVX_Voxel* voxel, double* sensors, VX3_VoxelyzeKernel* kernel) const;
   
-  __device__ VX3_Vec3D<float>* getOffset(const VX3_Voxel::linkDirection dir) const;
+  __device__ VX3_Vec3D<float>* getOffset(const linkDirection dir) const;
 
 private:
   int numVoxels;
