@@ -76,7 +76,7 @@ __device__ double* VX3_MLP::apply(double* inputs) const
 __device__ void VX3_NeuralDistributedController::init(double** weights, VX3_VoxelyzeKernel* kernel)
 {
   this->numVoxels = kernel->num_d_voxels;
-  mlp = new CVX_MLP();
+  mlp = new VX3_MLP();
   mlp->init(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights)
   //lastSignals = new std::map<VX3_Voxel*, double[]>();
   //currSignals = new std::map<VX3_Voxel*, double[]>();
