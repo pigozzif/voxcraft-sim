@@ -12,7 +12,7 @@
 
 class VX3_MLP
 {
-public:
+/*public:
   VX3_MLP(const int numInputs, const int numOutputs, const std::string weights);
   ~VX3_MLP(void);
 
@@ -26,7 +26,7 @@ public:
 private:
   int numInputs;
   int numOutputs;
-  double** weights;
+  double** weights;*/
 };
 
 /*class VX3_NeuralDistributedController
