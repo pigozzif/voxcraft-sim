@@ -39,8 +39,8 @@ public:
   __device__ void init(double** weights, VX3_VoxelyzeKernel* kernel);
   __device__ double updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel);
   //__device__ void updateLastSignals(VX3_VoxelyzeKernel* kernel);
-  //__device__ double* getLastSignals(CVX_Voxel* voxel) const;
-  __device__ void sense(CVX_Voxel* voxel, double* sensors, VX3_VoxelyzeKernel* kernel) const;
+  //__device__ double* getLastSignals(VX3_Voxel* voxel) const;
+  __device__ void sense(VX3_Voxel* voxel, double* sensors, VX3_VoxelyzeKernel* kernel) const;
   
   __device__ VX3_Vec3D<float>* getOffset(const linkDirection dir) const;
 
