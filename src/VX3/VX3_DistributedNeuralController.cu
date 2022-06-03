@@ -60,7 +60,7 @@ __device__ double* VX3_MLP::apply(double* inputs) const
   {
     inputs[i] = tanh(inputs[i]);
   }
-  double* outputs;
+  double* outputs = 0.0;
   VcudaMalloc((void **) outputs, sizeof(double) * numOutputs);
   for (int j = 0; j < numOutputs; ++j)
   {
