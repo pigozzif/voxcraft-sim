@@ -9,23 +9,23 @@
 #include <cstdlib>
 #include <math.h>
 #include <string>
-#include <map>/*
+#include <map>
 
-CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs, const std::string weights)
+/*CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs, const std::string weights)
   : numInputs(numInputs), numOutputs(numOutputs)
 {
   setWeights(weights);
-}
+}*/
 
 CVX_MLP::~CVX_MLP(void)
 {
   for (int i = 0; i < numOutputs; ++i) {
     MycudaFree(weights[i]);
   }
-  free(weights);
+  MycudaFree(weights);
 }
 
-__device__ void CVX_MLP::setWeights(const std::string weights)
+/*__device__ void CVX_MLP::setWeights(const std::string weights)
 {
   VcudaMalloc((void **) this->weights, sizeof(double*) * numOutputs);
   for (int i = 0; i < numOutputs; ++i) {
