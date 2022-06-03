@@ -14,7 +14,7 @@ class VX3_MLP
 {
 public:
   CV3_MLP = default;
-  __device__ init(const int numInputs, const int numOutputs, const std::string weights);
+  __device__ void init(const int numInputs, const int numOutputs, const std::string weights);
   //~VX3_MLP(void);
 
  // __device__ double* apply(double* inputs) const;
