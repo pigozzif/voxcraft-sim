@@ -48,7 +48,7 @@ __device__ void VX3_MLP::setWeights(std::string* weights)
   }*/
 }
 
-__device__ double* CVX_MLP::apply(double* inputs) const
+__device__ double* VX3_MLP::apply(double* inputs) const
 {
   //apply input activation
   for (int i = 0; i < numInputs; ++i)
@@ -68,7 +68,7 @@ __device__ double* CVX_MLP::apply(double* inputs) const
   return outputs;
 }
 
-/*__device__ CVX_Distributed::CVX_Distributed(const std::string weights, VX3_VoxelyzeKernel* kernel)
+/*__device__ VX3_Distributed::VX3_Distributed(const std::string weights, VX3_VoxelyzeKernel* kernel)
 {
   this->numVoxels = kernel->num_d_voxels;
   mlp = new CVX_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
@@ -82,12 +82,12 @@ __device__ double* CVX_MLP::apply(double* inputs) const
   }
 }
 
-__device__ CVX_Distributed::~CVX_Distributed(void)
+__device__ VX3_Distributed::~VX3_Distributed(void)
 {
   delete mlp;
 }
 
-__device__ double CVX_Distributed::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
+__device__ double VX3_Distributed::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
 {
   double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
   std::fill(sensors, sensors + NUM_SENSORS, -1.0);
@@ -107,14 +107,14 @@ __device__ double CVX_Distributed::updateVoxelTemp(VX3_Voxel* voxel, VX3_Voxelyz
   return actuation;
 }
 
-__device__ void CVX_Distributed::updateLastSignals(VX3_VoxelyzeKernel* kernel)
+__device__ void VX3_Distributed::updateLastSignals(VX3_VoxelyzeKernel* kernel)
 {
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     std::copy(currSignals[kernel->d_voxels + i], currSignals[kernel->d_voxels + i] + NUM_SIGNALS, lastSignals[kernel->d_voxels + i]);
   }
 }
 
-__device__ double* CVX_Distributed::getLastSignals(VX3_Voxel* voxel) const
+__device__ double* VX3_Distributed::getLastSignals(VX3_Voxel* voxel) const
 {
   double* signals = (double*) malloc(sizeof(double) * NUM_SIGNALS);
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
@@ -124,7 +124,7 @@ __device__ double* CVX_Distributed::getLastSignals(VX3_Voxel* voxel) const
   return signals;
 }
 
-__device__ void CVX_Distributed::sense(VX3_Voxel* voxel, double* sensors, VX3_VoxelyzeKernel* kernel) const
+__device__ void VX3_Distributed::sense(VX3_Voxel* voxel, double* sensors, VX3_VoxelyzeKernel* kernel) const
 {
   VX3_dVector<VX3_Collision*> collisions = VX3_dVector<VX3_Collision*>();
   for (VX3_Collision* collision : kernel->d_v_collisions) {
@@ -153,7 +153,7 @@ __device__ void CVX_Distributed::sense(VX3_Voxel* voxel, double* sensors, VX3_Vo
   }
 }
 
-__device__ VX3_Vec3D<float>* CVX_Distributed::getOffset(const linkDirection dir) const
+__device__ VX3_Vec3D<float>* VX3_Distributed::getOffset(const linkDirection dir) const
 {
   switch (dir) {
     case 0:
