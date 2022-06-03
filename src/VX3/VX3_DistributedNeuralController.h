@@ -1,4 +1,4 @@
-#ifndef CVX_DISTRIBUTED_H
+#if !defined(CVX_DISTRIBUTED_H)
 #define CVX_DISTRIBUTED_H
 
 #include "VX3_Voxel.h"
