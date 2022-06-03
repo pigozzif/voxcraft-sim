@@ -34,7 +34,7 @@ class VX3_NeuralDistributedController
 {
 public:
   VX3_NeuralDistributedController() = default;
-  ~VX3_NeuralDistributedController(void);
+  ~VX3_NeuralDistributedController(void) = default;
   
   __device__ void init(double** weights, VX3_VoxelyzeKernel* kernel);
   //__device__ double updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel);
