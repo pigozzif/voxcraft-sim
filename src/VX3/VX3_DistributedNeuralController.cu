@@ -122,7 +122,8 @@ __device__ void VX3_NeuralDistributedController::updateLastSignals(VX3_VoxelyzeK
 
 __device__ double* VX3_NeuralDistributedController::getLastSignals(VX3_Voxel* voxel) const
 {
-  double* signals = (double*) malloc(sizeof(double) * NUM_SIGNALS);
+  double* signals
+  VcudaMalloc((void **) &signals, sizeof(double) * NUM_SIGNALS);
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
     VX3_Voxel* adjVoxel = voxel->adjacentVoxel((linkDirection)dir); 
     signals[dir] = (adjVoxel) ? lastSignals[adjVoxel][dir] : 0.0;
@@ -139,7 +140,8 @@ __device__ void VX3_NeuralDistributedController::sense(VX3_Voxel* voxel, double*
     }
   }
   
-  for (VX3_Collision* collision : collisions) {
+  for (int j = 0; j < collisions.size(); ++j) {
+    VX3_Collision* collision = collisions.get(j);
     if (collision->force == VX3_Vec3D<float>(0,0,0)) {
       continue;
     }
