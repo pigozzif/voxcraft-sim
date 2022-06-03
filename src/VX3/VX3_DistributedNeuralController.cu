@@ -60,7 +60,8 @@ __device__ double* VX3_MLP::apply(double* inputs) const
   {
     inputs[i] = tanh(inputs[i]);
   }
-  double* outputs = (double*) malloc(sizeof(double) * numOutputs);
+  double* outputs;
+  VcudaMalloc((void **) outputs, sizeof(double) * numOutputs);
   for (int j = 0; j < numOutputs; ++j)
   {
     double sum = weights[j][0]; //the bias
