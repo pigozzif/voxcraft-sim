@@ -29,7 +29,7 @@ private:
   double** weights;
 };
 
-class VX3_NeuralDistributedController
+/*class VX3_NeuralDistributedController
 {
 public:
   __device__ VX3_NeuralDistributedController(const std::string weights, VX3_VoxelyzeKernel* kernel);
@@ -47,6 +47,6 @@ private:
   VX3_MLP* mlp;
   std::map<VX3_Voxel*, double[]> lastSignals;
   std::map<VX3_Voxel*, double[]> currSignals;
-};
+};*/
 
 #endif //CVX_DISTRIBUTED_H
