@@ -7,8 +7,8 @@
 #include <string>
 #include <map>
 
-//#define NUM_SENSORS 6
-//#define NUM_SIGNALS 6
+#define NUM_SENSORS 6
+#define NUM_SIGNALS 6
 
 class VX3_MLP
 {
