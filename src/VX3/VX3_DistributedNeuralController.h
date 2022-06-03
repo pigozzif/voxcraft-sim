@@ -26,7 +26,7 @@ class VX3_MLP
 private:
   int numInputs;
   int numOutputs;
-  //double** weights;
+  double** weights;
 };
 
 /*class VX3_NeuralDistributedController
