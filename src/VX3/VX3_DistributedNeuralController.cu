@@ -99,7 +99,7 @@ __device__ double VX3_NeuralDistributedController::updateVoxelTemp(VX3_Voxel* vo
   }
   sense(voxel, sensors, kernel);
   
-  double* signals = getLastSignals(voxel, pObj);
+  double* signals = getLastSignals(voxel);
   double* inputs = new double[mlp->getNumInputs()];
   //std::copy(sensors, sensors + NUM_SENSORS, inputs);
   //std::copy(signals, signals + NUM_SIGNALS, inputs + NUM_SENSORS);
@@ -126,7 +126,7 @@ __device__ void VX3_NeuralDistributedController::updateLastSignals(VX3_VoxelyzeK
 
 __device__ double* VX3_NeuralDistributedController::getLastSignals(VX3_Voxel* voxel) const
 {
-  double* signals
+  double* signals;
   VcudaMalloc((void **) &signals, sizeof(double) * NUM_SIGNALS);
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
     VX3_Voxel* adjVoxel = voxel->adjacentVoxel((linkDirection)dir); 
