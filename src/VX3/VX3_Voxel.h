@@ -263,6 +263,9 @@ class VX3_Voxel {
     __device__ void getSignal(double currentTime);
 
     __device__ void syncVectors();
+  
+    __device__ void setLastSignals(int numSignals);
+    __device__ void setCurrSignals(int numSignals);
 
     /* data */
     CVX_Voxel *_voxel;
@@ -312,6 +315,9 @@ class VX3_Voxel {
     // for Secondary Experiment
     bool removed = false;
     bool isMeasured = true;
+  
+    double* lastSignals;
+    double* currSignals;
 };
 
 #endif // VX3_VOXEL_H
