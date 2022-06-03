@@ -79,8 +79,8 @@ __device__ void VX3_NeuralDistributedController::init(double** weights, VX3_Voxe
   this->numVoxels = kernel->num_d_voxels;
   mlp = new VX3_MLP();
   mlp->init(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
-  lastSignals = new VX3_dDictionary<VX3_Voxel*, double[]>();
-  currSignals = new VX3_dDictionary<VX3_Voxel*, double[]>();
+  //lastSignals = new VX3_dDictionary<VX3_Voxel*, double[]>();
+  //currSignals = new VX3_dDictionary<VX3_Voxel*, double[]>();
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;//lastSignals.set(voxel, new double[4]);
     voxel->initLastSignals(NUM_SIGNALS);
