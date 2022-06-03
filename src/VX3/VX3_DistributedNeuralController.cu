@@ -45,8 +45,8 @@ __device__ void CVX_MLP::setWeights(const std::string weights)
     }
     start = end + delim.length();
     end = weights.find(delim, start);
-  }
-}*/
+  }*/
+}
 
 /*__device__ double* CVX_MLP::apply(double* inputs) const
 {
