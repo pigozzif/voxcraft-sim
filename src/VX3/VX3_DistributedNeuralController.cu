@@ -92,8 +92,11 @@ __device__ void VX3_NeuralDistributedController::init(double** weights, VX3_Voxe
 
 /*__device__ double VX3_NeuralDistributedController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
 {
-  double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
-  std::fill(sensors, sensors + NUM_SENSORS, -1.0);
+  double* sensors = new double[NUM_SENSORS];
+  VcudaMalloc((void **) &sensors, sizeof(double) * NUM_SENSORS);
+  for (int i = 0 ; i < NUM_SENSORS; ++i) {
+    sensors[i] = -1.0;
+  }
   sense(voxel, sensors, kernel);
   
   double* signals = getLastSignals(voxel, pObj);
@@ -103,10 +106,10 @@ __device__ void VX3_NeuralDistributedController::init(double** weights, VX3_Voxe
   double* outputs = mlp->apply(inputs);
   
   double actuation = outputs[0];
-  free(sensors);
-  free(signals);
-  free(inputs);
-  free(outputs);
+  MycudaFree(sensors);
+  MycudaFree(signals);
+  delete[] inputs;
+  MycudaFree(outputs);
   return actuation;
 }
 
