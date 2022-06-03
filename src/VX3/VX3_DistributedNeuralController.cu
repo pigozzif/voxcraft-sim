@@ -73,7 +73,7 @@ __device__ double* VX3_MLP::apply(double* inputs) const
   return outputs;
 }
 
-__device__ void VX3_Distributed::init(double** weights, VX3_VoxelyzeKernel* kernel)
+__device__ void VX3_NeuralDistributedController::init(double** weights, VX3_VoxelyzeKernel* kernel)
 {
   this->numVoxels = kernel->num_d_voxels;
   mlp = new CVX_MLP();
