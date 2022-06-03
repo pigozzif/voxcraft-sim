@@ -19,11 +19,11 @@ VX3_MLP::~VX3_MLP(void)
   MycudaFree(weights);
 }
 
-__device__ void VX3_MLP::init(const int numInputs, const int numOutputs, std::string weights)
+__device__ void VX3_MLP::init(const int numInputs, const int numOutputs, std::string* weights)
 {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
-  setWeights(&weights);
+  setWeights(weights);
 }
 
 __device__ void VX3_MLP::setWeights(std::string* weights)
@@ -32,20 +32,20 @@ __device__ void VX3_MLP::setWeights(std::string* weights)
   for (int i = 0; i < numOutputs; ++i) {
     VcudaMalloc((void **) this->weights[i], sizeof(double) * (numInputs + 1));
   }
-  /*std::string delim = ",";
+  std::string delim = ",";
   std::size_t start = 0U;
-  std::size_t end = weights.find(delim);
+  std::size_t end = weights->find(delim);
   int i = 0;
   int j = 0;
   while (end != std::string::npos) {
-    this->weights[i][j++] = atof(weights.substr(start, end - start).c_str());
+    this->weights[i][j++] = atof(weights->substr(start, end - start).c_str());
     if (j >= numInputs + 1) {
       j = 0;
       ++i;
     }
     start = end + delim.length();
-    end = weights.find(delim, start);
-  }*/
+    end = weights->find(delim, start);
+  }
 }
 
 __device__ double* VX3_MLP::apply(double* inputs) const
@@ -68,7 +68,7 @@ __device__ double* VX3_MLP::apply(double* inputs) const
   return outputs;
 }
 
-/*__device__ VX3_Distributed::VX3_Distributed(const std::string weights, VX3_VoxelyzeKernel* kernel)
+/*__device__ VX3_Distributed::VX3_Distributed(std::string* weights, VX3_VoxelyzeKernel* kernel)
 {
   this->numVoxels = kernel->num_d_voxels;
   mlp = new CVX_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
