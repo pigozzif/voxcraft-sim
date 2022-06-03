@@ -3,6 +3,7 @@
 #include "VX3_Voxel.h"
 #include "VX3_VoxelyzeKernel.cuh"
 #include "VX3_Collision.h"
+#include "VX3_MemoryCleaner.h"
 #include <algorithm>
 #include <stdlib.h>
 #include <cstdlib>
@@ -11,25 +12,24 @@
 #include <map>
 
 CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs, const std::string weights)
+  : numInputs(numInputs), numOutputs(numOutputs)
 {
-  this->numInputs = numInputs;
-  this->numOutputs = numOutputs;
   setWeights(weights);
 }
 
-__device__ CVX_MLP::~CVX_MLP(void)
+CVX_MLP::~CVX_MLP(void)
 {
   for (int i = 0; i < numOutputs; ++i) {
-    free(weights[i]);
+    MycudaFree(weights[i]);
   }
   free(weights);
 }
 
 __device__ void CVX_MLP::setWeights(const std::string weights)
 {
-  this->weights = (double**) malloc(sizeof(double*) * numOutputs);
+  VcudaMalloc((void **) this->weights, sizeof(double*) * numOutputs);
   for (int i = 0; i < numOutputs; ++i) {
-    this->weights[i] = (double*) malloc(sizeof(double) * (numInputs + 1));
+    VcudaMalloc((void **) this->weights[i], sizeof(double) * (numInputs + 1));
   }
   std::string delim = ",";
   std::size_t start = 0U;
@@ -67,7 +67,7 @@ __device__ double* CVX_MLP::apply(double* inputs) const
   return outputs;
 }
 
-__device__ CVX_Distributed::CVX_Distributed(const std::string weights, VX3_VoxelyzeKernel* kernel)
+/*__device__ CVX_Distributed::CVX_Distributed(const std::string weights, VX3_VoxelyzeKernel* kernel)
 {
   this->numVoxels = kernel->num_d_voxels;
   mlp = new CVX_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
@@ -168,4 +168,4 @@ __device__ VX3_Vec3D<float>* CVX_Distributed::getOffset(const linkDirection dir)
     default:
       return new VX3_Vec3D<float>(0,0,-1);
   }
-}
+}*/
