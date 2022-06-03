@@ -530,3 +530,11 @@ __device__ void VX3_Voxel::enableCollisions(bool enabled, float watchRadius) {
 __device__ void VX3_Voxel::generateNearby(int linkDepth, int gindex, bool surfaceOnly) {
     assert(false); // not used. near by has logic flaws.
 }
+
+__device__ void initLastSignals(int numSignals) {
+  VcudaMalloc((void **) &lastSignals, sizeof(double) * numSignals);
+}
+
+__device__ void initCurrSignals(int numSignals) {
+  VcudaMalloc((void **) &currSignals, sizeof(double) * numSignals);
+}
