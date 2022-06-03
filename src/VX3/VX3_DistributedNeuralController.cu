@@ -14,9 +14,9 @@
 VX3_MLP::~VX3_MLP(void)
 {
   for (int i = 0; i < numOutputs; ++i) {
-    MycudaFree(weights[i]);
+    VcudaFree(weights[i]);
   }
-  MycudaFree(weights);
+  VcudaFree(weights);
 }
 
 __device__ void VX3_MLP::init(const int numInputs, const int numOutputs, double** weights)
@@ -107,9 +107,9 @@ __device__ double VX3_NeuralDistributedController::updateVoxelTemp(VX3_Voxel* vo
   
   double actuation = outputs[0];
   delete[] sensors;
-  MycudaFree(signals);
+  VcudaFree(signals);
   delete[] inputs;
-  MycudaFree(outputs);
+  VcudaFree(outputs);
   return actuation;
 }
 
