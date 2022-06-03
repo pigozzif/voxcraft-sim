@@ -1,4 +1,4 @@
-#include "VX3_DistributedNeuralController.h"
+/*#include "VX3_DistributedNeuralController.h"
 #include "VX3.cuh"
 #include "VX3_Voxel.h"
 #include "VX3_VoxelyzeKernel.cuh"
@@ -65,7 +65,7 @@ __device__ double* CVX_MLP::apply(double* inputs) const
     outputs[j] = tanh(sum); //apply output activation
   }
   return outputs;
-}
+}*/
 
 /*__device__ CVX_Distributed::CVX_Distributed(const std::string weights, VX3_VoxelyzeKernel* kernel)
 {
