@@ -85,12 +85,12 @@ __device__ void VX3_NeuralDistributedController::init(double** weights, VX3_Voxe
     VX3_Voxel* voxel = kernel->d_voxels + i;//lastSignals.set(voxel, new double[4]);
     voxel->initLastSignals(NUM_SIGNALS);
     voxel->initCurrSignals(NUM_SIGNALS);
-    //for (int i = 0; i < NUM_SIGNALS; ++i) {
-    //  voxel->lastSignals[i] = 0.0;
-   //   voxel->currSignals[i] = 0.0;
-    //}
-    std::fill(voxel->lastSignals, voxel->lastSignals + NUM_SIGNALS, 0.0);
-    std::fill(voxel->currSignals, voxel->currSignals + NUM_SIGNALS, 0.0);
+    for (int i = 0; i < NUM_SIGNALS; ++i) {
+      voxel->lastSignals[i] = 0.0;
+      voxel->currSignals[i] = 0.0;
+    }
+    //std::fill(voxel->lastSignals, voxel->lastSignals + NUM_SIGNALS, 0.0);
+    //std::fill(voxel->currSignals, voxel->currSignals + NUM_SIGNALS, 0.0);
   }
 }
 
