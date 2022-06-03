@@ -48,7 +48,7 @@ __device__ void VX3_MLP::setWeights(std::string* weights)
   }*/
 }
 
-/*__device__ double* CVX_MLP::apply(double* inputs) const
+__device__ double* CVX_MLP::apply(double* inputs) const
 {
   //apply input activation
   for (int i = 0; i < numInputs; ++i)
@@ -66,7 +66,7 @@ __device__ void VX3_MLP::setWeights(std::string* weights)
     outputs[j] = tanh(sum); //apply output activation
   }
   return outputs;
-}*/
+}
 
 /*__device__ CVX_Distributed::CVX_Distributed(const std::string weights, VX3_VoxelyzeKernel* kernel)
 {
