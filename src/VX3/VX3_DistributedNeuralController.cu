@@ -152,7 +152,7 @@ __device__ void CVX_Distributed::sense(VX3_Voxel* voxel, double* sensors, VX3_Vo
   }
 }
 
-__device__ VX3_Vec3D<float>* CVX_Distributed::getOffset(const VX3_Voxel::linkDirection dir) const
+__device__ VX3_Vec3D<float>* CVX_Distributed::getOffset(const linkDirection dir) const
 {
   switch (dir) {
     case 0:
