@@ -14,7 +14,7 @@ class VX3_MLP
 {
 public:
   __device__ VX3_MLP(const int numInputs, const int numOutputs, const std::string weights);
-  ~VX3_MLP(void);
+  //~VX3_MLP(void);
 
  // __device__ double* apply(double* inputs) const;
  // __device__ inline int getNumInputs(void) const { return numInputs; }
