@@ -17,13 +17,13 @@ __device__ CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs, const std
   setWeights(weights);
 }
 
-CVX_MLP::~CVX_MLP(void)
+/*CVX_MLP::~CVX_MLP(void)
 {
   for (int i = 0; i < numOutputs; ++i) {
     MycudaFree(weights[i]);
   }
   MycudaFree(weights);
-}
+}*/
 
 __device__ void CVX_MLP::setWeights(const std::string weights)
 {
