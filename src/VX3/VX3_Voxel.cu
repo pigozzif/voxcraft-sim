@@ -531,10 +531,10 @@ __device__ void VX3_Voxel::generateNearby(int linkDepth, int gindex, bool surfac
     assert(false); // not used. near by has logic flaws.
 }
 
-__device__ void initLastSignals(int numSignals) {
+__device__ void VX3_Voxel::initLastSignals(int numSignals) {
   VcudaMalloc((void **) &lastSignals, sizeof(double) * numSignals);
 }
 
-__device__ void initCurrSignals(int numSignals) {
+__device__ void VX3_Voxel::initCurrSignals(int numSignals) {
   VcudaMalloc((void **) &currSignals, sizeof(double) * numSignals);
 }
