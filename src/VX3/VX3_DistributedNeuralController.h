@@ -22,7 +22,7 @@ public:
  // __device__ inline int getNumOutputs(void) const { return numOutputs; }
 
 //  __device__ double** getWeights(void) const { return weights; };
-  __device__ void setWeights(const std::string weights);
+  //__device__ void setWeights(const std::string weights);
 
 private:
   int numInputs;
