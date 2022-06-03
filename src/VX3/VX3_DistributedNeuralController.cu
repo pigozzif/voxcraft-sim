@@ -1,4 +1,4 @@
-/*#include "VX3_DistributedNeuralController.h"
+#include "VX3_DistributedNeuralController.h"
 #include "VX3.cuh"
 #include "VX3_Voxel.h"
 #include "VX3_VoxelyzeKernel.cuh"
@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <math.h>
 #include <string>
-#include <map>
+#include <map>/*
 
 CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs, const std::string weights)
   : numInputs(numInputs), numOutputs(numOutputs)
