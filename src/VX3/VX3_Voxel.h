@@ -316,8 +316,8 @@ class VX3_Voxel {
     bool removed = false;
     bool isMeasured = true;
   
-    double* lastSignals;
-    double* currSignals;
+    double* lastSignals = NULL;
+    double* currSignals = NULL;
 };
 
 #endif // VX3_VOXEL_H
