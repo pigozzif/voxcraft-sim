@@ -19,20 +19,25 @@ VX3_MLP::~VX3_MLP(void)
   MycudaFree(weights);
 }
 
-__device__ void VX3_MLP::init(const int numInputs, const int numOutputs, std::string* weights)
+__device__ void VX3_MLP::init(const int numInputs, const int numOutputs, double** weights)
 {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
   setWeights(weights);
 }
 
-__device__ void VX3_MLP::setWeights(std::string* weights)
+__device__ void VX3_MLP::setWeights(double** weights)
 {
   VcudaMalloc((void **) this->weights, sizeof(double*) * numOutputs);
   for (int i = 0; i < numOutputs; ++i) {
     VcudaMalloc((void **) this->weights[i], sizeof(double) * (numInputs + 1));
   }
-  std::string delim = ",";
+  for (int i = 0; i < numOutputs; ++i) {
+    for (int j = 0; j < numInputs + 1; ++j) {
+      this->weights[i][j] = weights[i][j];
+    }
+  }
+  /*std::string delim = ",";
   std::size_t start = 0U;
   std::size_t end = weights->find(delim);
   int i = 0;
@@ -45,7 +50,7 @@ __device__ void VX3_MLP::setWeights(std::string* weights)
     }
     start = end + delim.length();
     end = weights->find(delim, start);
-  }
+  }*/
 }
 
 __device__ double* VX3_MLP::apply(double* inputs) const
