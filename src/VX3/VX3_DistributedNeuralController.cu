@@ -73,26 +73,22 @@ __device__ double* VX3_MLP::apply(double* inputs) const
   return outputs;
 }
 
-/*__device__ VX3_Distributed::VX3_Distributed(std::string* weights, VX3_VoxelyzeKernel* kernel)
+__device__ VX3_Distributed::init(double** weights, VX3_VoxelyzeKernel* kernel)
 {
   this->numVoxels = kernel->num_d_voxels;
-  mlp = new CVX_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
-  lastSignals = new std::map<VX3_Voxel*, double[]>();
-  currSignals = new std::map<VX3_Voxel*, double[]>();
-  for (VX3_Voxel* voxel : kernel->d_voxels) {
-    lastSignals.emplace(voxel, new double[4]);
-    currSignals.emplace(voxel, new double[4]);
-    std::fill(lastSignals[voxel], currSignals[voxel] + NUM_SIGNALS, 0.0);
-    std::fill(currSignals[voxel], currSignals[voxel] + NUM_SIGNALS, 0.0);
-  }
+  mlp = new CVX_MLP();
+  mlp->init(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights)
+  //lastSignals = new std::map<VX3_Voxel*, double[]>();
+  //currSignals = new std::map<VX3_Voxel*, double[]>();
+  //for (VX3_Voxel* voxel : kernel->d_voxels) {
+  //  lastSignals.emplace(voxel, new double[4]);
+  //  currSignals.emplace(voxel, new double[4]);
+    //std::fill(lastSignals[voxel], currSignals[voxel] + NUM_SIGNALS, 0.0);
+    //std::fill(currSignals[voxel], currSignals[voxel] + NUM_SIGNALS, 0.0);
+  //}
 }
 
-__device__ VX3_Distributed::~VX3_Distributed(void)
-{
-  delete mlp;
-}
-
-__device__ double VX3_Distributed::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
+/*__device__ double VX3_Distributed::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
 {
   double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
   std::fill(sensors, sensors + NUM_SENSORS, -1.0);
