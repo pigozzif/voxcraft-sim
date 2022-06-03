@@ -16,11 +16,11 @@ public:
   VX3_MLP(const int numInputs, const int numOutputs, const std::string weights);
   ~VX3_MLP(void);
 
-/*  __device__ double* apply(double* inputs) const;
-  __device__ inline int getNumInputs(void) const { return numInputs; }
-  __device__ inline int getNumOutputs(void) const { return numOutputs; }
+ // __device__ double* apply(double* inputs) const;
+ // __device__ inline int getNumInputs(void) const { return numInputs; }
+ // __device__ inline int getNumOutputs(void) const { return numOutputs; }
 
-  __device__ double** getWeights(void) const { return weights; };
+//  __device__ double** getWeights(void) const { return weights; };
   __device__ void setWeights(const std::string weights);*/
 
 private:
