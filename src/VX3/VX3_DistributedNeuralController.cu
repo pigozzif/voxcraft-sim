@@ -11,7 +11,7 @@
 #include <string>
 #include <map>
 
-__device__ void init(const int numInputs, const int numOutputs, const std::string weights)
+__device__ void VX3_MLP::init(const int numInputs, const int numOutputs, const std::string weights)
 {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
