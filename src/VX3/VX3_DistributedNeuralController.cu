@@ -11,9 +11,10 @@
 #include <string>
 #include <map>
 
-__device__ init(const int numInputs, const int numOutputs, const std::string weights)
-  : numInputs(numInputs), numOutputs(numOutputs)
+__device__ void init(const int numInputs, const int numOutputs, const std::string weights)
 {
+  this->numInputs = numInputs;
+  this->numOutputs = numOutputs;
   setWeights(weights);
 }
 
