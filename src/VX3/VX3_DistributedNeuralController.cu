@@ -153,7 +153,7 @@ __device__ void VX3_Distributed::sense(VX3_Voxel* voxel, double* sensors, VX3_Vo
   if (voxel->iz == 0) {
     sensors[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
   }
-}
+}*/
 
 __device__ VX3_Vec3D<float>* VX3_Distributed::getOffset(const linkDirection dir) const
 {
@@ -171,4 +171,4 @@ __device__ VX3_Vec3D<float>* VX3_Distributed::getOffset(const linkDirection dir)
     default:
       return new VX3_Vec3D<float>(0,0,-1);
   }
-}*/
+}
