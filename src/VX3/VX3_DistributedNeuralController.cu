@@ -93,7 +93,6 @@ __device__ void VX3_NeuralDistributedController::init(double** weights, VX3_Voxe
 __device__ double VX3_NeuralDistributedController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
 {
   double* sensors = new double[NUM_SENSORS];
-  //VcudaMalloc((void **) &sensors, sizeof(double) * NUM_SENSORS);
   for (int i = 0 ; i < NUM_SENSORS; ++i) {
     sensors[i] = -1.0;
   }
@@ -101,8 +100,9 @@ __device__ double VX3_NeuralDistributedController::updateVoxelTemp(VX3_Voxel* vo
   
   double* signals = getLastSignals(voxel);
   double* inputs = new double[mlp->getNumInputs()];
-  //std::copy(sensors, sensors + NUM_SENSORS, inputs);
-  //std::copy(signals, signals + NUM_SIGNALS, inputs + NUM_SENSORS);
+  for (int i = 0; i < NUM_SIGNALS + NUM_SENSORS; ++i) {
+    inputs[i] = (i < NUM_SENSORS) ? sensors[i] : signals[i - NUM_SENSORS];
+  }
   double* outputs = mlp->apply(inputs);
   
   double actuation = outputs[0];
@@ -116,7 +116,6 @@ __device__ double VX3_NeuralDistributedController::updateVoxelTemp(VX3_Voxel* vo
 __device__ void VX3_NeuralDistributedController::updateLastSignals(VX3_VoxelyzeKernel* kernel)
 {
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
-    //std::copy(currSignals[kernel->d_voxels + i], currSignals[kernel->d_voxels + i] + NUM_SIGNALS, lastSignals[kernel->d_voxels + i]);
     VX3_Voxel* voxel = kernel->d_voxels + i;
     for (int j = 0; j < NUM_SIGNALS; ++j) {
       voxel->lastSignals[j] = voxel->currSignals[j]; 
