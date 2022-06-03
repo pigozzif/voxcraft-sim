@@ -19,14 +19,14 @@ VX3_MLP::~VX3_MLP(void)
   MycudaFree(weights);
 }
 
-__device__ void VX3_MLP::init(const int numInputs, const int numOutputs, const std::string weights)
+__device__ void VX3_MLP::init(const int numInputs, const int numOutputs, std::string weights)
 {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
   setWeights(&weights);
 }
 
-__device__ void VX3_MLP::setWeights(const std::string* weights)
+__device__ void VX3_MLP::setWeights(std::string* weights)
 {
   VcudaMalloc((void **) this->weights, sizeof(double*) * numOutputs);
   for (int i = 0; i < numOutputs; ++i) {
