@@ -134,7 +134,8 @@ __device__ double* VX3_NeuralDistributedController::getLastSignals(VX3_Voxel* vo
 __device__ void VX3_NeuralDistributedController::sense(VX3_Voxel* voxel, double* sensors, VX3_VoxelyzeKernel* kernel) const
 {
   VX3_dVector<VX3_Collision*> collisions = VX3_dVector<VX3_Collision*>();
-  for (VX3_Collision* collision : kernel->d_v_collisions) {
+  for (int j = 0; j < kernel->d_v_collisions.size(); ++j) {
+    VX3_Collision* collision = kernel->d_v_collision.get(i);
     if (collision->pV1 == voxel || collision->pV2 == voxel) {
       collisions.push_back(collision);
     }
@@ -146,7 +147,7 @@ __device__ void VX3_NeuralDistributedController::sense(VX3_Voxel* voxel, double*
       continue;
     }
     for (int i = 0; i < NUM_SENSORS; ++i) {
-      VX3_Vec3D<float>* offset = getOffset((VX3_Voxel::linkDirection)i);
+      VX3_Vec3D<float>* offset = getOffset((linkDirection)i);
       double s = voxel->material()->nominalSize();
       VX3_Voxel* other = (collision->pV1 == voxel) ? collision->pV2 : collision->pV1;
       if (VX3_Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
