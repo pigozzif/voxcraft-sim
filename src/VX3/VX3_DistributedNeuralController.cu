@@ -11,11 +11,11 @@
 #include <string>
 #include <map>
 
-/*CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs, const std::string weights)
+CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs, const std::string weights)
   : numInputs(numInputs), numOutputs(numOutputs)
 {
   setWeights(weights);
-}*/
+}
 
 CVX_MLP::~CVX_MLP(void)
 {
@@ -25,7 +25,7 @@ CVX_MLP::~CVX_MLP(void)
   MycudaFree(weights);
 }
 
-/*__device__ void CVX_MLP::setWeights(const std::string weights)
+__device__ void CVX_MLP::setWeights(const std::string weights)
 {
   VcudaMalloc((void **) this->weights, sizeof(double*) * numOutputs);
   for (int i = 0; i < numOutputs; ++i) {
@@ -47,7 +47,7 @@ CVX_MLP::~CVX_MLP(void)
   }
 }
 
-__device__ double* CVX_MLP::apply(double* inputs) const
+/*__device__ double* CVX_MLP::apply(double* inputs) const
 {
   //apply input activation
   for (int i = 0; i < numInputs; ++i)
