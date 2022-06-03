@@ -135,7 +135,7 @@ __device__ void VX3_NeuralDistributedController::sense(VX3_Voxel* voxel, double*
 {
   VX3_dVector<VX3_Collision*> collisions = VX3_dVector<VX3_Collision*>();
   for (int j = 0; j < kernel->d_v_collisions.size(); ++j) {
-    VX3_Collision* collision = kernel->d_v_collision.get(i);
+    VX3_Collision* collision = kernel->d_v_collisions.get(j);
     if (collision->pV1 == voxel || collision->pV2 == voxel) {
       collisions.push_back(collision);
     }
