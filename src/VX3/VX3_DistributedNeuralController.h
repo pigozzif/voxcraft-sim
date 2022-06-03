@@ -1,5 +1,5 @@
 #if !defined(CVX_DISTRIBUTED_H)
-#define CVX_DISTRIBUTED_H
+#define VX3_DISTRIBUTED_H
 
 #include "VX3_Voxel.h"
 #include "VX3.cuh"
@@ -49,4 +49,4 @@ private:
   std::map<VX3_Voxel*, double[]> currSignals;
 };*/
 
-#endif //CVX_DISTRIBUTED_H
+#endif //VX3 _DISTRIBUTED_H
