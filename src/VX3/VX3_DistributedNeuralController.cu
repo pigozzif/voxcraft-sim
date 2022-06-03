@@ -117,7 +117,7 @@ __device__ double* CVX_Distributed::getLastSignals(VX3_Voxel* voxel) const
 {
   double* signals = (double*) malloc(sizeof(double) * NUM_SIGNALS);
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
-    VX3_Voxel* adjVoxel = voxel->adjacentVoxel((VX3_Voxel::linkDirection)dir); 
+    VX3_Voxel* adjVoxel = voxel->adjacentVoxel((linkDirection)dir); 
     signals[dir] = (adjVoxel) ? lastSignals[adjVoxel][dir] : 0.0;
   }
   return signals;
