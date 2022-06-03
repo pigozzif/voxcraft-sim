@@ -47,8 +47,6 @@ public:
 private:
   int numVoxels;
   VX3_MLP* mlp;
-  VX3_dDictionary<VX3_Voxel*, double[]> lastSignals;
-  VX3_dDictionary<VX3_Voxel*, double[]> currSignals;
 };
 
 #endif //VX3 _DISTRIBUTED_H
