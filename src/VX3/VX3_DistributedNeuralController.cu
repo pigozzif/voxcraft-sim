@@ -11,7 +11,7 @@
 #include <string>
 #include <map>
 
-CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs, const std::string weights)
+__device__ CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs, const std::string weights)
   : numInputs(numInputs), numOutputs(numOutputs)
 {
   setWeights(weights);
