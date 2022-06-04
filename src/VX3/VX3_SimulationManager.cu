@@ -1,5 +1,5 @@
 #include "VX3_SimulationManager.cuh"
-#include "VX3_NeuralDistributedController.h"
+#include "VX3_DistributedNeuralController.h"
 #include "ctool.h"
 #include <boost/algorithm/string/case_conv.hpp>
 #include <queue>
