@@ -19,8 +19,8 @@ __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** 
 {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
-  this->weights = weights;
-  //setWeights(weights);
+  //this->weights = weights;
+  setWeights(weights);
 }
 
 __device__ void VX3_MLP::setWeights(double** weights)
@@ -29,11 +29,7 @@ __device__ void VX3_MLP::setWeights(double** weights)
   for (int i = 0; i < numOutputs; ++i) {
     VcudaMalloc((void **) &this->weights[i], sizeof(double) * (numInputs + 1));
   }
-  for (int i = 0; i < numOutputs; ++i) {
-    for (int j = 0; j < numInputs + 1; ++j) {
-      ;//this->weights[i][j] = weights[i][j];
-    }
-  }
+  VcudaMemcpy(weights, this->weights, sizeof(double) * numOutputs * (numInputs + 1), cudaMemcpyHostToDevice);
 }
 
 __device__ double* VX3_MLP::apply(double* inputs) const
