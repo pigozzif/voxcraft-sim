@@ -6,6 +6,7 @@
 #include "VX3_MemoryCleaner.h"
 #include <stdlib.h>
 #include <math.h>
+#include <string.h>
 
 __device__ VX3_MLP::~VX3_MLP(void) {
   for (int i = 0; i < numOutputs; ++i) {
@@ -16,25 +17,33 @@ __device__ VX3_MLP::~VX3_MLP(void) {
   VcudaFree(inputs);
 }
 
-__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** weights) {
+__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, char* weights) {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
   VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
   VcudaMalloc((void **) &inputs, sizeof(double) * numInputs);
-  this->weights = weights;
-  //setWeights(weights);
+  //this->weights = weights;
+  setWeights(weights);
 }
 
-__device__ void VX3_MLP::setWeights(double** weights) {
-  VcudaMalloc((void **) &this->weights, sizeof(double*) * numOutputs);
+__device__ void VX3_MLP::setWeights(char* weights) {
+  VcudaMalloc((void**) &weights, sizeof(double*) * numOutputs);
   for (int i = 0; i < numOutputs; ++i) {
-    VcudaMalloc((void **) &this->weights[i], sizeof(double) * (numInputs + 1));
+    VcudaMalloc((void**) &weights[i], sizeof(double) * (numInputs + 1));
   }
-  for (int i = 0; i < numOutputs; ++i) {
-    for (int j = 0; j < numInputs + 1; ++j) {
-      ;//this->weights[i][j] = weights[i][j];
+  int i = 0;
+  int j = 0;
+  char *p = strtok(weights, ",");
+  while (p != NULL) {
+    this->weights[i][j++] = p;
+    p = strtok(NULL, ",");
+    if (j >= numInputs - 1) {
+      j = 0;
+      ++i;
     }
   }
+  return weights;
+}
 }
 
 __device__ void VX3_MLP::apply(void) const {
@@ -51,7 +60,7 @@ __device__ void VX3_MLP::apply(void) const {
   }
 }
 
-__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(double** weights, VX3_VoxelyzeKernel* kernel) {
+__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(char* weights, VX3_VoxelyzeKernel* kernel) {
   mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
