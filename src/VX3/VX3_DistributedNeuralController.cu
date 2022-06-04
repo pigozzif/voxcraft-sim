@@ -29,23 +29,24 @@ __device__ void VX3_MLP::setWeights(double** weights)
   for (int i = 0; i < numOutputs; ++i) {
     VcudaMalloc((void **) &this->weights[i], sizeof(double) * (numInputs + 1));
   }
-  //VcudaMemcpy(weights, this->weights, sizeof(double) * numOutputs * (numInputs + 1), cudaMemcpyHostToDevice);
+  for (int i = 0; i < numOutputs; ++i) {
+    for (int j = 0; j < numInputs + 1; ++j) {
+      this->weights[i][j] = weights[i][j];
+    }
+  }
 }
 
 __device__ double* VX3_MLP::apply(double* inputs) const
 {
   //apply input activation
-  for (int i = 0; i < numInputs; ++i)
-  {
+  for (int i = 0; i < numInputs; ++i) {
     inputs[i] = tanh(inputs[i]);
   }
   double* outputs;
   VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
-  for (int j = 0; j < numOutputs; ++j)
-  {
+  for (int j = 0; j < numOutputs; ++j) {
     double sum = weights[j][0]; //the bias
-    for (int k = 1; k < numInputs + 1; ++k)
-    {
+    for (int k = 1; k < numInputs + 1; ++k) {
       sum += inputs[k - 1] * weights[j][k]; //weight inputs
     }
     outputs[j] = tanh(sum); //apply output activation
