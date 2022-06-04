@@ -38,7 +38,7 @@ class VX3_SimulationManager {
     fs::path input_dir;
     fs::path base;
     VX3_VoxelyzeKernel h_d_base;
-    double** weights;
+    std::string weights;
 
     // fs::path input_directory;
     // fs::path output_file;
