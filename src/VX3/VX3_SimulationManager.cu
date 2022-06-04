@@ -64,7 +64,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         for (int j = 0; j < 1000000; j++) { // Maximum Steps 1000000
             if (d_v3->StopConditionMet())
                 break;
-            if (!d_v3->doTimeStep()) {
+            if (!d_v3->doTimeStep(controller)) {
                 printf(COLORCODE_BOLD_RED "\n%d) Simulation %d Diverged: %s.\n" COLORCODE_RESET, device_index, thread_index,
                        d_v3->vxa_filename);
                 break;
