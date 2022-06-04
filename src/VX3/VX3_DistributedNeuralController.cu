@@ -13,12 +13,16 @@ __device__ VX3_MLP::~VX3_MLP(void)
     VcudaFree(weights[i]);
   }
   VcudaFree(weights);
+  VcudaFree(outputs);
+  VcudaFree(inputs);
 }
 
 __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** weights)
 {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
+  VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
+  VcudaMalloc((void **) &inputs, sizeof(double) * numInputs);
   //this->weights = weights;
   setWeights(weights);
 }
@@ -36,14 +40,14 @@ __device__ void VX3_MLP::setWeights(double** weights)
   }
 }
 
-__device__ double* VX3_MLP::apply(double* inputs) const
+__device__ void VX3_MLP::apply(void) const
 {
   //apply input activation
   for (int i = 0; i < numInputs; ++i) {
     inputs[i] = tanh(inputs[i]);
   }
-  double* outputs;
-  VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
+  //double* outputs;
+  //VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
   for (int j = 0; j < numOutputs; ++j) {
     double sum = weights[j][0]; //the bias
     for (int k = 1; k < numInputs + 1; ++k) {
@@ -51,7 +55,7 @@ __device__ double* VX3_MLP::apply(double* inputs) const
     }
     outputs[j] = tanh(sum); //apply output activation
   }
-  return outputs;
+  //return outputs;
 }
 
 __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(double** weights, VX3_VoxelyzeKernel* kernel)
@@ -73,24 +77,24 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(doub
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
 {
   //return 0.0;
-  double* inputs = new double[mlp->getNumInputs()];
+  //double* inputs = new double[mlp->getNumInputs()];
   for (int i = 0 ; i < NUM_SENSORS; ++i) {
-    inputs[i] = -1.0;
+    mlp->inputs[i] = -1.0;
   }
-  sense(voxel, inputs, kernel);
+  sense(voxel, kernel);
   
-  getLastSignals(voxel, inputs);
+  getLastSignals(voxel);
   //for (int i = 0; i < NUM_SIGNALS + NUM_SENSORS; ++i) {
   //  inputs[i] = (i < NUM_SENSORS) ? sensors[i] : signals[i - NUM_SENSORS];
   //}
-  double* outputs = mlp->apply(inputs);
+  mlp->apply();
   
-  double actuation = outputs[0];
+  //double actuation = outputs[0];
   //delete[] sensors;
   //VcudaFree(signals);
-  delete[] inputs;
-  VcudaFree(outputs);
-  return actuation;
+  //delete[] inputs;
+  //VcudaFree(outputs);
+  return mlp->outputs[0];
 }
 
 __device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeKernel* kernel)
@@ -103,18 +107,18 @@ __device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeK
   }
 }
 
-__device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel, double* inputs) const
+__device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel) const
 {
   //double* signals;
   //VcudaMalloc((void **) &signals, sizeof(double) * NUM_SIGNALS);
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
     VX3_Voxel* adjVoxel = voxel->adjacentVoxel((linkDirection)dir); 
-    inputs[dir + NUM_SENSORS] = (adjVoxel) ? adjVoxel->lastSignals[dir] : 0.0;
+    mlp->inputs[dir + NUM_SENSORS] = (adjVoxel) ? adjVoxel->lastSignals[dir] : 0.0;
   }
   //return signals;
 }
 
-__device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, double* sensors, VX3_VoxelyzeKernel* kernel) const
+__device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) const
 {
   VX3_dVector<VX3_Collision*> collisions = VX3_dVector<VX3_Collision*>();
   for (int j = 0; j < kernel->d_v_collisions.size(); ++j) {
@@ -135,13 +139,13 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, double*
       VX3_Voxel* other = (collision->pV1 == voxel) ? collision->pV2 : collision->pV1;
       if (VX3_Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
           VX3_Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
-        sensors[i] = 1.0;
+        mlp->inputs[i] = 1.0;
       }
     }
   }
   
   if (voxel->iz == 0) {
-    sensors[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
+    mlp->inputs[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
   }
 }
 
