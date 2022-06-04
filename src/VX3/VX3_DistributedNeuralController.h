@@ -13,10 +13,9 @@
 class VX3_MLP
 {
 public:
-  //__device__ VX3_MLP(void);// = default;
+  __device__ VX3_MLP(const int numInputs, const int numOutputs, double** weights);
   __device__ ~VX3_MLP(void);
   
-  __device__ VX3_MLP(const int numInputs, const int numOutputs, double** weights);
   __device__ double* apply(double* inputs) const;
   __device__ inline int getNumInputs(void) const { return numInputs; }
   __device__ inline int getNumOutputs(void) const { return numOutputs; }
@@ -33,10 +32,9 @@ private:
 class VX3_DistributedNeuralController
 {
 public:
-  //__device__ VX3_DistributedNeuralController(void);// = default;
-  __device__ ~VX3_DistributedNeuralController(void);// = default;
-  
   __device__ VX3_DistributedNeuralController(double** weights, VX3_VoxelyzeKernel* kernel);
+  __device__ ~VX3_DistributedNeuralController(void);
+  
   __device__ double updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel);
   __device__ void updateLastSignals(VX3_VoxelyzeKernel* kernel);
   __device__ double* getLastSignals(VX3_Voxel* voxel) const;
