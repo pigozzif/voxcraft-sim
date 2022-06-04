@@ -46,8 +46,6 @@ __device__ void VX3_MLP::apply(void) const
   for (int i = 0; i < numInputs; ++i) {
     inputs[i] = tanh(inputs[i]);
   }
-  //double* outputs;
-  //VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
   for (int j = 0; j < numOutputs; ++j) {
     double sum = weights[j][0]; //the bias
     for (int k = 1; k < numInputs + 1; ++k) {
@@ -55,12 +53,10 @@ __device__ void VX3_MLP::apply(void) const
     }
     outputs[j] = tanh(sum); //apply output activation
   }
-  //return outputs;
 }
 
 __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(double** weights, VX3_VoxelyzeKernel* kernel)
 {
-  this->numVoxels = kernel->num_d_voxels;
   mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
   printf("we are after MLP");
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
@@ -76,24 +72,14 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(doub
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
 {
-  //return 0.0;
-  //double* inputs = new double[mlp->getNumInputs()];
   for (int i = 0 ; i < NUM_SENSORS; ++i) {
     mlp->inputs[i] = -1.0;
   }
   sense(voxel, kernel);
   
   getLastSignals(voxel);
-  //for (int i = 0; i < NUM_SIGNALS + NUM_SENSORS; ++i) {
-  //  inputs[i] = (i < NUM_SENSORS) ? sensors[i] : signals[i - NUM_SENSORS];
-  //}
   mlp->apply();
   
-  //double actuation = outputs[0];
-  //delete[] sensors;
-  //VcudaFree(signals);
-  //delete[] inputs;
-  //VcudaFree(outputs);
   return mlp->outputs[0];
 }
 
@@ -109,13 +95,10 @@ __device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeK
 
 __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel) const
 {
-  //double* signals;
-  //VcudaMalloc((void **) &signals, sizeof(double) * NUM_SIGNALS);
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
     VX3_Voxel* adjVoxel = voxel->adjacentVoxel((linkDirection)dir); 
     mlp->inputs[dir + NUM_SENSORS] = (adjVoxel) ? adjVoxel->lastSignals[dir] : 0.0;
   }
-  //return signals;
 }
 
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) const
