@@ -60,6 +60,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(doub
 {
   this->numVoxels = kernel->num_d_voxels;
   mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
+  printf("we are after MLP");
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
     voxel->initLastSignals(NUM_SIGNALS);
