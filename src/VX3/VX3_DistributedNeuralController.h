@@ -15,7 +15,7 @@ public:
   __device__ VX3_MLP(const int numInputs, const int numOutputs, double** weights);
   __device__ ~VX3_MLP(void);
   
-  __device__ double* apply(double* inputs) const;
+  __device__ void apply(void) const;
   __device__ inline int getNumInputs(void) const { return numInputs; }
   __device__ inline int getNumOutputs(void) const { return numOutputs; }
 
@@ -39,8 +39,8 @@ public:
   
   __device__ double updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel);
   __device__ void updateLastSignals(VX3_VoxelyzeKernel* kernel);
-  __device__ void getLastSignals(VX3_Voxel* voxel, double* inputs) const;
-  __device__ void sense(VX3_Voxel* voxel, double* sensors, VX3_VoxelyzeKernel* kernel) const;
+  __device__ void getLastSignals(VX3_Voxel* voxel) const;
+  __device__ void sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) const;
   
   __device__ VX3_Vec3D<float>* getOffset(const linkDirection dir) const;
 
