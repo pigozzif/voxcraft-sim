@@ -45,4 +45,4 @@ private:
   VX3_MLP* mlp;
 };
 
-#endif //VX3 _DISTRIBUTED_H
+#endif //VX3_DISTRIBUTED_H
