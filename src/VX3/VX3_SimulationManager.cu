@@ -10,7 +10,7 @@
 #include "VX3_VoxelyzeKernel.cuh"
 #include "VX_Sim.h" //readVXA
 
-__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, char* weights) {
+__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, double** weights) {
     int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (thread_index < num_simulation) {
         VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
@@ -122,6 +122,29 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         printf(COLORCODE_BLUE "%d) Simulation %d ends: %s Time: %f, angleSampleTimes: %d.\n" COLORCODE_RESET, device_index, thread_index,
                d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);
     }
+}
+
+double** VX3_SimulationManager::readWeights(int numInputs, int numOutputs, std::string s_weights) {
+  double** weights;
+  VcudaMalloc((void**) &weights, sizeof(double*) * numOutputs);
+  for (int i = 0; i < numOutputs; ++i) {
+    VcudaMalloc((void**) &weights[i], sizeof(double) * (numInputs + 1));
+  }
+  std::string delim = ",";
+  std::size_t start = 0U;
+  std::size_t end = s_weights.find(delim);
+  int i = 0;
+  int j = 0;
+  while (end != std::string::npos) {
+    weights[i][j++] = atof(s_weights.substr(start, end - start).c_str());
+    if (j >= numInputs + 1) {
+      j = 0;
+      ++i;
+    }
+    start = end + delim.length();
+    end = s_weights.find(delim, start);
+  }
+  return weights;
 }
 
 VX3_SimulationManager::VX3_SimulationManager(std::vector<std::vector<fs::path>> in_sub_batches, fs::path in_base, fs::path in_input_dir,
@@ -426,7 +449,8 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     //             cudaMemcpyDeviceToHost);
     enlargeGPUHeapSize();
     enlargeGPUPrintfFIFOSize();
-    CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, const_cast<char*>(weights.c_str()));
+    double** d_weights = readWeights(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
+    CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, d_weights);
     CUDA_CHECK_AFTER_CALL();
 }
 
