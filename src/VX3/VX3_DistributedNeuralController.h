@@ -1,4 +1,4 @@
-#if !defined(CVX_DISTRIBUTED_H)
+#if !defined(VX3_DISTRIBUTED_H)
 #define VX3_DISTRIBUTED_H
 
 #include "VX3.cuh"
