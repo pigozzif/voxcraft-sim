@@ -10,12 +10,11 @@
 #include "VX3_VoxelyzeKernel.cuh"
 #include "VX_Sim.h" //readVXA
 
-__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, double** weights) {
+__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, std::string weights) {
     int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (thread_index < num_simulation) {
         VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
-        VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(weights, d_v3);
-        printf("we are here");
+        VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(readWeights(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights), d_v3);
         if (d_v3->num_d_links == 0 and d_v3->num_d_voxels == 0) {
             printf(COLORCODE_BOLD_RED "No links and no voxels. Simulation %d (%s) abort.\n" COLORCODE_RESET, thread_index,
                    d_v3->vxa_filename);
@@ -123,6 +122,29 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         printf(COLORCODE_BLUE "%d) Simulation %d ends: %s Time: %f, angleSampleTimes: %d.\n" COLORCODE_RESET, device_index, thread_index,
                d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);
     }
+}
+
+__global__ double** readWeights(int numInputs, int numOutputs, std::string s_weights) {
+  double** weights;
+  VcudaMalloc((void**) &weights, sizeof(double*) * numOutputs);
+  for (int i = 0; i < numOutputs; ++i) {
+    VcudaMalloc((void**) &weights[i], sizeof(double) * (numInputs + 1));
+  }
+  std::string delim = ",";
+  std::size_t start = 0U;
+  std::size_t end = s_weights.find(delim);
+  int i = 0;
+  int j = 0;
+  while (end != std::string::npos) {
+    weights[i][j++] = atof(s_weights.substr(start, end - start).c_str());
+    if (j >= numInputs + 1) {
+      j = 0;
+      ++i;
+    }
+    start = end + delim.length();
+    end = s_weights.find(delim, start);
+  }
+  return weights;
 }
 
 VX3_SimulationManager::VX3_SimulationManager(std::vector<std::vector<fs::path>> in_sub_batches, fs::path in_base, fs::path in_input_dir,
@@ -321,7 +343,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         //         m->dependentMaterials.size(), mm); i++;
         //     }
         // }
-        readWeights(NUM_SIGNALS + NUM_SENSORS, NUM_SIGNALS + 2, MainEnv.GetNeuralWeights());
+        this->weights = MainEnv.GetNeuralWeights();
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
         // More VXA settings which is new in VX3
         strcpy(h_d_tmp.vxa_filename, file.filename().c_str());
@@ -384,27 +406,6 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         VcudaMemcpy(d_voxelyze_3s[device_index] + i, &h_d_tmp, sizeof(VX3_VoxelyzeKernel), cudaMemcpyHostToDevice);
         i++;
     }
-}
-
-void VX3_SimulationManager::readWeights(int numInputs, int numOutputs, std::string weights) {
-  this->weights = (double**) malloc(sizeof(double*) * numOutputs);
-  for (int i = 0; i < numOutputs; ++i) {
-    this->weights[i] = (double*) malloc(sizeof(double) * (numInputs + 1));
-  }
-  std::string delim = ",";
-  std::size_t start = 0U;
-  std::size_t end = weights.find(delim);
-  int i = 0;
-  int j = 0;
-  while (end != std::string::npos) {
-    this->weights[i][j++] = atof(weights.substr(start, end - start).c_str());
-    if (j >= numInputs + 1) {
-      j = 0;
-      ++i;
-    }
-    start = end + delim.length();
-    end = weights.find(delim, start);
-  }
 }
 
 // GPU Heap is for in-kernel malloc(). Refer to
