@@ -10,11 +10,11 @@
 #include "VX3_VoxelyzeKernel.cuh"
 #include "VX_Sim.h" //readVXA
 
-__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, std::string weights) {
+__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, double** weights) {
     int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (thread_index < num_simulation) {
         VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
-        VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(readWeights(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights), d_v3);
+        VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(weights, d_v3);
         if (d_v3->num_d_links == 0 and d_v3->num_d_voxels == 0) {
             printf(COLORCODE_BOLD_RED "No links and no voxels. Simulation %d (%s) abort.\n" COLORCODE_RESET, thread_index,
                    d_v3->vxa_filename);
@@ -124,7 +124,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
     }
 }
 
-__global__ double** readWeights(int numInputs, int numOutputs, std::string s_weights) {
+double** readWeights(int numInputs, int numOutputs, std::string s_weights) {
   double** weights;
   VcudaMalloc((void**) &weights, sizeof(double*) * numOutputs);
   for (int i = 0; i < numOutputs; ++i) {
@@ -449,7 +449,8 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     //             cudaMemcpyDeviceToHost);
     enlargeGPUHeapSize();
     enlargeGPUPrintfFIFOSize();
-    CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, weights);
+    double** d_weights = readWeights(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights)
+    CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, d_weights);
     CUDA_CHECK_AFTER_CALL();
 }
 
