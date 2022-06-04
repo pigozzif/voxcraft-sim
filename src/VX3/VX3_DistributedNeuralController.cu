@@ -11,7 +11,7 @@
 #include <string>
 #include <map>
 
-VX3_MLP::~VX3_MLP(void)
+__device__ VX3_MLP::~VX3_MLP(void)
 {
   for (int i = 0; i < numOutputs; ++i) {
     VcudaFree(weights[i]);
@@ -37,20 +37,6 @@ __device__ void VX3_MLP::setWeights(double** weights)
       this->weights[i][j] = weights[i][j];
     }
   }
-  /*std::string delim = ",";
-  std::size_t start = 0U;
-  std::size_t end = weights->find(delim);
-  int i = 0;
-  int j = 0;
-  while (end != std::string::npos) {
-    this->weights[i][j++] = atof(weights->substr(start, end - start).c_str());
-    if (j >= numInputs + 1) {
-      j = 0;
-      ++i;
-    }
-    start = end + delim.length();
-    end = weights->find(delim, start);
-  }*/
 }
 
 __device__ double* VX3_MLP::apply(double* inputs) const
