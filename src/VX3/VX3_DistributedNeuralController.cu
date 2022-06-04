@@ -21,8 +21,8 @@ __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** 
   this->numOutputs = numOutputs;
   VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
   VcudaMalloc((void **) &inputs, sizeof(double) * numInputs);
-  //this->weights = weights;
-  setWeights(weights);
+  this->weights = weights;
+  //setWeights(weights);
 }
 
 __device__ void VX3_MLP::setWeights(double** weights) {
