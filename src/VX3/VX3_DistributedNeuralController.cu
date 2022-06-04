@@ -19,7 +19,8 @@ __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** 
 {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
-  setWeights(weights);
+  this->weights = weights;
+  //setWeights(weights);
 }
 
 __device__ void VX3_MLP::setWeights(double** weights)
