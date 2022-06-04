@@ -15,6 +15,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
     if (thread_index < num_simulation) {
         VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
         VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(weights, d_v3);
+        std::cout << "we are here" << std::endl;
         if (d_v3->num_d_links == 0 and d_v3->num_d_voxels == 0) {
             printf(COLORCODE_BOLD_RED "No links and no voxels. Simulation %d (%s) abort.\n" COLORCODE_RESET, thread_index,
                    d_v3->vxa_filename);
@@ -320,7 +321,6 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         //         m->dependentMaterials.size(), mm); i++;
         //     }
         // }
-        std::cout << MainEnv.GetNeuralWeights() << std::endl;
         readWeights(NUM_SIGNALS + NUM_SENSORS, NUM_SIGNALS + 2, MainEnv.GetNeuralWeights());
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
         // More VXA settings which is new in VX3
