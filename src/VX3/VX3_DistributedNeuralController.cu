@@ -31,7 +31,7 @@ __device__ void VX3_MLP::setWeights(double** weights)
   }
   for (int i = 0; i < numOutputs; ++i) {
     for (int j = 0; j < numInputs + 1; ++j) {
-      this->weights[i][j] = weights[i][j];
+      ;//this->weights[i][j] = weights[i][j];
     }
   }
 }
@@ -72,7 +72,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(doub
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
 {
-  return 0.0;
+  //return 0.0;
   double* inputs = new double[mlp->getNumInputs()];
   for (int i = 0 ; i < NUM_SENSORS; ++i) {
     inputs[i] = -1.0;
