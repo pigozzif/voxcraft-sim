@@ -12,6 +12,7 @@
 #include "VX3_Link.h"
 #include "VX3_MaterialLink.h"
 #include "VX3_Voxel.h"
+#include "VX3_DistributedNeuralController.h"
 #include "VX_Enums.h"
 
 /*
@@ -27,11 +28,11 @@ class VX3_VoxelyzeKernel {
     void cleanup();
 
     /* Cuda methods */
-    __device__ bool doTimeStep(float dt = -1.0f);
+    __device__ bool doTimeStep(VX3_DistributedNeuralController* controller, float dt = -1.0f);
     __device__ double recommendedTimeStep();
     __device__ void updateCurrentCenterOfMass();
     __device__ bool StopConditionMet();
-    __device__ void updateTemperature();
+    __device__ void updateTemperature(VX3_DistributedNeuralController* controller);
     __device__ void syncVectors();
     __device__ void updateAttach();
     __device__ void updateDetach();
