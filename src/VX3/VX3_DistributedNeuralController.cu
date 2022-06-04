@@ -19,7 +19,7 @@ __device__ VX3_MLP::~VX3_MLP(void)
   VcudaFree(weights);
 }
 
-__device__ void VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** weights)
+__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** weights)
 {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
@@ -60,7 +60,7 @@ __device__ double* VX3_MLP::apply(double* inputs) const
   return outputs;
 }
 
-__device__ void VX3_DistributedNeuralController::VX3_DistributedNeuralController(double** weights, VX3_VoxelyzeKernel* kernel)
+__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(double** weights, VX3_VoxelyzeKernel* kernel)
 {
   this->numVoxels = kernel->num_d_voxels;
   mlp = new VX3_MLP();
