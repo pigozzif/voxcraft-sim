@@ -71,6 +71,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(doub
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
 {
+  return 0.0;
   double* sensors = new double[NUM_SENSORS];
   for (int i = 0 ; i < NUM_SENSORS; ++i) {
     sensors[i] = -1.0;
