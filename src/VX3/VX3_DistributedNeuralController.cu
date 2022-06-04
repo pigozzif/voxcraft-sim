@@ -19,7 +19,8 @@ __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** 
 {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
-  setWeights(weights);
+  this->weights = weights;
+  //setWeights(weights);
 }
 
 __device__ void VX3_MLP::setWeights(double** weights)
@@ -59,7 +60,7 @@ __device__ double* VX3_MLP::apply(double* inputs) const
 __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(double** weights, VX3_VoxelyzeKernel* kernel)
 {
   this->numVoxels = kernel->num_d_voxels;
-  mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, NULL);
+  mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
   printf("we are after MLP");
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
