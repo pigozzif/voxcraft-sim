@@ -446,7 +446,6 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     //             cudaMemcpyDeviceToHost);
     enlargeGPUHeapSize();
     enlargeGPUPrintfFIFOSize();
-    VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(NUM_SIGNALS + NUM_SENSORS, NUM_SIGNALS + 2, weights);
     CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, weights);
     CUDA_CHECK_AFTER_CALL();
 }
