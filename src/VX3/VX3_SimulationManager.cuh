@@ -20,6 +20,7 @@ class VX3_SimulationManager {
 
     void start();
     std::vector<std::vector<fs::path>> splitIntoSubBatches();
+    void readVXD(fs::path base, std::vector<fs::path> files, int device_index);
     void startKernel(int num_tasks, int device_index);
     void collectResults(int num_simulation, int device_index);
     void sortResults();
