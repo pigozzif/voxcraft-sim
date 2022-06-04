@@ -9,10 +9,10 @@
 #include <string.h>
 
 __device__ VX3_MLP::~VX3_MLP(void) {
-  for (int i = 0; i < numOutputs; ++i) {
+  /*for (int i = 0; i < numOutputs; ++i) {
     VcudaFree(weights[i]);
   }
-  VcudaFree(weights);
+  VcudaFree(weights);*/
   VcudaFree(outputs);
   VcudaFree(inputs);
 }
@@ -27,7 +27,7 @@ __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** 
 }
 
 __device__ void VX3_MLP::setWeights(char* weights) {
-  VcudaMalloc((void**) &weights, sizeof(double*) * numOutputs);
+  /*VcudaMalloc((void**) &weights, sizeof(double*) * numOutputs);
   for (int i = 0; i < numOutputs; ++i) {
     VcudaMalloc((void**) &weights[i], sizeof(double) * (numInputs + 1));
   }
@@ -41,7 +41,7 @@ __device__ void VX3_MLP::setWeights(char* weights) {
       j = 0;
       ++i;
     }
-  }
+  }*/
 }
 
 __device__ void VX3_MLP::apply(void) const {
