@@ -74,7 +74,7 @@ __device__ double* VX3_MLP::apply(double* inputs) const
   return outputs;
 }
 
-__device__ void VX3_NeuralDistributedController::init(double** weights, VX3_VoxelyzeKernel* kernel)
+__device__ void VX3_DistributedNeuralController::init(double** weights, VX3_VoxelyzeKernel* kernel)
 {
   this->numVoxels = kernel->num_d_voxels;
   mlp = new VX3_MLP();
@@ -90,7 +90,7 @@ __device__ void VX3_NeuralDistributedController::init(double** weights, VX3_Voxe
   }
 }
 
-__device__ double VX3_NeuralDistributedController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
+__device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
 {
   double* sensors = new double[NUM_SENSORS];
   for (int i = 0 ; i < NUM_SENSORS; ++i) {
@@ -113,7 +113,7 @@ __device__ double VX3_NeuralDistributedController::updateVoxelTemp(VX3_Voxel* vo
   return actuation;
 }
 
-__device__ void VX3_NeuralDistributedController::updateLastSignals(VX3_VoxelyzeKernel* kernel)
+__device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeKernel* kernel)
 {
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
@@ -123,7 +123,7 @@ __device__ void VX3_NeuralDistributedController::updateLastSignals(VX3_VoxelyzeK
   }
 }
 
-__device__ double* VX3_NeuralDistributedController::getLastSignals(VX3_Voxel* voxel) const
+__device__ double* VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel) const
 {
   double* signals;
   VcudaMalloc((void **) &signals, sizeof(double) * NUM_SIGNALS);
@@ -134,7 +134,7 @@ __device__ double* VX3_NeuralDistributedController::getLastSignals(VX3_Voxel* vo
   return signals;
 }
 
-__device__ void VX3_NeuralDistributedController::sense(VX3_Voxel* voxel, double* sensors, VX3_VoxelyzeKernel* kernel) const
+__device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, double* sensors, VX3_VoxelyzeKernel* kernel) const
 {
   VX3_dVector<VX3_Collision*> collisions = VX3_dVector<VX3_Collision*>();
   for (int j = 0; j < kernel->d_v_collisions.size(); ++j) {
@@ -165,7 +165,7 @@ __device__ void VX3_NeuralDistributedController::sense(VX3_Voxel* voxel, double*
   }
 }
 
-__device__ VX3_Vec3D<float>* VX3_NeuralDistributedController::getOffset(const linkDirection dir) const
+__device__ VX3_Vec3D<float>* VX3_DistributedNeuralController::getOffset(const linkDirection dir) const
 {
   switch (dir) {
     case 0:
