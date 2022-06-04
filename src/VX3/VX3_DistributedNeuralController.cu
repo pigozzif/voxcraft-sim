@@ -73,22 +73,21 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(doub
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
 {
   return 0.0;
-  double* sensors = new double[NUM_SENSORS];
-  for (int i = 0 ; i < NUM_SENSORS; ++i) {
-    sensors[i] = -1.0;
-  }
-  sense(voxel, sensors, kernel);
-  
-  double* signals = getLastSignals(voxel);
   double* inputs = new double[mlp->getNumInputs()];
-  for (int i = 0; i < NUM_SIGNALS + NUM_SENSORS; ++i) {
-    inputs[i] = (i < NUM_SENSORS) ? sensors[i] : signals[i - NUM_SENSORS];
+  for (int i = 0 ; i < NUM_SENSORS; ++i) {
+    inputs[i] = -1.0;
   }
+  sense(voxel, inputs, kernel);
+  
+  getLastSignals(voxel, inputs);
+  //for (int i = 0; i < NUM_SIGNALS + NUM_SENSORS; ++i) {
+  //  inputs[i] = (i < NUM_SENSORS) ? sensors[i] : signals[i - NUM_SENSORS];
+  //}
   double* outputs = mlp->apply(inputs);
   
   double actuation = outputs[0];
-  delete[] sensors;
-  VcudaFree(signals);
+  //delete[] sensors;
+  //VcudaFree(signals);
   delete[] inputs;
   VcudaFree(outputs);
   return actuation;
@@ -104,15 +103,15 @@ __device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeK
   }
 }
 
-__device__ double* VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel) const
+__device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel, double* inputs) const
 {
-  double* signals;
-  VcudaMalloc((void **) &signals, sizeof(double) * NUM_SIGNALS);
+  //double* signals;
+  //VcudaMalloc((void **) &signals, sizeof(double) * NUM_SIGNALS);
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
     VX3_Voxel* adjVoxel = voxel->adjacentVoxel((linkDirection)dir); 
-    signals[dir] = (adjVoxel) ? adjVoxel->lastSignals[dir] : 0.0;
+    inputs[dir + NUM_SENSORS] = (adjVoxel) ? adjVoxel->lastSignals[dir] : 0.0;
   }
-  return signals;
+  //return signals;
 }
 
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, double* sensors, VX3_VoxelyzeKernel* kernel) const
