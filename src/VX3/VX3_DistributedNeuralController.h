@@ -44,8 +44,6 @@ public:
   
   __device__ VX3_Vec3D<float>* getOffset(const linkDirection dir) const;
 
-private:
-  int numVoxels;
   VX3_MLP* mlp;
 };
 
