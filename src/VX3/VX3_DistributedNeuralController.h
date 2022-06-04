@@ -12,7 +12,7 @@ class VX3_VoxelyzeKernel;
 class VX3_MLP
 {
 public:
-  __device__ VX3_MLP(const int numInputs, const int numOutputs, char* weights);
+  __device__ VX3_MLP(const int numInputs, const int numOutputs, double** weights);
   __device__ ~VX3_MLP(void);
   
   __device__ void apply(void) const;
@@ -20,7 +20,7 @@ public:
   __device__ inline int getNumOutputs(void) const { return numOutputs; }
 
   __device__ double** getWeights(void) const { return weights; };
-  __device__ void setWeights(char* weights);
+  __device__ void setWeights(double** weights);
   
   double* inputs;
   double* outputs;
@@ -34,7 +34,7 @@ private:
 class VX3_DistributedNeuralController
 {
 public:
-  __device__ VX3_DistributedNeuralController(char* weights, VX3_VoxelyzeKernel* kernel);
+  __device__ VX3_DistributedNeuralController(double** weights, VX3_VoxelyzeKernel* kernel);
   __device__ ~VX3_DistributedNeuralController(void);
   
   __device__ double updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel);
