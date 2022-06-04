@@ -68,6 +68,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(doub
       voxel->currSignals[i] = 0.0;
     }
   }
+  collisions = VX3_dVector<VX3_Collision*>();
 }
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
@@ -103,7 +104,8 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
 
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) const
 {
-  VX3_dVector<VX3_Collision*> collisions = VX3_dVector<VX3_Collision*>();
+  //VX3_dVector<VX3_Collision*> collisions = VX3_dVector<VX3_Collision*>();
+  collisions.clear();
   for (int j = 0; j < kernel->d_v_collisions.size(); ++j) {
     VX3_Collision* collision = kernel->d_v_collisions.get(j);
     if (collision->pV1 == voxel || collision->pV2 == voxel) {
