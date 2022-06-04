@@ -5,7 +5,7 @@
 #include <queue>
 #include <stack>
 #include <utility>
-#include <iostream>
+#include <stdlib.h>
 
 #include "VX3_VoxelyzeKernel.cuh"
 #include "VX_Sim.h" //readVXA
@@ -15,7 +15,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
     if (thread_index < num_simulation) {
         VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
         VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(weights, d_v3);
-        std::cout << "we are here" << std::endl;
+        printf("we are here");
         if (d_v3->num_d_links == 0 and d_v3->num_d_voxels == 0) {
             printf(COLORCODE_BOLD_RED "No links and no voxels. Simulation %d (%s) abort.\n" COLORCODE_RESET, thread_index,
                    d_v3->vxa_filename);
