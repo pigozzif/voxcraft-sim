@@ -3,7 +3,6 @@
 
 #include "VX3.cuh"
 #include "VX3_Voxel.h"
-#include "VX3_Collision.h"
 
 #define NUM_SENSORS 6
 #define NUM_SIGNALS 6
@@ -46,7 +45,6 @@ public:
   __device__ VX3_Vec3D<float>* getOffset(const linkDirection dir) const;
 
   VX3_MLP* mlp;
-  VX3_dVector<VX3_Collision*> collisions;
 };
 
 #endif //VX3_DISTRIBUTED_H
