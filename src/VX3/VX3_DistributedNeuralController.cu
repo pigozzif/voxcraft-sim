@@ -42,7 +42,6 @@ __device__ void VX3_MLP::setWeights(char* weights) {
       ++i;
     }
   }
-  return weights;
 }
 
 __device__ void VX3_MLP::apply(void) const {
