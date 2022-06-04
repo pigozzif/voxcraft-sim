@@ -4,12 +4,8 @@
 #include "VX3_VoxelyzeKernel.cuh"
 #include "VX3_Collision.h"
 #include "VX3_MemoryCleaner.h"
-#include <algorithm>
 #include <stdlib.h>
-#include <cstdlib>
 #include <math.h>
-#include <string>
-#include <map>
 
 __device__ VX3_MLP::~VX3_MLP(void)
 {
