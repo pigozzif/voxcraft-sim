@@ -235,7 +235,7 @@ __device__ void VX3_VoxelyzeKernel::updateTemperature(VX3_DistributedNeuralContr
     }
 }
 
-__device__ bool VX3_VoxelyzeKernel::doTimeStep(float dt, VX3_DistributedNeuralController* controller) {
+__device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* controller, float dt) {
     // clock_t time_measures[10];
     // time_measures[0] = clock();
     updateTemperature(controller);
@@ -637,7 +637,7 @@ __global__ void gpu_update_temperature(VX3_Voxel *voxels, int num, double TempAm
         if (t->mat->fixed)
             return; // fixed voxels, no need to update temperature
         double currentTemperature =
-            TempAmplitude * controllers->updateVoxelTemp(t, k);//sin(2 * 3.1415926f * (currentTime / TempPeriod + t->phaseOffset)); // update the global temperature
+            TempAmplitude * controller->updateVoxelTemp(t, k);//sin(2 * 3.1415926f * (currentTime / TempPeriod + t->phaseOffset)); // update the global temperature
         // TODO: if we decide not to use PhaseOffset any more, we can move this calculation outside.
         // By default we don't enable expansion. But we can enable that in VXA.
         if (!k->EnableExpansion) {
