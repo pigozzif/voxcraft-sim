@@ -27,6 +27,7 @@ class VX3_SimulationManager {
     void enlargeGPUHeapSize();
     void enlargeGPUPrintfFIFOSize();
     void ParseMathTree(VX3_MathTreeToken *field_ptr, size_t max_length, std::string node_address, pt::ptree &tree);
+    void readWeights(int numInputs, int numOutputs, std::string weights);
 
     /* DATA */
     int num_of_devices;                              // Total number of GPUs on one single node. One
@@ -37,6 +38,7 @@ class VX3_SimulationManager {
     fs::path input_dir;
     fs::path base;
     VX3_VoxelyzeKernel h_d_base;
+    double** weights;
 
     // fs::path input_directory;
     // fs::path output_file;
