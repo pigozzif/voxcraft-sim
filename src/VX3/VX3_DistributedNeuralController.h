@@ -3,10 +3,11 @@
 
 #include "VX3.cuh"
 #include "VX3_Voxel.h"
-#include "VX3_VoxelyzeKernel.cuh"
 
 #define NUM_SENSORS 6
 #define NUM_SIGNALS 6
+
+class VX3_VoxelyzeKernel;
 
 class VX3_MLP
 {
