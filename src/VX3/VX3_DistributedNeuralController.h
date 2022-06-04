@@ -21,6 +21,9 @@ public:
 
   __device__ double** getWeights(void) const { return weights; };
   __device__ void setWeights(double** weights);
+  
+  double* inputs;
+  double* outputs;
 
 private:
   int numInputs;
