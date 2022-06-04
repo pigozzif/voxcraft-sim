@@ -104,27 +104,20 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
 
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) const
 {
-  //VX3_dVector<VX3_Collision*> collisions = VX3_dVector<VX3_Collision*>();
-  collisions.clear();
   for (int j = 0; j < kernel->d_v_collisions.size(); ++j) {
     VX3_Collision* collision = kernel->d_v_collisions.get(j);
     if (collision->pV1 == voxel || collision->pV2 == voxel) {
-      collisions.push_back(collision);
-    }
-  }
-  
-  for (int j = 0; j < collisions.size(); ++j) {
-    VX3_Collision* collision = collisions.get(j);
-    if (collision->force == VX3_Vec3D<float>(0,0,0)) {
-      continue;
-    }
-    for (int i = 0; i < NUM_SENSORS; ++i) {
-      VX3_Vec3D<float>* offset = getOffset((linkDirection)i);
-      double s = voxel->material()->nominalSize();
-      VX3_Voxel* other = (collision->pV1 == voxel) ? collision->pV2 : collision->pV1;
-      if (VX3_Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
-          VX3_Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
-        mlp->inputs[i] = 1.0;
+      if (collision->force == VX3_Vec3D<float>(0,0,0)) {
+        continue;
+      }
+      for (int i = 0; i < NUM_SENSORS; ++i) {
+        VX3_Vec3D<float>* offset = getOffset((linkDirection)i);
+        double s = voxel->material()->nominalSize();
+        VX3_Voxel* other = (collision->pV1 == voxel) ? collision->pV2 : collision->pV1;
+        if (VX3_Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
+            VX3_Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
+          mlp->inputs[i] = 1.0;
+        }
       }
     }
   }
