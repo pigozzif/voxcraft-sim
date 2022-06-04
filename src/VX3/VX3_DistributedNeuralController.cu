@@ -7,8 +7,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-__device__ VX3_MLP::~VX3_MLP(void)
-{
+__device__ VX3_MLP::~VX3_MLP(void) {
   for (int i = 0; i < numOutputs; ++i) {
     VcudaFree(weights[i]);
   }
@@ -17,8 +16,7 @@ __device__ VX3_MLP::~VX3_MLP(void)
   VcudaFree(inputs);
 }
 
-__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** weights)
-{
+__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** weights) {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
   VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
@@ -27,8 +25,7 @@ __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** 
   setWeights(weights);
 }
 
-__device__ void VX3_MLP::setWeights(double** weights)
-{
+__device__ void VX3_MLP::setWeights(double** weights) {
   VcudaMalloc((void **) &this->weights, sizeof(double*) * numOutputs);
   for (int i = 0; i < numOutputs; ++i) {
     VcudaMalloc((void **) &this->weights[i], sizeof(double) * (numInputs + 1));
@@ -40,8 +37,7 @@ __device__ void VX3_MLP::setWeights(double** weights)
   }
 }
 
-__device__ void VX3_MLP::apply(void) const
-{
+__device__ void VX3_MLP::apply(void) const {
   //apply input activation
   for (int i = 0; i < numInputs; ++i) {
     inputs[i] = tanh(inputs[i]);
@@ -55,9 +51,7 @@ __device__ void VX3_MLP::apply(void) const
   }
 }
 
-__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(double** weights, VX3_VoxelyzeKernel* kernel)
-{
-  printf("%d\n", kernel->num_d_voxels);
+__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(double** weights, VX3_VoxelyzeKernel* kernel) {
   mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
@@ -68,11 +62,9 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(doub
       voxel->currSignals[i] = 0.0;
     }
   }
-  collisions = VX3_dVector<VX3_Collision*>();
 }
 
-__device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel)
-{
+__device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
   for (int i = 0 ; i < NUM_SENSORS; ++i) {
     mlp->inputs[i] = -1.0;
   }
@@ -84,8 +76,7 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   return mlp->outputs[0];
 }
 
-__device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeKernel* kernel)
-{
+__device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeKernel* kernel) {
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
     for (int j = 0; j < NUM_SIGNALS; ++j) {
@@ -94,16 +85,14 @@ __device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeK
   }
 }
 
-__device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel) const
-{
+__device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel) const {
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
     VX3_Voxel* adjVoxel = voxel->adjacentVoxel((linkDirection)dir); 
     mlp->inputs[dir + NUM_SENSORS] = (adjVoxel) ? adjVoxel->lastSignals[dir] : 0.0;
   }
 }
 
-__device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) const
-{
+__device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) const {
   for (int j = 0; j < kernel->d_v_collisions.size(); ++j) {
     VX3_Collision* collision = kernel->d_v_collisions.get(j);
     if (collision->pV1 == voxel || collision->pV2 == voxel) {
@@ -127,8 +116,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   }
 }
 
-__device__ VX3_Vec3D<float>* VX3_DistributedNeuralController::getOffset(const linkDirection dir) const
-{
+__device__ VX3_Vec3D<float>* VX3_DistributedNeuralController::getOffset(const linkDirection dir) const {
   switch (dir) {
     case 0:
       return new VX3_Vec3D<float>(1,0,0);
