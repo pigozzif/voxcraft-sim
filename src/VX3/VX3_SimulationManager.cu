@@ -5,6 +5,7 @@
 #include <queue>
 #include <stack>
 #include <utility>
+#include <iostream>
 
 #include "VX3_VoxelyzeKernel.cuh"
 #include "VX_Sim.h" //readVXA
@@ -319,6 +320,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         //         m->dependentMaterials.size(), mm); i++;
         //     }
         // }
+        std::cout << MainEnv.GetNeuralWeights() << std::endl;
         readWeights(NUM_SIGNALS + NUM_SENSORS, NUM_SIGNALS + 2, MainEnv.GetNeuralWeights());
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
         // More VXA settings which is new in VX3
