@@ -35,7 +35,7 @@ __device__ void VX3_MLP::setWeights(char* weights) {
   int j = 0;
   char *p = strtok(weights, ",");
   while (p != NULL) {
-    this->weights[i][j++] = p;
+    this->weights[i][j++] = atof(p);
     p = strtok(NULL, ",");
     if (j >= numInputs - 1) {
       j = 0;
@@ -43,7 +43,6 @@ __device__ void VX3_MLP::setWeights(char* weights) {
     }
   }
   return weights;
-}
 }
 
 __device__ void VX3_MLP::apply(void) const {
