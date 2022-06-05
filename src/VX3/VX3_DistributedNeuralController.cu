@@ -59,7 +59,10 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   getLastSignals(voxel);
   mlp->apply();
   
-  votes.push_back(outputs[1]);
+  for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
+    voxel->currSignals[dir] = mlp->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
+  }
+  votes.push_back(mlp->outputs[1]);
   return mlp->outputs[0];
 }
 
