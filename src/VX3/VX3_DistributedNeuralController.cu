@@ -47,6 +47,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
       voxel->currSignals[i] = 0.0;
     }
   }
+  votes = new VX3_dVector<double>();
 }
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
@@ -58,6 +59,7 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   getLastSignals(voxel);
   mlp->apply();
   
+  votes.push_back(outputs[1]);
   return mlp->outputs[0];
 }
 
