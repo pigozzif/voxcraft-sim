@@ -75,7 +75,6 @@ int main(int argc, char** argv) {
     }
 
     //count number of GPUs
-    std::cout << "start" << std::endl;
     int nDevices=0;
     VcudaGetDeviceCount(&nDevices);
     if (nDevices<=0) {
@@ -84,7 +83,7 @@ int main(int argc, char** argv) {
     } else {
         printf("%d GPU found.\n", nDevices);
     }
-
+    std::cout << "start" << std::endl;
     //split files into sub batches (if run locally, one batch stands for all files in input directory.)
     std::vector<std::vector<fs::path>> sub_batches;
     sub_batches.resize(nDevices);
