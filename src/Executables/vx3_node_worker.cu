@@ -83,7 +83,6 @@ int main(int argc, char** argv) {
     } else {
         printf("%d GPU found.\n", nDevices);
     }
-    std::cout << "start" << std::endl;
     //split files into sub batches (if run locally, one batch stands for all files in input directory.)
     std::vector<std::vector<fs::path>> sub_batches;
     sub_batches.resize(nDevices);
@@ -93,6 +92,7 @@ int main(int argc, char** argv) {
     }
 
     VX3_SimulationManager sm(sub_batches, base, input_dir, nDevices);
+    std::cout << "start" << std::endl;
     sm.start();
 
     pt::ptree tr_result;
