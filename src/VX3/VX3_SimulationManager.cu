@@ -453,13 +453,13 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     readWeights(d_weights, numInputs, numOutputs);
     double** cuda_weights = NULL;
     std::cout << "before" << std::endl;
-    VcudaMalloc((void**) &cuda_weights, sizeof(double*) * numOutputs);
+    cudaMalloc((void**) &cuda_weights, sizeof(double*) * numOutputs);
     for (int i = 0; i < numOutputs; ++i) {
-      VcudaMalloc((void**) &cuda_weights[i], sizeof(double) * (numInputs + 1));
+      cudaMalloc((void**) &cuda_weights[i], sizeof(double) * (numInputs + 1));
     }
-    VcudaMemcpy(cuda_weights, d_weights, sizeof(double*) * numOutputs, cudaMemcpyHostToDevice)
+    cudaMemcpy(cuda_weights, d_weights, sizeof(double*) * numOutputs, cudaMemcpyHostToDevice)
     for (int i = 0; i < numOutputs; ++i) {
-      VcudaMemcpy(cuda_weights[i], d_weights[i], sizeof(double) * (numInputs + 1), cudaMemcpyHostToDevice)
+      cudaMemcpy(cuda_weights[i], d_weights[i], sizeof(double) * (numInputs + 1), cudaMemcpyHostToDevice)
     }
     std::cout << "after" << std::endl; 
     CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, d_weights);
