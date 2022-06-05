@@ -51,9 +51,9 @@ __device__ void VX3_MLP::apply(void) const {
     inputs[i] = tanh(inputs[i]);
   }
   for (int j = 0; j < numOutputs; ++j) {
-    double sum = 0.0;//weights[j][0]; //the bias
+    double sum = weights[j][0]; //the bias
     for (int k = 1; k < numInputs + 1; ++k) {
-      sum += inputs[k - 1] * 0.0;//weights[j][k]; //weight inputs
+      sum += inputs[k - 1] * weights[j][k]; //weight inputs
     }
     outputs[j] = tanh(sum); //apply output activation
   }
