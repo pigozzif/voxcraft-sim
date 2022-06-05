@@ -92,7 +92,6 @@ int main(int argc, char** argv) {
     }
 
     VX3_SimulationManager sm(sub_batches, base, input_dir, nDevices);
-    std::cout << "start" << std::endl;
     sm.start();
 
     pt::ptree tr_result;
