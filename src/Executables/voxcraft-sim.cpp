@@ -23,6 +23,7 @@ Allowed options\
 //if the executable `vx3_node_worker' doesn't exist in the same path, use -w <worker> to specify the path.\n\
 
 int main(int argc, char** argv) {
+    std::cout << "we start" << std::endl;
 
     //setup tools for parsing arguments
     po::options_description desc(APP_DESCRIPTION);
