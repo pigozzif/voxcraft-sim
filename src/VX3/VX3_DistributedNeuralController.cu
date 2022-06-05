@@ -23,7 +23,6 @@ __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double a,
   VcudaMalloc((void**) &outputs, sizeof(double) * numOutputs);
   VcudaMalloc((void**) &inputs, sizeof(double) * numInputs);
   printf("we are here\n");
-  //for (int i = 0; i < numOutputs * (numInputs + 1); ++i) printf("%f ", weights[i]);
   //this->weights = weights;
   setWeights(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, aa, ab, ac, ad, ae, af, ag, ah, ai, aj, ak, al, am, an, ao, ap, aq, ar, as, at, au, av, aw, ax, ay, az, ba, bb, bc, bd, be, bf, bg, bh, bi, bj, bk, bl, bm, bn, bo, bp, bq, br, bs, bt);
 }
@@ -34,9 +33,9 @@ __device__ void VX3_MLP::apply(void) const {
     inputs[i] = tanh(inputs[i]);
   }
   for (int j = 0; j < numOutputs; ++j) {
-    double sum = 0.0;//weights[j * (numInputs + 1)]; //the bias
+    double sum = weights[j * (numInputs + 1)]; //the bias
     for (int k = 1; k < numInputs + 1; ++k) {
-      sum += inputs[k - 1] * 0.0;//;weights[j * (numInputs + 1) + k]; //weight inputs
+      sum += inputs[k - 1] * weights[j * (numInputs + 1) + k]; //weight inputs
     }
     outputs[j] = tanh(sum); //apply output activation
   }
