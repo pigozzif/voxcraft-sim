@@ -232,6 +232,7 @@ __device__ void VX3_VoxelyzeKernel::updateTemperature(VX3_DistributedNeuralContr
             CUDA_CHECK_AFTER_CALL();
             VcudaDeviceSynchronize();
         }
+        controller->updateLastSignals(this);
     }
 }
 
