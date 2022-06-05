@@ -24,11 +24,11 @@ __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** 
   VcudaMalloc((void **) &inputs, sizeof(double) * numInputs);
   printf("we are here");
   //this->weights = weights;
-  setWeights("");
+  /*setWeights("");
   VcudaMemcpy(this->weights, weights, sizeof(double*) * numOutputs, cudaMemcpyHostToDevice);
   for (int i = 0; i < numOutputs; ++i) {
     VcudaMemcpy(this->weights[i], weights[i], sizeof(double) * (numInputs + 1), cudaMemcpyHostToDevice);
-  }
+  }*/
 }
 
 __device__ void VX3_MLP::setWeights(char* weights) {
