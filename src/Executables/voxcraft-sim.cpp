@@ -94,7 +94,6 @@ int main(int argc, char** argv) {
 
     //Do evocations: locally or distributedly
     if (run_locally) { //Produce a vxt file and pass that to vx3_node_worker
-        std::cout << "we start" << std::endl;
         fs::path locally(workspace/"locally");
         try {
             fs::create_directory(locally);
@@ -114,6 +113,7 @@ int main(int argc, char** argv) {
         std::string command = str_worker + " -i " + (locally/vxt).string() + " -o " + (locally/vxr).string();
 
         std::cout << command << "\n";
+        std::cout << "we start" << std::endl;
         boost::process::child process_worker(command);
         process_worker.wait();
         try {
