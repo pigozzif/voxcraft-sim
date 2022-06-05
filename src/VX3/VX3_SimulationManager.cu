@@ -10,7 +10,7 @@
 #include "VX3_VoxelyzeKernel.cuh"
 #include "VX_Sim.h" //readVXA
 
-__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, double** weights) {
+__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, double* weights) {
     int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (thread_index < num_simulation) {
         VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
@@ -124,14 +124,14 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
     }
 }
 
-void VX3_SimulationManager::readWeights(double** d_weights, int numInputs, int numOutputs) {
+void VX3_SimulationManager::readWeights(double* d_weights, int numInputs, int numOutputs) {
   std::string delim = ",";
   std::size_t start = 0U;
   std::size_t end = weights.find(delim);
   int i = 0;
   int j = 0;
   while (end != std::string::npos) {
-    d_weights[i][j++] = atof(weights.substr(start, end - start).c_str());
+    d_weights[i * (numInputs + 1) + j++] = atof(weights.substr(start, end - start).c_str());
     if (j >= numInputs + 1) {
       j = 0;
       ++i;
@@ -443,21 +443,18 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     //             cudaMemcpyDeviceToHost);
     enlargeGPUHeapSize();
     enlargeGPUPrintfFIFOSize();
-    double** d_weights;
+    double* d_weights;
     int numOutputs = NUM_SIGNALS + 2;
     int numInputs = NUM_SENSORS + NUM_SIGNALS;
-    d_weights = (double**) malloc(sizeof(double*) * numOutputs);
-    for (int i = 0; i < numOutputs; ++i) {
-      d_weights[i] = (double*) malloc(sizeof(double) * (numInputs + 1));
-    }
+    d_weights = (double*) malloc(sizeof(double) * numOutputs * (numInputs + 1));
     readWeights(d_weights, numInputs, numOutputs);
-    double** cuda_weights = NULL;
+    double* cuda_weights = NULL;
     std::cout << "before" << std::endl;
-    cudaMalloc((void**) &cuda_weights, sizeof(double*) * numOutputs);
-    for (int i = 0; i < numOutputs; ++i) {
-      ;//cudaMalloc((void**) &cuda_weights[i], sizeof(double) * (numInputs + 1));
-    }
-    //cudaMemcpy(cuda_weights, d_weights, sizeof(double*) * numOutputs, cudaMemcpyHostToDevice);
+    cudaMalloc((void**) &cuda_weights, sizeof(double) * numOutputs * (numInputs + 1));
+    //for (int i = 0; i < numOutputs; ++i) {
+    //  ;//cudaMalloc((void**) &cuda_weights[i], sizeof(double) * (numInputs + 1));
+    //}
+    cudaMemcpy(cuda_weights, d_weights, sizeof(double) * numOutputs * (numInputs + 1), cudaMemcpyHostToDevice);
     //for (int i = 0; i < numOutputs; ++i) {
     //  cudaMemcpy(cuda_weights[i], d_weights[i], sizeof(double) * (numInputs + 1), cudaMemcpyHostToDevice);
     //}
