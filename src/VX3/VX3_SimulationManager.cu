@@ -170,7 +170,6 @@ void VX3_SimulationManager::start() {
             printf("=== set device to %d for %ld simulations ===\n", device_index, files.size());
             // readVXA(base)
             readVXD(base, files, device_index);
-            std::cout << "start" << std::endl;
             startKernel(files.size(), device_index);
         }
     }
@@ -448,9 +447,10 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     // VcudaMemcpy(result_voxelyze_kernel, d_voxelyze_3s[device_index],
     //             num_simulation * sizeof(VX3_VoxelyzeKernel),
     //             cudaMemcpyDeviceToHost);
+    std::cout << "start" << std::endl;
     enlargeGPUHeapSize();
     enlargeGPUPrintfFIFOSize();
-    printf("we are before allocation");
+    std::cout << "we are before allocation") << std::endl;
     double** d_weights = readWeights(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2);
     CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, d_weights);
     CUDA_CHECK_AFTER_CALL();
