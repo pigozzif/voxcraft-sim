@@ -451,11 +451,11 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
       d_weights[i] = (double*) malloc(sizeof(double) * (numInputs + 1));
     }
     readWeights(d_weights, numInputs, numOutputs);
-    double** cuda_weights;
-    VcudaMemcpy(cuda_weights, d_weights, sizeof(double*) * numOutputs, cudaMemcpyHostToDevice)
-    for (int i = 0; i < numOutputs; ++i) {
-      VcudaMemcpy(cuda_weights[i], d_weights[i], sizeof(double) * (numInputs + 1), cudaMemcpyHostToDevice)
-    }
+    //double** cuda_weights;
+    //VcudaMemcpy(cuda_weights, d_weights, sizeof(double*) * numOutputs, cudaMemcpyHostToDevice)
+    //for (int i = 0; i < numOutputs; ++i) {
+    //  VcudaMemcpy(cuda_weights[i], d_weights[i], sizeof(double) * (numInputs + 1), cudaMemcpyHostToDevice)
+    //}
     CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, d_weights);
     CUDA_CHECK_AFTER_CALL();
 }
