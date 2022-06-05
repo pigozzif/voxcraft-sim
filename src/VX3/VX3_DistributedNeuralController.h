@@ -46,6 +46,8 @@ public:
 
   VX3_MLP* mlp;
   VX3_dVector<double>* votes;
+  VX3_dVector<double>* tempVotes;
+  bool firstContact;
 };
 
 #endif //VX3_DISTRIBUTED_H
