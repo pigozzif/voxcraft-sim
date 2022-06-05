@@ -14,7 +14,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
     int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (thread_index < num_simulation) {
         VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
-        VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(d_v3);
+        VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(d_v3, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, aa, ab, ac, ad, ae, af, ag, ah, ai, aj, ak, al, am, an, ao, ap, aq, ar, as, at, au, av, aw, ax, ay, az, ba, bb, bc, bd, be, bf, bg, bh, bi, bj, bk, bl, bm, bn, bo, bp, bq, br, bs, bt);
         if (d_v3->num_d_links == 0 and d_v3->num_d_voxels == 0) {
             printf(COLORCODE_BOLD_RED "No links and no voxels. Simulation %d (%s) abort.\n" COLORCODE_RESET, thread_index,
                    d_v3->vxa_filename);
@@ -446,21 +446,22 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     double* d_weights;
     int numOutputs = NUM_SIGNALS + 2;
     int numInputs = NUM_SENSORS + NUM_SIGNALS;
-    d_weights = (double*) malloc(sizeof(double) * numOutputs * (numInputs + 1));
+    d_weights = new double[numOutputs * (numInputs + 1)];//(double*) malloc(sizeof(double) * numOutputs * (numInputs + 1));
     readWeights(d_weights, numInputs, numOutputs);
-    double* cuda_weights = NULL;
+    //double* cuda_weights = NULL;
     std::cout << "before" << std::endl;
-    cudaMalloc((void**) &cuda_weights, sizeof(double) * numOutputs * (numInputs + 1));
+    //cudaMalloc((void**) &cuda_weights, sizeof(double) * numOutputs * (numInputs + 1));
     //for (int i = 0; i < numOutputs; ++i) {
     //  ;//cudaMalloc((void**) &cuda_weights[i], sizeof(double) * (numInputs + 1));
     //}
-    cudaMemcpy(cuda_weights, d_weights, sizeof(double) * numOutputs * (numInputs + 1), cudaMemcpyHostToDevice);
+    //cudaMemcpy(cuda_weights, d_weights, sizeof(double) * numOutputs * (numInputs + 1), cudaMemcpyHostToDevice);
     //for (int i = 0; i < numOutputs; ++i) {
     //  cudaMemcpy(cuda_weights[i], d_weights[i], sizeof(double) * (numInputs + 1), cudaMemcpyHostToDevice);
     //}
     std::cout << "after" << std::endl; 
-    CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, d_weights);
+    CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, weights[0], weights[1], weights[2], weights[3], weights[4], weights[5], weights[6], weights[7], weights[8], weights[9], weights[10], weights[11], weights[12], weights[13], weights[14], weights[15], weights[16], weights[17], weights[18], weights[19], weights[20], weights[21], weights[22], weights[23], weights[24], weights[25], weights[26], weights[27], weights[28], weights[29], weights[30], weights[31], weights[32], weights[33], weights[34], weights[35], weights[36], weights[37], weights[38], weights[39], weights[40], weights[41], weights[42], weights[43], weights[44], weights[45], weights[46], weights[47], weights[48], weights[49], weights[50], weights[51], weights[52], weights[53], weights[54], weights[55], weights[56], weights[57], weights[58], weights[59], weights[60], weights[61], weights[62], weights[63], weights[64], weights[65], weights[66], weights[67], weights[68], weights[69], weights[70], weights[71]);
     CUDA_CHECK_AFTER_CALL();
+    delete[] d_weights;
 }
 
 void VX3_SimulationManager::collectResults(int num_simulation, int device_index) {
