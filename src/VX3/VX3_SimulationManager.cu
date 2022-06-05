@@ -446,9 +446,9 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     double** d_weights;
     int numOutputs = NUM_SIGNALS + 2;
     int numInputs = NUM_SENSORS + NUM_SIGNALS;
-    VcudaMalloc((void**) &d_weights, sizeof(double*) * numOutputs);
+    d_weights = (double**) malloc(sizeof(double*) * numOutputs);
     for (int i = 0; i < numOutputs; ++i) {
-      VcudaMalloc((void**) &d_weights[i], sizeof(double) * (numInputs + 1));
+      w_weights[i] = (double**) malloc(sizeof(double) * (numInputs + 1));
     }
     readWeights(d_weights, numInputs, numOutputs);
     std::cout << "we are here after allocation" << std::endl;
