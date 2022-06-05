@@ -23,16 +23,20 @@ __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** 
   VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
   VcudaMalloc((void **) &inputs, sizeof(double) * numInputs);
   printf("we are here");
-  this->weights = weights;
-  //setWeights(weights);
+  //this->weights = weights;
+  setWeights("");
+  VcudaMemcpy(this->weights, weights, sizeof(double*) * numOutputs, cudaMemcpyHostToDevice);
+  for (int i = 0; i < numOutputs; ++i) {
+    VcudaMemcpy(this->weights[i], weights[i], sizeof(double) * (numInputs + 1), cudaMemcpyHostToDevice);
+  }
 }
 
 __device__ void VX3_MLP::setWeights(char* weights) {
-  /*VcudaMalloc((void**) &weights, sizeof(double*) * numOutputs);
+  VcudaMalloc((void**) &this->weights, sizeof(double*) * numOutputs);
   for (int i = 0; i < numOutputs; ++i) {
-    VcudaMalloc((void**) &weights[i], sizeof(double) * (numInputs + 1));
+    VcudaMalloc((void**) &this->weights[i], sizeof(double) * (numInputs + 1));
   }
-  int i = 0;
+  /*int i = 0;
   int j = 0;
   char *p = strtok(weights, ",");
   while (p != NULL) {
