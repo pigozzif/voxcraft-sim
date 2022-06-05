@@ -75,6 +75,7 @@ int main(int argc, char** argv) {
     }
 
     //count number of GPUs
+    std::cout << "start" << std::endl;
     int nDevices=0;
     VcudaGetDeviceCount(&nDevices);
     if (nDevices<=0) {
