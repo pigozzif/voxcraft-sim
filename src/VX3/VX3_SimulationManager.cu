@@ -125,10 +125,6 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
 }
 
 void VX3_SimulationManager::readWeights(double** d_weights, int numInputs, int numOutputs) {
-  VcudaMalloc((void**) &d_weights, sizeof(double*) * numOutputs);
-  for (int i = 0; i < numOutputs; ++i) {
-    VcudaMalloc((void**) &d_weights[i], sizeof(double) * (numInputs + 1));
-  }
   std::string delim = ",";
   std::size_t start = 0U;
   std::size_t end = weights.find(delim);
@@ -143,7 +139,6 @@ void VX3_SimulationManager::readWeights(double** d_weights, int numInputs, int n
     start = end + delim.length();
     end = weights.find(delim, start);
   }
-  return d_weights;
 }
 
 VX3_SimulationManager::VX3_SimulationManager(std::vector<std::vector<fs::path>> in_sub_batches, fs::path in_base, fs::path in_input_dir,
@@ -449,6 +444,10 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     enlargeGPUHeapSize();
     enlargeGPUPrintfFIFOSize();
     double** d_weights;
+    VcudaMalloc((void**) &d_weights, sizeof(double*) * numOutputs);
+    for (int i = 0; i < numOutputs; ++i) {
+      VcudaMalloc((void**) &d_weights[i], sizeof(double) * (numInputs + 1));
+    }
     readWeights(d_weights, NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2);
     std::cout << "we are here after allocation" << std::endl;
     CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, d_weights);
