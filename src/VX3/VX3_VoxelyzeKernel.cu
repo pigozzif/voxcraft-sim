@@ -1,6 +1,7 @@
 #include "VX3_MemoryCleaner.h"
 #include "VX3_VoxelyzeKernel.cuh"
 #include "VX3_DistributedNeuralController.h"
+#include "math.h"
 
 /* Tools */
 __device__ int bound(int x, int min, int max) {
@@ -529,10 +530,16 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
     return newMat;
 }
 
-__device__ void VX3_VoxelyzeKernel::computeFitness() {
+__device__ void VX3_VoxelyzeKernel::computeFitness(VX3_NeuralDistributedController* controller, VX3_Vec3D<double> d_max, int is_passable) {
     VX3_Vec3D<> offset = currentCenterOfMass - initialCenterOfMass;
-    fitness_score = VX3_MathTree::eval(offset.x, offset.y, offset.z, collisionCount, currentTime, recentAngle, targetCloseness,
-                                       numClosePairs, num_d_voxels, fitness_function);
+    double distance = sqrt(pow(offset.x - d_max.x, 2) + pow(offset.y - d_max.y, 2)); + //VX3_MathTree::eval(offset.x, offset.y, offset.z, collisionCount, currentTime, recentAngle, targetCloseness,
+                                     //  numClosePairs, num_d_voxels, fitness_function);
+    double voting = 0.0;
+    for (int i = 0; i < controller->votes.size(); ++i) {
+      voting += controllers->votes == is_passable;
+    }
+    voting /= controller->votes.size();
+    fitness_score = distance + voting;
 }
 
 __device__ void VX3_VoxelyzeKernel::registerTargets() {
