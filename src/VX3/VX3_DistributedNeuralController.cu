@@ -17,18 +17,14 @@ __device__ VX3_MLP::~VX3_MLP(void) {
   VcudaFree(inputs);
 }
 
-__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double** weights) {
+__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double* weights) {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
   VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
   VcudaMalloc((void **) &inputs, sizeof(double) * numInputs);
   printf("we are here");
   //this->weights = weights;
-  /*setWeights("");
-  VcudaMemcpy(this->weights, weights, sizeof(double*) * numOutputs, cudaMemcpyHostToDevice);
-  for (int i = 0; i < numOutputs; ++i) {
-    VcudaMemcpy(this->weights[i], weights[i], sizeof(double) * (numInputs + 1), cudaMemcpyHostToDevice);
-  }*/
+  //setWeights("");
 }
 
 __device__ void VX3_MLP::setWeights(char* weights) {
@@ -55,9 +51,9 @@ __device__ void VX3_MLP::apply(void) const {
     inputs[i] = tanh(inputs[i]);
   }
   for (int j = 0; j < numOutputs; ++j) {
-    double sum = weights[j][0]; //the bias
+    double sum = weights[j * (numInputs + 1)]; //the bias
     for (int k = 1; k < numInputs + 1; ++k) {
-      sum += inputs[k - 1] * weights[j][k]; //weight inputs
+      sum += inputs[k - 1] * weights[j * (numInputs + 1) + k]; //weight inputs
     }
     outputs[j] = tanh(sum); //apply output activation
   }
