@@ -124,8 +124,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
     }
 }
 
-double** VX3_SimulationManager::readWeights(int numInputs, int numOutputs) {
-  double** d_weights;
+void VX3_SimulationManager::readWeights(double** d_weights, int numInputs, int numOutputs) {
   VcudaMalloc((void**) &d_weights, sizeof(double*) * numOutputs);
   for (int i = 0; i < numOutputs; ++i) {
     VcudaMalloc((void**) &d_weights[i], sizeof(double) * (numInputs + 1));
