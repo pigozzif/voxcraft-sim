@@ -23,7 +23,7 @@ __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double* w
   VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
   VcudaMalloc((void **) &inputs, sizeof(double) * numInputs);
   printf("we are here");
-  //this->weights = weights;
+  this->weights = weights;
   //setWeights("");
 }
 
