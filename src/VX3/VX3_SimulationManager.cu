@@ -170,10 +170,10 @@ void VX3_SimulationManager::start() {
             printf("=== set device to %d for %ld simulations ===\n", device_index, files.size());
             // readVXA(base)
             readVXD(base, files, device_index);
+            std::cout << "start" << std::endl;
             startKernel(files.size(), device_index);
         }
     }
-    std::cout << "start" << std::endl;
     VcudaDeviceSynchronize();
     for (int device_index = 0; device_index < num_of_devices; device_index++) { // multi GPUs
         auto files = sub_batches[device_index];
