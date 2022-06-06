@@ -84,7 +84,7 @@ __device__ void vote(void) const {
       numNeg += 1;
     }
   }
-  votes->push_back((numPos >= numNeg) ? 1.0 : 0.0);
+  votes->push_back((numPos >= numNeg) ? 1 : 0);
   tempVotes->clear();
 }
 
