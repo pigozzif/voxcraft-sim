@@ -185,6 +185,13 @@ bool CVX_Environment::ReadXML(CXML_Rip* pXML, std::string* RetMessage) //pXML po
 	        if (!pXML->FindLoadElement("NeuralWeights", &Weights)) Weights = "";
 		pXML->UpLevel();
 	}
+	
+	if (pXML->FindElement("Task")){
+	        if (!pXML->FindLoadElement("X", &x)) x = 0;
+		if (!pXML->FindLoadElement("Y", &y)) y = 0;
+		if (!pXML->FindLoadElement("Passable", &is_passable)) is_passable = 1;
+		pXML->UpLevel();
+	}
 
 
 
