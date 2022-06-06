@@ -48,6 +48,8 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
     }
   }
   votes = new VX3_dVector<double>();
+  tempVotes = new VX3_dVector<double>();
+  firstContact = false;
 }
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
@@ -62,8 +64,28 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
     voxel->currSignals[dir] = mlp->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
   }
-  votes->push_back(mlp->outputs[1]);
+  if (firstContact) {
+    tempVotes->push_back(mlp->outputs[1]);
+  }
   return mlp->outputs[0];
+}
+
+__device__ void vote(void) const {
+  if (!firstContact) {
+    return;
+  }
+  int numPos = 0;
+  int numNeg = 0;
+  for (int i = 0; i < tempVotes->size(); ++i) {
+    if (tempVotes->get(i) > 0.0) {
+      numPos += 1;
+    }
+    else {
+      numNeg += 1;
+    }
+  }
+  votes->push_back((numPos >= numNeg) ? 1.0 : 0.0);
+  tempVotes->clear();
 }
 
 __device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeKernel* kernel) {
@@ -96,6 +118,9 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
         if (VX3_Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
             VX3_Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
           mlp->inputs[i] = 1.0;
+          if (!firstContact && other->material()->fixed) {
+            firstContact = true;
+          }
         }
       }
     }
