@@ -70,7 +70,7 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   return mlp->outputs[0];
 }
 
-__device__ void vote(void) const {
+__device__ void VX3_DistributedNeuralController::vote(void) const {
   if (!firstContact) {
     return;
   }
