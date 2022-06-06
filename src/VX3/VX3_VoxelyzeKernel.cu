@@ -531,7 +531,7 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
     return newMat;
 }
 
-__device__ void VX3_VoxelyzeKernel::computeFitness(VX3_NeuralDistributedController* controller, VX3_Vec3D<double> d_max, int is_passable) {
+__device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, VX3_Vec3D<double> d_max, int is_passable) {
     VX3_Vec3D<> offset = currentCenterOfMass - initialCenterOfMass;
     double distance = sqrt(pow(offset.x - d_max.x, 2) + pow(offset.y - d_max.y, 2)); + //VX3_MathTree::eval(offset.x, offset.y, offset.z, collisionCount, currentTime, recentAngle, targetCloseness,
                                      //  numClosePairs, num_d_voxels, fitness_function);
