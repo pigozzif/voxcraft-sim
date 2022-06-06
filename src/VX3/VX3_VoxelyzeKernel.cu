@@ -234,6 +234,7 @@ __device__ void VX3_VoxelyzeKernel::updateTemperature(VX3_DistributedNeuralContr
             VcudaDeviceSynchronize();
         }
         controller->updateLastSignals(this);
+        controller->vote();
     }
 }
 
