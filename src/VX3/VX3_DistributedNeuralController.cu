@@ -47,7 +47,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
       voxel->currSignals[i] = 0.0;
     }
   }
-  votes = new VX3_dVector<double>();
+  votes = new VX3_dVector<int>();
   tempVotes = new VX3_dVector<double>();
   firstContact = false;
 }
