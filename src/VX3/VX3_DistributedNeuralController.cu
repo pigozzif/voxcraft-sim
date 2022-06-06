@@ -104,7 +104,7 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
   }
 }
 
-__device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) const {
+__device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
   for (int j = 0; j < kernel->d_v_collisions.size(); ++j) {
     VX3_Collision* collision = kernel->d_v_collisions.get(j);
     if (collision->pV1 == voxel || collision->pV2 == voxel) {
