@@ -80,6 +80,9 @@ public:
 	std::string GetNeuralWeights(void) {return Weights;} //!<Return neural net weights
 	CVX_Distributed* GetController(void) {return Controller;}
 	void InitController(CVoxelyze* sim);
+	int GetX() {return x;}
+	int GetY() {return y;}
+	int GetPassability() {return is_passable;}
 
 	float UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj = NULL, CVX_Voxel* voxel = NULL); //!< Updates the current temperature based on provided simulation time.
 	vfloat GetCurTemp() {return CurTemp;} //!< Returns the current temperature of the environment. (degrees C)
@@ -99,6 +102,9 @@ private:
 	vfloat TempBase, TempAmplitude, TempPeriod; //degress celcius
 	std::string Weights; //neural weights
 	CVX_Distributed* Controller;
+	double x;
+	double y;
+	int is_passable;
 
 	vfloat CurTemp; //updated based on time... (for phase 0... individual materials now have their own current temp
 
