@@ -40,7 +40,7 @@ public:
   __device__ double updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel);
   __device__ void updateLastSignals(VX3_VoxelyzeKernel* kernel);
   __device__ void getLastSignals(VX3_Voxel* voxel) const;
-  __device__ void sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) const;
+  __device__ void sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel);
   __device__ void vote(void) const;
   
   __device__ VX3_Vec3D<float>* getOffset(const linkDirection dir) const;
