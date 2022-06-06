@@ -10,7 +10,7 @@
 #include "VX3_VoxelyzeKernel.cuh"
 #include "VX_Sim.h" //readVXA
 
-__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k, double l, double m, double n, double o, double p, double q, double r, double s, double t, double u, double v, double w, double x, double y, double z, double aa, double ab, double ac, double ad, double ae, double af, double ag, double ah, double ai, double aj, double ak, double al, double am, double an, double ao, double ap, double aq, double ar, double as, double at, double au, double av, double aw, double ax, double ay, double az, double ba, double bb, double bc, double bd, double be, double bf, double bg, double bh, double bi, double bj, double bk, double bl, double bm, double bn, double bo, double bp, double bq, double br, double bs, double bt) {
+__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, int x, int y, int is_passable, double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k, double l, double m, double n, double o, double p, double q, double r, double s, double t, double u, double v, double w, double x, double y, double z, double aa, double ab, double ac, double ad, double ae, double af, double ag, double ah, double ai, double aj, double ak, double al, double am, double an, double ao, double ap, double aq, double ar, double as, double at, double au, double av, double aw, double ax, double ay, double az, double ba, double bb, double bc, double bd, double be, double bf, double bg, double bh, double bi, double bj, double bk, double bl, double bm, double bn, double bo, double bp, double bq, double br, double bs, double bt) {
     int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (thread_index < num_simulation) {
         VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
@@ -117,7 +117,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
             }
         }
         d_v3->updateCurrentCenterOfMass();
-        d_v3->computeFitness();
+        d_v3->computeFitness(controller, VX3_Vec3D(x, y, 0), is_passable);
         VcudaFree(controller);
         printf(COLORCODE_BLUE "%d) Simulation %d ends: %s Time: %f, angleSampleTimes: %d.\n" COLORCODE_RESET, device_index, thread_index,
                d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);
@@ -338,6 +338,9 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         //     }
         // }
         this->weights = MainEnv.GetNeuralWeights();
+        x = MainEnv.GetX();
+        y = MainEnv.GetY();
+        is_passable = MainEnv.GetPassability();
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
         // More VXA settings which is new in VX3
         strcpy(h_d_tmp.vxa_filename, file.filename().c_str());
@@ -448,7 +451,7 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     int numInputs = NUM_SENSORS + NUM_SIGNALS;
     d_weights = new double[numOutputs * (numInputs + 1)];
     readWeights(d_weights, numInputs, numOutputs);
-    CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, weights[0], weights[1], weights[2], weights[3], weights[4], weights[5], weights[6], weights[7], weights[8], weights[9], weights[10], weights[11], weights[12], weights[13], weights[14], weights[15], weights[16], weights[17], weights[18], weights[19], weights[20], weights[21], weights[22], weights[23], weights[24], weights[25], weights[26], weights[27], weights[28], weights[29], weights[30], weights[31], weights[32], weights[33], weights[34], weights[35], weights[36], weights[37], weights[38], weights[39], weights[40], weights[41], weights[42], weights[43], weights[44], weights[45], weights[46], weights[47], weights[48], weights[49], weights[50], weights[51], weights[52], weights[53], weights[54], weights[55], weights[56], weights[57], weights[58], weights[59], weights[60], weights[61], weights[62], weights[63], weights[64], weights[65], weights[66], weights[67], weights[68], weights[69], weights[70], weights[71]);
+    CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, x, y, is_passable, weights[0], weights[1], weights[2], weights[3], weights[4], weights[5], weights[6], weights[7], weights[8], weights[9], weights[10], weights[11], weights[12], weights[13], weights[14], weights[15], weights[16], weights[17], weights[18], weights[19], weights[20], weights[21], weights[22], weights[23], weights[24], weights[25], weights[26], weights[27], weights[28], weights[29], weights[30], weights[31], weights[32], weights[33], weights[34], weights[35], weights[36], weights[37], weights[38], weights[39], weights[40], weights[41], weights[42], weights[43], weights[44], weights[45], weights[46], weights[47], weights[48], weights[49], weights[50], weights[51], weights[52], weights[53], weights[54], weights[55], weights[56], weights[57], weights[58], weights[59], weights[60], weights[61], weights[62], weights[63], weights[64], weights[65], weights[66], weights[67], weights[68], weights[69], weights[70], weights[71]);
     CUDA_CHECK_AFTER_CALL();
     delete[] d_weights;
 }
