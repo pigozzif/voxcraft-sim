@@ -46,7 +46,7 @@ public:
   __device__ VX3_Vec3D<float>* getOffset(const linkDirection dir) const;
 
   VX3_MLP* mlp;
-  VX3_dVector<double>* votes;
+  VX3_dVector<int>* votes;
   VX3_dVector<double>* tempVotes;
   bool firstContact;
 };
