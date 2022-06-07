@@ -532,9 +532,7 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
 }
 
 __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, VX3_Vec3D<double> d_max, int is_passable) {
-    VX3_Vec3D<> offset = currentCenterOfMass - initialCenterOfMass;
-    double distance = sqrt(pow(offset.x - d_max.x, 2) + pow(offset.y - d_max.y, 2)); //VX3_MathTree::eval(offset.x, offset.y, offset.z, collisionCount, currentTime, recentAngle, targetCloseness,
-                                     //  numClosePairs, num_d_voxels, fitness_function);
+    double distance = sqrt(pow(currentCenterOfMass.x - d_max.x, 2) + pow(currentCenterOfMass.y - d_max.y, 2));
     double voting = 0.0;
     for (int i = 0; i < controller->votes->size(); ++i) {
       voting += controller->votes->get(i) == is_passable;
