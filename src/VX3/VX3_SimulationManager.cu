@@ -118,7 +118,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
             }
         }
         d_v3->updateCurrentCenterOfMass();
-        d_v3->computeFitness(controller, VX3_Vec3D<double>(X, Y, 0), is_passable);
+        d_v3->computeFitness(controller, is_passable);
         VcudaFree(controller);
         printf(COLORCODE_BLUE "%d) Simulation %d ends: %s Time: %f, angleSampleTimes: %d.\n" COLORCODE_RESET, device_index, thread_index,
                d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);
@@ -339,8 +339,6 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         //     }
         // }
         this->weights = MainEnv.GetNeuralWeights();
-        x = MainEnv.GetX();
-        y = MainEnv.GetY();
         is_passable = MainEnv.GetPassability();
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
         // More VXA settings which is new in VX3
