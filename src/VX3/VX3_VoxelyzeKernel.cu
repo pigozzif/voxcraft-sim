@@ -97,6 +97,9 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
         target = voxel;
         break;
       }
+      else if (i == num_d_voxels - 1) { // horrible, just for debugging
+        target = voxel;
+      }
     }
     // Not all data is in Vx, here are others:
     DtFrac = In->DtFrac;
