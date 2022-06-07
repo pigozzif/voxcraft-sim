@@ -123,7 +123,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
             d_v3->target = voxel;
             break;
           }
-          else if (i == num_d_voxels - 1) { // horrible, just for debugging
+          else if (i == d_v3->num_d_voxels - 1) { // horrible, just for debugging
             d_v3->target = voxel;
           }
         }
