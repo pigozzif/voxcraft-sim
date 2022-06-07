@@ -100,6 +100,8 @@ int main(int argc, char** argv) {
     tr_result.put("report.bestfit.filename", sm.h_results[0].vxa_filename);
     // tr_result.put("report.bestfit.distance", sm.h_results[0].distance);
     tr_result.put("report.bestfit.fitness_score", sm.h_results[0].fitness_score);
+    tr_result.put("report.bestfit.locomotion_score", sm.h_results[0].locomotion_score);
+    tr_result.put("report.bestfit.sensing_score", sm.h_results[0].sensing_score);
 
     // this will be too much to write into the report.
     for (auto &res: sm.h_results) {
