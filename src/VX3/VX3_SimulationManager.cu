@@ -117,14 +117,14 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
                 }
             }
         }
-        for (int i = 0; i < d_v_3->num_d_voxels; ++i) {
-          VX3_Voxel* voxel = d_v_3->d_voxels + i;
+        for (int i = 0; i < d_v3->num_d_voxels; ++i) {
+          VX3_Voxel* voxel = d_v3->d_voxels + i;
           if (voxel->matid == 3) {
-            d_v_3->target = voxel;
+            d_v3->target = voxel;
             break;
           }
           else if (i == num_d_voxels - 1) { // horrible, just for debugging
-            d_v_3->target = voxel;
+            d_v3->target = voxel;
           }
         }
         d_v3->updateCurrentCenterOfMass();
