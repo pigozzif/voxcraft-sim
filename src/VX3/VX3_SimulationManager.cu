@@ -134,7 +134,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
           double distance = DBL_MAX;
           for (int i = 0; i < d_v3->num_d_voxels; ++i) {
             VX3_Voxel* voxel = d_v3->d_voxels + i;
-            else if (d_v3->target != NULL && voxel->matid == 2) {
+            if (d_v3->target != NULL && voxel->matid == 2) {
               double new_distance = sqrt(pow(d_v3->initialCenterOfMass->pos.x - voxel->pos.x, 2) + pow(d_v3->initialCenterOfMass->pos.y - voxel->pos.y, 2));
               if (new_distance <= distance) {
                 d_v3->target = voxel;
