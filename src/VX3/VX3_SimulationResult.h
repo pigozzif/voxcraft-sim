@@ -12,6 +12,8 @@ struct VX3_SimulationResult {
     // double distance; //a unitless distance
     // double distance_xy;
     double fitness_score; //fitness score defined in VXD file.
+    double locomotion_score;
+    double sensing_score;
     std::string vxa_filename;
     bool SavePositionOfAllVoxels = false;
     std::vector<int> voxel_mats;
