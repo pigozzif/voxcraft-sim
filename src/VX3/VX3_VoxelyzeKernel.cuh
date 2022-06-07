@@ -163,7 +163,7 @@ class VX3_VoxelyzeKernel {
 
     int EnableExpansion=0;
   
-    VX3_Voxel* target;
+    VX3_Voxel* target = NULL;
 };
 
 #endif // VX3_VOXELYZE_KERNEL_H
