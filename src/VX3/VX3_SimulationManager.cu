@@ -463,6 +463,8 @@ void VX3_SimulationManager::collectResults(int num_simulation, int device_index)
         VX3_SimulationResult tmp;
         tmp.currentTime = result_voxelyze_kernel[i].currentTime;
         tmp.fitness_score = result_voxelyze_kernel[i].fitness_score;
+        tmp.locomotion_score = result_voxelyze_kernel[i].locomotion_score;
+        tmp.sensing_score = result_voxelyze_kernel[i].sensing_score;
         tmp.x = result_voxelyze_kernel[i].currentCenterOfMass.x;
         tmp.y = result_voxelyze_kernel[i].currentCenterOfMass.y;
         tmp.z = result_voxelyze_kernel[i].currentCenterOfMass.z;
