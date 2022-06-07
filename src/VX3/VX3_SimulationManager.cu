@@ -63,7 +63,6 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         // d_v3->initialCenterOfMass.x*1000, d_v3->initialCenterOfMass.y*1000,
         // d_v3->initialCenterOfMass.z*1000);
         for (int j = 0; j < 1000000; j++) { // Maximum Steps 1000000
-            printf("%f %f %f\n", d_v3->currentCenterOfMass.x, d_v3->currentCenterOfMass.y, d_v3->currentCenterOfMass.z);
             if (d_v3->StopConditionMet())
                 break;
             if (!d_v3->doTimeStep(controller)) {
