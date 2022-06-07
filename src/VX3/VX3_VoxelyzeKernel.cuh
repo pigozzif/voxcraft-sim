@@ -115,6 +115,8 @@ class VX3_VoxelyzeKernel {
 
     VX3_MathTreeToken fitness_function[1024];
     double fitness_score = 0;
+    double locomotion_score = 0.0;
+    double sensing_score = 0.0;
 
     VX3_MathTreeToken AttachCondition[5][1024];
     VX3_MathTreeToken StopConditionFormula[1024];
@@ -160,6 +162,8 @@ class VX3_VoxelyzeKernel {
     bool InitialPositionReinitialized = false;
 
     int EnableExpansion=0;
+  
+    VX3_Voxel* target;
 };
 
 #endif // VX3_VOXELYZE_KERNEL_H
