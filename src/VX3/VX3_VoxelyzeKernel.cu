@@ -91,18 +91,6 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
         VX3_Voxel tmp_voxel(In->Vx.voxelsList[i], this);
         VcudaMemcpy(d_voxels + i, &tmp_voxel, sizeof(VX3_Voxel), VcudaMemcpyHostToDevice);
     }
-    std::cout << "before" << std::endl;
-    for (int i = 0; i < num_d_voxels; ++i) {
-      VX3_Voxel* voxel = d_voxels + i;
-      if (voxel->matid == 3) {
-        target = voxel;
-        break;
-      }
-      else if (i == num_d_voxels - 1) { // horrible, just for debugging
-        target = voxel;
-      }
-    }
-    std::cout << "after" << std::endl;
     // Not all data is in Vx, here are others:
     DtFrac = In->DtFrac;
     StopConditionType = In->StopConditionType;
