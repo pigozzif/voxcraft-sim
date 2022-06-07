@@ -85,13 +85,19 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
     for (int i = 0; i < num_d_links; i++) {
         h_lookup_links[In->Vx.linksList[i]] = d_links + i;
     }
-
+    
     for (int i = 0; i < num_d_voxels; i++) {
         // set values for GPU memory space
         VX3_Voxel tmp_voxel(In->Vx.voxelsList[i], this);
         VcudaMemcpy(d_voxels + i, &tmp_voxel, sizeof(VX3_Voxel), VcudaMemcpyHostToDevice);
     }
-
+    for (int i = 0; i < num_d_voxels; ++i) {
+      VX3_Voxel* voxel = d_voxels + i;
+      if (voxel->matid == 3) {
+        target = voxel;
+        break;
+      }
+    }
     // Not all data is in Vx, here are others:
     DtFrac = In->DtFrac;
     StopConditionType = In->StopConditionType;
@@ -531,14 +537,13 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
     return newMat;
 }
 
-__device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, VX3_Vec3D<double> d_max, int is_passable) {
-    double distance = sqrt(pow(currentCenterOfMass.x - d_max.x, 2) + pow(currentCenterOfMass.y - d_max.y, 2));
-    double voting = 0.0;
+__device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, int is_passable) {
+    locomotion_score = sqrt(pow(currentCenterOfMass.x - target->pos.x, 2) + pow(currentCenterOfMass.y - target->pos.y, 2));
     for (int i = 0; i < controller->votes->size(); ++i) {
-      voting += controller->votes->get(i) == is_passable;
+      sensing_score += controller->votes->get(i) == is_passable;
     }
-    voting /= controller->votes->size();
-    fitness_score = distance + voting;
+    sensing_score /= controller->votes->size();
+    fitness_score = locomotion_score + sensing_score;
 }
 
 __device__ void VX3_VoxelyzeKernel::registerTargets() {
