@@ -191,6 +191,7 @@ VX3_SimulationManager::~VX3_SimulationManager() {
 }
 
 void VX3_SimulationManager::start() {
+    std::cout << "beginning of start" << std::endl;
     for (int device_index = 0; device_index < num_of_devices; device_index++) { // multi GPUs
         auto files = sub_batches[device_index];
         if (files.size()) {
