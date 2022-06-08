@@ -10,6 +10,7 @@
 #include <vector>
 #include <math.h>
 #include <string>
+#include <iostream>
 
 CVX_MLP::CVX_MLP(const int numInputs, const int numOutputs, const std::string weights)
 {
@@ -99,6 +100,7 @@ CVX_Distributed::~CVX_Distributed(void)
 
 double CVX_Distributed::updateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
 {
+  std::cout << "start updating" << std::endl;
   double* sensors = (double*) malloc(sizeof(double) * NUM_SENSORS);
   std::fill(sensors, sensors + NUM_SENSORS, -1.0);
   sense(voxel, sensors);
@@ -114,6 +116,7 @@ double CVX_Distributed::updateVoxelTemp(CVX_Object* pObj, CVX_Voxel* voxel)
   free(signals);
   free(inputs);
   free(outputs);
+  std::cout << "after updating" << std::endl;
   return actuation;
 }
 
