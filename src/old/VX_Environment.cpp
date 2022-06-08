@@ -352,6 +352,7 @@ void CVX_Environment::InitController(CVoxelyze* sim)
 
 float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_Voxel* voxel)
 {
+	std::cout << "inside updating temps" << std::endl;
 	CVX_Object* pObjUpdate = pObj;
 	//if (Controller == NULL) {
 	//  Controller = new CVX_Distributed(10, pObjUpdate->GetStArraySize(), Weights);
