@@ -469,6 +469,7 @@ void CVX_Sim::UpdateMatTemps(void) // updates expansions for each material
     if (!pEnv->GetController()) {
       pEnv->InitController(&Vx);
     }
+    std::cout << "before temps" << std::endl;
     for (int iz = Vx.indexMinZ(); iz <= Vx.indexMaxZ(); iz++) {
         for (int iy = Vx.indexMinY(); iy <= Vx.indexMaxY(); iy++) {
             for (int ix = Vx.indexMinX(); ix <= Vx.indexMaxX(); ix++) {
