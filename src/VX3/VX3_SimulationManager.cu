@@ -198,6 +198,7 @@ void VX3_SimulationManager::start() {
             printf("=== set device to %d for %ld simulations ===\n", device_index, files.size());
             // readVXA(base)
             readVXD(base, files, device_index);
+            printf("after reading vxd\n");
             startKernel(files.size(), device_index);
         }
     }
