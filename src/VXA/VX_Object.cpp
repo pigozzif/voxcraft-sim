@@ -1715,6 +1715,7 @@ bool CVXC_Structure::WriteXML(CXML_Rip* pXML, int Compression, std::string* RetM
 
 	std::string RawData;
 	std::string WriteData;
+	std::cout << "before reading data" << std::endl;
 
 	for (int i=0; i<Z_Voxels; i++){
 		RawData.clear();
@@ -1754,6 +1755,7 @@ bool CVXC_Structure::WriteXML(CXML_Rip* pXML, int Compression, std::string* RetM
 	}
 	pXML->UpLevel();
 	pXML->UpLevel();
+	std::cout << "after reading data" << std::endl;
 	return true;
 }
 
