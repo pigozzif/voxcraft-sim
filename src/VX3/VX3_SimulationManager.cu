@@ -360,6 +360,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         MainSim.pEnv = &MainEnv; // connect Simulation to envirnment
         std::string RetMessage;
         // std::cout<<str_merged;
+        printf("before reading most stuff\n");
         MainSim.ReadVXA(&XML, &RetMessage);
         MainSim.Import(NULL, NULL, &RetMessage);
         if (!RetMessage.empty()) {
@@ -374,6 +375,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         // }
         this->weights = MainEnv.GetNeuralWeights();
         is_passable = MainEnv.GetPassability();
+        printf("after reading most stuff\n");
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
         // More VXA settings which is new in VX3
         strcpy(h_d_tmp.vxa_filename, file.filename().c_str());
