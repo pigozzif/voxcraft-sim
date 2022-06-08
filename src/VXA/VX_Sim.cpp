@@ -14,6 +14,7 @@ See the GNU Lesser General Public License for more details. See <http://www.open
 #include "VXS_Voxel.h"
 
 #include <sstream>
+#include <iostream>
 
 #include "VX_Material.h"
 #include "VX_Voxel.h"
