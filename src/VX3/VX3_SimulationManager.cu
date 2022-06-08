@@ -198,9 +198,9 @@ void VX3_SimulationManager::start() {
             VcudaSetDevice(device_index);
             printf("=== set device to %d for %ld simulations ===\n", device_index, files.size());
             // readVXA(base)
-            std::cout << "before reading vxd\n" << std::endl;
+            std::cout << "before reading vxd" << std::endl;
             readVXD(base, files, device_index);
-            printf("after reading vxd\n");
+            std::cout << "after reading vxd" << std::endl;
             startKernel(files.size(), device_index);
         }
     }
@@ -345,7 +345,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         // Read VXD file, clone base VXA, replace parts specified in VXD, send
         // to MainSim.ReadVXA to process. printf("reading %s\n",
         // (input_dir/file).c_str());
-        printf("before reading most stuff_0\n");
+        std::cout << "before reading most stuff_0" << std::endl;
         pt::ptree pt_VXD;
         pt::read_xml((input_dir / file).string(), pt_VXD);
         pt::ptree pt_merged = pt_baseVXA;
@@ -363,7 +363,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         MainSim.pEnv = &MainEnv; // connect Simulation to envirnment
         std::string RetMessage;
         // std::cout<<str_merged;
-        printf("before reading most stuff\n");
+        std::cout << "before reading most stuff" << std::endl;
         MainSim.ReadVXA(&XML, &RetMessage);
         MainSim.Import(NULL, NULL, &RetMessage);
         if (!RetMessage.empty()) {
@@ -378,7 +378,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         // }
         this->weights = MainEnv.GetNeuralWeights();
         is_passable = MainEnv.GetPassability();
-        printf("after reading most stuff\n");
+        std::cout << "after reading most stuff" << std::endl;
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
         // More VXA settings which is new in VX3
         strcpy(h_d_tmp.vxa_filename, file.filename().c_str());
