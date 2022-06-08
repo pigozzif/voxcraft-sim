@@ -343,6 +343,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         // Read VXD file, clone base VXA, replace parts specified in VXD, send
         // to MainSim.ReadVXA to process. printf("reading %s\n",
         // (input_dir/file).c_str());
+        printf("before reading most stuff_0\n");
         pt::ptree pt_VXD;
         pt::read_xml((input_dir / file).string(), pt_VXD);
         pt::ptree pt_merged = pt_baseVXA;
