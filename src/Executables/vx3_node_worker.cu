@@ -90,7 +90,7 @@ int main(int argc, char** argv) {
     for (int i=0;i<files.size();i++) {
         sub_batches[i%nDevices].push_back(files[i]);
     }
-
+    std::cout << "before manager" << std::endl;
     VX3_SimulationManager sm(sub_batches, base, input_dir, nDevices);
     sm.start();
 
