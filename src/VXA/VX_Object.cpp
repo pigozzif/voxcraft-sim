@@ -19,6 +19,7 @@ See <http://www.opensource.org/licenses/lgpl-3.0.html> for license details.
 #include <iomanip>
 #include <cstdlib> //for rand(), srand()
 #include <climits>
+#include <iostream>
 
 #ifdef USE_OPEN_GL
 #ifdef QT_GUI_LIB
