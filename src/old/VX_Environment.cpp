@@ -359,7 +359,7 @@ float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_
 	//}
 	if (pUpdateInObj) pObjUpdate = pUpdateInObj; //necessary b/c of how simulation is set up with a local un-modifiable CVX_Object
 
-	if (VaryTempEnabled && voxel->matid == 1){
+	if (VaryTempEnabled && !voxel->fixed){
 		if (TempPeriod == 0) return 0.0f; //avoid NaNs.
 		//CurTemp = TempBase + TempAmplitude*sin(2*3.1415926/TempPeriod*time);	//update the global temperature
 		CurTemp = TempBase + TempAmplitude*Controller->updateVoxelTemp(pObjUpdate, voxel);
