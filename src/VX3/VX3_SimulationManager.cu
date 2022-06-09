@@ -16,7 +16,6 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
     int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (thread_index < num_simulation) {
         VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
-        printf("before creation\n");
         VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(d_v3, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, aa, ab, ac, ad, ae, af, ag, ah, ai, aj, ak, al, am, an, ao, ap, aq, ar, as, at, au, av, aw, ax, ay, az, ba, bb, bc, bd, be, bf, bg, bh, bi, bj, bk, bl, bm, bn, bo, bp, bq, br, bs, bt);
         if (d_v3->num_d_links == 0 and d_v3->num_d_voxels == 0) {
             printf(COLORCODE_BOLD_RED "No links and no voxels. Simulation %d (%s) abort.\n" COLORCODE_RESET, thread_index,
@@ -65,7 +64,6 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         // printf("Initial CoM: %f %f %f mm\n",
         // d_v3->initialCenterOfMass.x*1000, d_v3->initialCenterOfMass.y*1000,
         // d_v3->initialCenterOfMass.z*1000);
-        printf("before simulation\n");
         for (int j = 0; j < 1000000; j++) { // Maximum Steps 1000000
             if (d_v3->StopConditionMet())
                 break;
@@ -120,7 +118,6 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
                 }
             }
         }
-        printf("before target and fitness\n");
         if (is_passable) {
           for (int i = 0; i < d_v3->num_d_voxels; ++i) {
             VX3_Voxel* voxel = d_v3->d_voxels + i;
@@ -191,16 +188,13 @@ VX3_SimulationManager::~VX3_SimulationManager() {
 }
 
 void VX3_SimulationManager::start() {
-    std::cout << "beginning of start" << std::endl;
     for (int device_index = 0; device_index < num_of_devices; device_index++) { // multi GPUs
         auto files = sub_batches[device_index];
         if (files.size()) {
             VcudaSetDevice(device_index);
             printf("=== set device to %d for %ld simulations ===\n", device_index, files.size());
             // readVXA(base)
-            std::cout << "before reading vxd" << std::endl;
             readVXD(base, files, device_index);
-            std::cout << "after reading vxd" << std::endl;
             startKernel(files.size(), device_index);
         }
     }
@@ -363,7 +357,6 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         MainSim.pEnv = &MainEnv; // connect Simulation to envirnment
         std::string RetMessage;
         // std::cout<<str_merged;
-        std::cout << "before reading most stuff" << std::endl;
         MainSim.ReadVXA(&XML, &RetMessage);
         MainSim.Import(NULL, NULL, &RetMessage);
         if (!RetMessage.empty()) {
@@ -378,7 +371,6 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         // }
         this->weights = MainEnv.GetNeuralWeights();
         is_passable = MainEnv.GetPassability();
-        std::cout << "after reading most stuff" << std::endl;
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
         // More VXA settings which is new in VX3
         strcpy(h_d_tmp.vxa_filename, file.filename().c_str());
