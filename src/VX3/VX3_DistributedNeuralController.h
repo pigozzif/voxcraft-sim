@@ -48,7 +48,8 @@ public:
   VX3_MLP* mlp;
   VX3_dVector<int>* votes;
   VX3_dVector<double>* tempVotes;
-  bool firstContact;
+  bool firstRightContact;
+  bool firstLeftContact;
 };
 
 #endif //VX3_DISTRIBUTED_H
