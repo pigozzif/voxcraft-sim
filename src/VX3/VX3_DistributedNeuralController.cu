@@ -119,10 +119,10 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
         if (VX3_Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
             VX3_Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
           mlp->inputs[i] = 1.0;
-          if (!firstRightContact && other->matid == 2) {
+          if (!firstRightContact && other->matid == 1) {
             firstRightContact = true;
           }
-          if (!firstLeftContact && other->matid == 3) {
+          if (!firstLeftContact && other->matid == 2) {
             firstLeftContact = true;
           }
         }
