@@ -49,7 +49,8 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
   }
   votes = new VX3_dVector<int>();
   tempVotes = new VX3_dVector<double>();
-  firstContact = false;
+  firstRightContact = false;
+  firstLeftContact = false;
 }
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
@@ -71,7 +72,7 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
 }
 
 __device__ void VX3_DistributedNeuralController::vote(void) const {
-  if (!firstContact) {
+  if (!firstLeftContact && !firstRightContact) {
     return;
   }
   int numPos = 0;
@@ -118,8 +119,11 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
         if (VX3_Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
             VX3_Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
           mlp->inputs[i] = 1.0;
-          if (!firstContact && other->material()->fixed) {
-            firstContact = true;
+          if (!firstRightContact && other->matid == 2) {
+            firstRightContact = true;
+          }
+          if (!firstLeftContact && other->matid == 3) {
+            firstLeftContact = true;
           }
         }
       }
