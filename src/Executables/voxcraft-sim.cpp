@@ -105,7 +105,7 @@ int main(int argc, char** argv) {
             if (boost::algorithm::to_lower_copy(file.path().extension().string())==".vxd")
                 tree.add("vxd.f", file.path().filename().string());
         }
-        std::string str_time = "2022/06/15/13/20/00";//ctool::u_format_now("%Y%m%d%H%M%S");
+        std::string str_time = ctool::u_format_now("%Y%m%d%H%M%S");
         std::string str_hash_number = std::to_string(std::hash<std::string>{}( input.string() ));
         std::string vxt = str_time + "." + str_hash_number + ".vxt";
         std::string vxr = str_time + "." + str_hash_number + ".vxr";
