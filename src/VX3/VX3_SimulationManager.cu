@@ -368,8 +368,8 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         //         m->dependentMaterials.size(), mm); i++;
         //     }
         // }
-        this->weights = pt_merged.get(<std::string>("VXD.Controller.NeuralWeights", ""));
-        is_passable = pt_merged.get(<int>("VXD.Task.Passable", 1));
+        this->weights = pt_merged.get<std::string>("VXD.Controller.NeuralWeights", "");
+        is_passable = pt_merged.get<int>("VXD.Task.Passable", 1);
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
         // More VXA settings which is new in VX3
         strcpy(h_d_tmp.vxa_filename, file.filename().c_str());
