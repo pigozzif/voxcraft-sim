@@ -48,7 +48,7 @@ class VX3_SimulationManager {
 
     std::vector<VX3_SimulationResult> h_results;
   
-    std::map<int,> vxd_files;
+    std::map<int,std::string> vxd_files;
 
     double HeapSize=1;
     int PrintfFIFOSize=50;
