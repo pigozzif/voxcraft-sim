@@ -15,6 +15,7 @@ struct VX3_SimulationResult {
     double locomotion_score;
     double sensing_score;
     std::string vxa_filename;
+    std::string vxd_filename;
     bool SavePositionOfAllVoxels = false;
     std::vector<int> voxel_mats;
     std::vector<Vec3D<>> voxel_init_pos;
