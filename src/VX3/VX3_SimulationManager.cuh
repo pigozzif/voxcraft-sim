@@ -6,6 +6,7 @@
 #include <utility>
 #include <vector>
 #include <map>
+#include <pair>
 namespace fs = boost::filesystem;
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
@@ -49,7 +50,7 @@ class VX3_SimulationManager {
 
     std::vector<VX3_SimulationResult> h_results;
   
-    std::map<int,std::string>* vxd_files;
+    std::map<std::pair<int,int>,std::string>* vxd_files;
 
     double HeapSize=1;
     int PrintfFIFOSize=50;
