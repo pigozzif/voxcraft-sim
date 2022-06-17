@@ -13,7 +13,7 @@
 #include "VX3_VoxelyzeKernel.cuh"
 #include "VX_Sim.h" //readVXA
 
-std::vector<std::string> split(const std::string& s, char delimiter)
+std::vector<std::string> split_aux(const std::string& s, char delimiter)
 {
     std::vector<std::string> tokens;
     std::string token;
@@ -356,7 +356,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         pt::ptree pt_VXD;
         std::string name = (input_dir / file).string();
         pt::read_xml(name, pt_VXD);
-        vxd_files->insert({device_index, split(split(name, '/')[2], '.')[0]});
+        vxd_files->insert({device_index, split_aux(split_aux(name, '/')[2], '.')[0]});
         pt::ptree pt_merged = pt_baseVXA;
         ctool::ptree_merge(pt_VXD, pt_merged);
         std::ostringstream stream_merged;
