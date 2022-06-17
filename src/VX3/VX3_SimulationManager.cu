@@ -6,7 +6,6 @@
 #include <stack>
 #include <utility>
 #include <map>
-#include <pair>
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
