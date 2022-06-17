@@ -6,6 +6,7 @@
 #include <stack>
 #include <utility>
 #include <map>
+#include <pair>
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
@@ -192,7 +193,7 @@ VX3_SimulationManager::VX3_SimulationManager(std::vector<std::vector<fs::path>> 
     for (int i = 0; i < num_of_devices; i++) {
         d_voxelyze_3s[i] = NULL;
     }
-    vxd_files = new std::map<int,std::string>();
+    vxd_files = new std::map<std::pair<int,int>,std::string>();
 }
 VX3_SimulationManager::~VX3_SimulationManager() {
     for (auto d : d_voxelyze_3s) {
@@ -356,7 +357,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         pt::ptree pt_VXD;
         std::string name = (input_dir / file).string();
         pt::read_xml(name, pt_VXD);
-        vxd_files->insert({device_index, split_aux(split_aux(name, '/')[2], '.')[0]});
+        vxd_files->insert({std::pair<int,int>(device_index, i), split_aux(split_aux(name, '/')[2], '.')[0]});
         pt::ptree pt_merged = pt_baseVXA;
         ctool::ptree_merge(pt_VXD, pt_merged);
         std::ostringstream stream_merged;
@@ -521,7 +522,7 @@ void VX3_SimulationManager::collectResults(int num_simulation, int device_index)
         tmp.voxSize = result_voxelyze_kernel[i].voxSize;
         tmp.num_voxel = result_voxelyze_kernel[i].num_d_voxels;
         tmp.vxa_filename = result_voxelyze_kernel[i].vxa_filename;
-        tmp.vxd_filename = (*vxd_files)[device_index];
+        tmp.vxd_filename = (*vxd_files)[std::pair<int,int>(device_index, i)];
         VX3_Voxel *tmp_v;
         tmp_v = (VX3_Voxel *)malloc(result_voxelyze_kernel[i].num_d_voxels * sizeof(VX3_Voxel));
         VcudaMemcpy(tmp_v, result_voxelyze_kernel[i].d_voxels, result_voxelyze_kernel[i].num_d_voxels * sizeof(VX3_Voxel),
