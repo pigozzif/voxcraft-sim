@@ -13,6 +13,18 @@
 #include "VX3_VoxelyzeKernel.cuh"
 #include "VX_Sim.h" //readVXA
 
+std::vector<std::string> split(const std::string& s, char delimiter)
+{
+    std::vector<std::string> tokens;
+    std::string token;
+    std::istringstream tokenStream(s);
+    while (std::getline(tokenStream, token, delimiter))
+    {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
+
 __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, double X, double Y, int is_passable, double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k, double l, double m, double n, double o, double p, double q, double r, double s, double t, double u, double v, double w, double x, double y, double z, double aa, double ab, double ac, double ad, double ae, double af, double ag, double ah, double ai, double aj, double ak, double al, double am, double an, double ao, double ap, double aq, double ar, double as, double at, double au, double av, double aw, double ax, double ay, double az, double ba, double bb, double bc, double bd, double be, double bf, double bg, double bh, double bi, double bj, double bk, double bl, double bm, double bn, double bo, double bp, double bq, double br, double bs, double bt) {
     int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (thread_index < num_simulation) {
@@ -342,9 +354,9 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         // to MainSim.ReadVXA to process. printf("reading %s\n",
         // (input_dir/file).c_str());
         pt::ptree pt_VXD;
-        pt::read_xml((input_dir / file).string(), pt_VXD);
-        std::cout << (input_dir / file).string() << std::endl;
-        vxd_files->insert({device_index, (input_dir / file).string()});
+        std::string name = (input_dir / file).string();
+        pt::read_xml(name, pt_VXD);
+        vxd_files->insert({device_index, split(split(name, '/')[2], '.')[0]});
         pt::ptree pt_merged = pt_baseVXA;
         ctool::ptree_merge(pt_VXD, pt_merged);
         std::ostringstream stream_merged;
