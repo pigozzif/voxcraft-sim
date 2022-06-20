@@ -68,7 +68,7 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   if (firstRightContact && firstLeftContact) {
     tempVotes->push_back(mlp->outputs[1]);
   }
-  printf("%d %d\n", outputs[0], outputs[1]);
+  printf("%d %d\n", mlp->outputs[0], mlp->outputs[1]);
   return mlp->outputs[0];
 }
 
