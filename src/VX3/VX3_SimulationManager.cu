@@ -6,6 +6,7 @@
 #include <stack>
 #include <utility>
 #include <map>
+#include <algorithm>
 #include <stdlib.h>
 #include <math.h>
 #include <float.h>
@@ -174,7 +175,9 @@ double* VX3_SimulationManager::readWeights(int numInputs, int numOutputs) {
   int i = 0;
   int j = 0;
   while (end != std::string::npos) {
-    d_weights[i * (numInputs + 1) + j] = atof(weights.substr(start, end - start).c_str());
+    std::string str = weights.substr(start, end - start);
+    std::replace(s.begin(), s.end(), '.', ',');
+    d_weights[i * (numInputs + 1) + j] = atof(str.c_str());
     std::cout << weights.substr(start, end - start) << std::endl;
     ++j;
     if (j >= numInputs + 1) {
