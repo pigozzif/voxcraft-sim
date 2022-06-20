@@ -531,13 +531,13 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
 }
 
 __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, int is_passable) {
-    locomotion_score = 0.0;//sqrt(pow(currentCenterOfMass.x - target->pos.x, 2) + pow(currentCenterOfMass.y - target->pos.y, 2));
-    //locomotion_score /= sqrt(pow(initialCenterOfMass.x - target->pos.x, 2) + pow(initialCenterOfMass.y - target->pos.y, 2));
+    locomotion_score = sqrt(pow(currentCenterOfMass.x - target->pos.x, 2) + pow(currentCenterOfMass.y - target->pos.y, 2));
+    locomotion_score /= sqrt(pow(initialCenterOfMass.x - target->pos.x, 2) + pow(initialCenterOfMass.y - target->pos.y, 2));
     for (int i = 0; i < controller->votes->size(); ++i) {
       sensing_score += controller->votes->get(i) == is_passable;
     }
     sensing_score /= (controller->votes->size() == 0) ? 1 : controller->votes->size();
-    fitness_score = /*locomotion_score +*/ sensing_score;
+    fitness_score = locomotion_score + sensing_score;
 }
 
 __device__ void VX3_VoxelyzeKernel::registerTargets() {
