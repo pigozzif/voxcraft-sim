@@ -182,7 +182,7 @@ bool CVX_Environment::ReadXML(CXML_Rip* pXML, std::string* RetMessage) //pXML po
 	}
 	
 	if (pXML->FindElement("Controller")){
-	        if (!pXML->FindLoadElement("NeuralWeights", &Weights)) Weights = "";
+	        if (!pXML->FindLoadElement("NeuralWeights", &Weights)) Weights = "not found for real";
 		std::cout << Weights << std::endl;
 		pXML->UpLevel();
 	}
