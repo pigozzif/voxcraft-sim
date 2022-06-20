@@ -176,7 +176,7 @@ double* VX3_SimulationManager::readWeights(int numInputs, int numOutputs) {
   int j = 0;
   while (end != std::string::npos) {
     std::string str = weights.substr(start, end - start);
-    std::replace(s.begin(), s.end(), '.', ',');
+    std::replace(str.begin(), str.end(), '.', ',');
     d_weights[i * (numInputs + 1) + j] = atof(str.c_str());
     std::cout << weights.substr(start, end - start) << std::endl;
     ++j;
