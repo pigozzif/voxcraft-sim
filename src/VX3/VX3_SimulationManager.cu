@@ -175,7 +175,7 @@ double* VX3_SimulationManager::readWeights(int numInputs, int numOutputs) {
   int j = 0;
   while (end != std::string::npos) {
     d_weights[i * (numInputs + 1) + j] = atof(weights.substr(start, end - start).c_str());
-    std::cout << d_weights[i * (numInputs + 1) + j] << std::endl;
+    std::cout << weights.substr(start, end - start) << std::endl;
     ++j;
     if (j >= numInputs + 1) {
       j = 0;
