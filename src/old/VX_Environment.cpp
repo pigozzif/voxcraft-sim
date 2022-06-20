@@ -181,7 +181,7 @@ bool CVX_Environment::ReadXML(CXML_Rip* pXML, std::string* RetMessage) //pXML po
 		pXML->UpLevel();
 	}
 	pXML->UpLevel();
-	pXML->UpLevel();
+	//pXML->UpLevel();
 	if (pXML->FindElement("Controller")){
 		std::cout << "found Controller" << std::endl;
 	        if (!pXML->FindLoadElement("NeuralWeights", &Weights)) Weights = "not found for real";
@@ -205,8 +205,8 @@ bool CVX_Environment::ReadXML(CXML_Rip* pXML, std::string* RetMessage) //pXML po
 		if (!pXML->FindLoadElement("Passable", &is_passable)) is_passable = 1;
 		pXML->UpLevel();
 	}
-	pXML->DownLevel("VXA");
-	pXML->DownLevel("Environment");
+	//pXML->DownLevel("VXA");
+	//pXML->DownLevel("Environment");
 
 
 	return true;
