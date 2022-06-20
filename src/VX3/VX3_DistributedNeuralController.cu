@@ -133,6 +133,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   
   if (voxel->iz == 0) {
     mlp->inputs[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
+    printf("%f\n", mlp->inputs[5]);
   }
 }
 
