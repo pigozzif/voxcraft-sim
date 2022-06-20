@@ -166,7 +166,8 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
     }
 }
 
-void VX3_SimulationManager::readWeights(double* d_weights, int numInputs, int numOutputs) {
+double* VX3_SimulationManager::readWeights(int numInputs, int numOutputs) {
+  double* d_weights = (double*) malloc(sizeof(double) * numOutputs * (numInputs + 1));
   std::string delim = ",";
   std::size_t start = 0U;
   std::size_t end = weights.find(delim);
@@ -181,6 +182,7 @@ void VX3_SimulationManager::readWeights(double* d_weights, int numInputs, int nu
     start = end + delim.length();
     end = weights.find(delim, start);
   }
+  return d_weights;
 }
 
 VX3_SimulationManager::VX3_SimulationManager(std::vector<std::vector<fs::path>> in_sub_batches, fs::path in_base, fs::path in_input_dir,
@@ -490,11 +492,10 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     //             cudaMemcpyDeviceToHost);
     enlargeGPUHeapSize();
     enlargeGPUPrintfFIFOSize();
-    double* d_weights;
     int numOutputs = NUM_SIGNALS + 2;
     int numInputs = NUM_SENSORS + NUM_SIGNALS;
-    d_weights = new double[numOutputs * (numInputs + 1)];
-    readWeights(d_weights, numInputs, numOutputs);
+    //d_weights = new double[numOutputs * (numInputs + 1)];
+    double* d_weights = readWeights(numInputs, numOutputs);
     CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, x, y, is_passable, d_weights[0], d_weights[1], d_weights[2], d_weights[3], d_weights[4], d_weights[5], d_weights[6], d_weights[7], d_weights[8], d_weights[9], d_weights[10], d_weights[11], d_weights[12], d_weights[13], d_weights[14], d_weights[15], d_weights[16], d_weights[17], d_weights[18], d_weights[19], d_weights[20], d_weights[21], d_weights[22], d_weights[23], d_weights[24], d_weights[25], d_weights[26], d_weights[27], d_weights[28], d_weights[29], d_weights[30], d_weights[31], d_weights[32], d_weights[33], d_weights[34], d_weights[35], d_weights[36], d_weights[37], d_weights[38], d_weights[39], d_weights[40], d_weights[41], d_weights[42], d_weights[43], d_weights[44], d_weights[45], d_weights[46], d_weights[47], d_weights[48], d_weights[49], d_weights[50], d_weights[51], d_weights[52], d_weights[53], d_weights[54], d_weights[55], d_weights[56], d_weights[57], d_weights[58], d_weights[59], d_weights[60], d_weights[61], d_weights[62], d_weights[63], d_weights[64], d_weights[65], d_weights[66], d_weights[67], d_weights[68], d_weights[69], d_weights[70], d_weights[71], d_weights[72], d_weights[73], d_weights[74], d_weights[75], d_weights[76], d_weights[77], d_weights[78], d_weights[79], d_weights[80], d_weights[81], d_weights[82], d_weights[83], d_weights[84], d_weights[85], d_weights[86], d_weights[87], d_weights[88], d_weights[89], d_weights[90], d_weights[91], d_weights[92], d_weights[93], d_weights[94], d_weights[95], d_weights[96], d_weights[97], d_weights[98], d_weights[99], d_weights[100], d_weights[101], d_weights[102], d_weights[103]);
     CUDA_CHECK_AFTER_CALL();
     delete[] d_weights;
