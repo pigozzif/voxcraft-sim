@@ -180,33 +180,6 @@ bool CVX_Environment::ReadXML(CXML_Rip* pXML, std::string* RetMessage) //pXML po
 
 		pXML->UpLevel();
 	}
-	pXML->UpLevel();
-	//pXML->UpLevel();
-	if (pXML->FindElement("Controller")){
-		std::cout << "found Controller" << std::endl;
-	        if (!pXML->FindLoadElement("NeuralWeights", &Weights)) Weights = "not found for real";
-		std::cout << Weights << std::endl;
-		pXML->UpLevel();
-	}
-	else {
-	  std::cout << "did not find Controller" << std::endl;
-	}
-	if (pXML->FindElement("VXD")){
-	  std::cout << "found VXD" << std::endl;
-	  pXML->UpLevel();
-	} 
-	else {
-	  std::cout << "not found VXD" << std::endl;
-	}
-	
-	if (pXML->FindElement("Task")){
-	        if (!pXML->FindLoadElement("X", &x)) x = 0;
-		if (!pXML->FindLoadElement("Y", &y)) y = 0;
-		if (!pXML->FindLoadElement("Passable", &is_passable)) is_passable = 1;
-		pXML->UpLevel();
-	}
-	//pXML->DownLevel("VXA");
-	//pXML->DownLevel("Environment");
 
 
 	return true;
@@ -375,8 +348,8 @@ float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_
 
 	if (VaryTempEnabled && !voxel->mat->fixed){
 		if (TempPeriod == 0) return 0.0f; //avoid NaNs.
-		//CurTemp = TempBase + TempAmplitude*sin(2*3.1415926/TempPeriod*time);	//update the global temperature
-		CurTemp = TempBase + TempAmplitude*Controller->updateVoxelTemp(pObjUpdate, voxel);
+		CurTemp = TempBase + TempAmplitude*sin(2*3.1415926/TempPeriod*time);	//update the global temperature
+		//CurTemp = TempBase + TempAmplitude*Controller->updateVoxelTemp(pObjUpdate, voxel);
 		//for (int i = 0; i<(int)pObjUpdate->GetNumMaterials(); i++){ //now update the individual temperatures of each material (they can each have a different temperature)
 		//	pObjUpdate->GetBaseMat(i)->SetCurMatTemp(TempBase + TempAmplitude*sin((2*3.1415926f/TempPeriod) * time + pObjUpdate->GetBaseMat(i)->GetMatTempPhase()));	//and update each one
 		//}
