@@ -180,6 +180,7 @@ bool CVX_Environment::ReadXML(CXML_Rip* pXML, std::string* RetMessage) //pXML po
 
 		pXML->UpLevel();
 	}
+	pXML->UpLevel();
 
 
 	return true;
