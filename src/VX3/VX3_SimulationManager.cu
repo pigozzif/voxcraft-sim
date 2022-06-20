@@ -384,7 +384,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         //         m->dependentMaterials.size(), mm); i++;
         //     }
         // }
-        this->weights = pt_merged.get<std::string>("VXD.Controller.NeuralWeights", "");
+        this->weights = pt_merged.get<std::string>("VXD.Controller.NeuralWeights", "not found");
         std::cout << this->weights << std::endl;
         is_passable = pt_merged.get<int>("VXD.Task.Passable", 1);
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
