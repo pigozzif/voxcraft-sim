@@ -68,7 +68,6 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   if (firstRightContact && firstLeftContact) {
     tempVotes->push_back(mlp->outputs[1]);
   }
-  //printf("%f %f\n", mlp->outputs[0], mlp->outputs[1]);
   return mlp->outputs[0];
 }
 
@@ -133,7 +132,6 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   
   if (voxel->iz == 0) {
     mlp->inputs[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
-    printf("%f\n", mlp->inputs[5]);
   }
 }
 
