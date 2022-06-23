@@ -162,6 +162,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         printf("target: (%f, %f, %f)\n", d_v3->target->pos.x, d_v3->target->pos.y, d_v3->target->pos.z);
         d_v3->updateCurrentCenterOfMass();
         printf("center: (%f, %f, %f)\n", d_v3->currentCenterOfMass.x, d_v3->currentCenterOfMass.y, d_v3->currentCenterOfMass.z);
+        printf("initial center: (%f, %f, %f)\n", d_v3->initialCenterOfMass.x, d_v3->initialCenterOfMass.y, d_v3->initialCenterOfMass.z);
         d_v3->computeFitness(controller, is_passable);
         printf("fitness: %f %f %f\n", d_v3->fitness_score, d_v3->locomotion_score, d_v3->sensing_score);
         //VcudaFree(controller);
