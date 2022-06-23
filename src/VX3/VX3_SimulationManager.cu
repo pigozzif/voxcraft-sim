@@ -160,6 +160,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         }
         d_v3->updateCurrentCenterOfMass();
         d_v3->computeFitness(controller, is_passable);
+        printf("%f %f %f", fitness_score, locomotion_score, sensing_score);
         //VcudaFree(controller);
         printf(COLORCODE_BLUE "%d) Simulation %d ends: %s Time: %f, angleSampleTimes: %d.\n" COLORCODE_RESET, device_index, thread_index,
                d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);
