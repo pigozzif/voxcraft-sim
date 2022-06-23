@@ -51,7 +51,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
   tempVotes = new VX3_dVector<double>();
   firstRightContact = false;
   firstLeftContact = false;
-  for (int i = 0; i < (mlp->numInputs + 1) * (mlp->numOutputs)) printf("%f,", mlp->weights[i]);
+  for (int i = 0; i < (mlp->numInputs + 1) * (mlp->numOutputs); ++i) printf("%f,", mlp->weights[i]);
   printf("\n");
 }
 
