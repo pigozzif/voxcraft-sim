@@ -133,6 +133,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
             }
         }
         for (int i = 0; i < d_v3->num_d_voxels; ++i) {
+            VX3_Voxel* voxel = d_v3->d_voxels + i;
             if (voxel->matid == 3) {
               is_passable = 1;
               break;
