@@ -152,10 +152,6 @@ __device__ VX3_Vec3D<float>* VX3_DistributedNeuralController::getOffset(const li
   }
 }
 
-__device__ VX3_DistributedNeuralController::~VX3_DistributedNeuralController(void) {
-  VcudaFree(mlp);
-}
-
 __device__ void VX3_MLP::setWeights(double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k, double l, double m, double n, double o, double p, double q, double r, double s, double t, double u, double v, double w, double x, double y, double z, double aa, double ab, double ac, double ad, double ae, double af, double ag, double ah, double ai, double aj, double ak, double al, double am, double an, double ao, double ap, double aq, double ar, double as, double at, double au, double av, double aw, double ax, double ay, double az, double ba, double bb, double bc, double bd, double be, double bf, double bg, double bh, double bi, double bj, double bk, double bl, double bm, double bn, double bo, double bp, double bq, double br, double bs, double bt, double bu, double bv, double bw, double bx, double by, double bz, double ca, double cb, double cc, double cd, double ce, double cf, double cg, double ch, double ci, double cj, double ck, double cl, double cm, double cn, double co, double cp, double cq, double cr, double cs, double ct, double cu, double cv, double cw, double cx, double cy, double cz) {
   VcudaMalloc((void**) &weights, sizeof(double*) * numOutputs * (numInputs + 1));
   weights[0] = a;
