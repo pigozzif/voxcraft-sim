@@ -108,6 +108,7 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
 void VX3_VoxelyzeKernel::cleanup() {
     // The reason not use ~VX3_VoxelyzeKernel is that will be automatically call
     // multiple times after we use memcpy to clone objects.
+    target = NULL;
     MycudaFree(d_linkMats);
     MycudaFree(d_voxels);
     MycudaFree(d_links);
