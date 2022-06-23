@@ -107,6 +107,8 @@ int main(int argc, char** argv) {
         std::string simulation_name = split(res.vxd_filename, '.')[0];
         tr_result.put("report.detail."+simulation_name+".currentTime", res.currentTime);
         tr_result.put("report.detail."+simulation_name+".fitness_score", res.fitness_score);
+        tr_result.put("report.detail."+simulation_name+".sensing_score", res.sensing_score);
+        tr_result.put("report.detail."+simulation_name+".locomotion_score", res.locomotion_score);
         tr_result.put("report.detail."+simulation_name+".num_voxel", res.num_voxel);
         tr_result.put("report.detail."+simulation_name+".num_measured_voxel", res.num_measured_voxel);
         tr_result.put("report.detail."+simulation_name+".voxSize", res.voxSize);
