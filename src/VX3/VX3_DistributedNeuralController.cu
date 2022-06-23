@@ -51,6 +51,8 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
   tempVotes = new VX3_dVector<double>();
   firstRightContact = false;
   firstLeftContact = false;
+  for (int i = 0; i < (mlp->numInputs + 1) * (mlp->numOutputs)) printf("%f,", mlp->weights[i]);
+  printf("\n");
 }
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
