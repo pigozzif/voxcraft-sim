@@ -25,7 +25,6 @@ public:
   double* inputs;
   double* outputs;
 
-private:
   int numInputs;
   int numOutputs;
   double* weights;
