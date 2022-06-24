@@ -40,8 +40,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
   mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, aa, ab, ac, ad, ae, af, ag, ah, ai, aj, ak, al, am, an, ao, ap, aq, ar, as, at, au, av, aw, ax, ay, az, ba, bb, bc, bd, be, bf, bg, bh, bi, bj, bk, bl, bm, bn, bo, bp, bq, br, bs, bt, bu, bv, bw, bx, by, bz, ca, cb, cc, cd, ce, cf, cg, ch, ci, cj, ck, cl, cm, cn, co, cp, cq, cr, cs, ct, cu, cv, cw, cx, cy, cz);
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
-    voxel->initLastSignals(NUM_SIGNALS);
-    voxel->initCurrSignals(NUM_SIGNALS);
+    voxel->initArrays(mlp->numInputs, mlp->numOutputs, NUM_SIGNALS);
     for (int i = 0; i < NUM_SIGNALS; ++i) {
       voxel->lastSignals[i] = 0.0;
       voxel->currSignals[i] = 0.0;
