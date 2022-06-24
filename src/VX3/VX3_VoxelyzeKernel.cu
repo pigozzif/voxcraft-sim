@@ -648,9 +648,8 @@ __global__ void gpu_update_temperature(VX3_Voxel *voxels, int num, double TempAm
             TempAmplitude * controller->updateVoxelTemp(t, k);//sin(2 * 3.1415926f * (currentTime / TempPeriod + t->phaseOffset)); // update the global temperature
         // TODO: if we decide not to use PhaseOffset any more, we can move this calculation outside.
         // By default we don't enable expansion. But we can enable that in VXA.
-        printf("temp for (%d,%d,%d) at %f: %f", t->ix, t->iy, t->iz, currentTime, currentTemperature);
-        for (int i = 0; i < controller->mlp->numInputs; ++i) printf("% f", controller->mlp->inputs[i]);
-        printf("\n");
+        printf("temp for (%d,%d,%d) at %f: %f\n", t->ix, t->iy, t->iz, currentTime, currentTemperature);
+        printf("temp for (%d,%d,%d) at %f: %f %f %f %f %f %f %f %f %f %f %f %f\n", t->ix, t->iy, t->iz, currentTime, controller->mlp->inputs[0], controller->mlp->inputs[1], controller->mlp->inputs[2], controller->mlp->inputs[3], controller->mlp->inputs[4], controller->mlp->inputs[5], controller->mlp->inputs[6], controller->mlp->inputs[7], controller->mlp->inputs[8], controller->mlp->inputs[9], controller->mlp->inputs[10]);
         if (!k->EnableExpansion) {
             if (currentTemperature > 0) {
                 currentTemperature = 0;
