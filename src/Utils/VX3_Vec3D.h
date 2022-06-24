@@ -5,6 +5,7 @@
 
 #include <math.h>
 #include <float.h>
+#include <iostream>
 
 #include "Vec3D.h"
 
