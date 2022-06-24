@@ -649,7 +649,8 @@ __global__ void gpu_update_temperature(VX3_Voxel *voxels, int num, double TempAm
         // TODO: if we decide not to use PhaseOffset any more, we can move this calculation outside.
         // By default we don't enable expansion. But we can enable that in VXA.
         printf("temp for (%d,%d,%d) at %f: %f\n", t->ix, t->iy, t->iz, currentTime, currentTemperature);
-        printf("temp for (%d,%d,%d) at %f: %f %f %f %f %f %f %f %f %f %f %f %f\n", t->ix, t->iy, t->iz, currentTime, controller->mlp->inputs[0], controller->mlp->inputs[1], controller->mlp->inputs[2], controller->mlp->inputs[3], controller->mlp->inputs[4], controller->mlp->inputs[5], controller->mlp->inputs[6], controller->mlp->inputs[7], controller->mlp->inputs[8], controller->mlp->inputs[9], controller->mlp->inputs[10]);
+        printf("inputs for (%d,%d,%d) at %f: %f %f %f %f %f %f %f %f %f %f %f %f\n", t->ix, t->iy, t->iz, currentTime, t->inputs[0], t->inputs[1], t->inputs[2], t->inputs[3], t->inputs[4], t->inputs[5], t->inputs[6], t->inputs[7], t->inputs[8], t->inputs[9], t->inputs[10]);
+        printf("outputs for (%d,%d,%d) at %f: %f %f %f %f %f %f %f %f\n", t->ix, t->iy, t->iz, currentTime, t->outputs[0], t->outputs[1], t->outputs[2], t->outputs[3], t->outputs[4], t->outputs[5], t->outputs[6], t->outputs[7]);
         if (!k->EnableExpansion) {
             if (currentTemperature > 0) {
                 currentTemperature = 0;
