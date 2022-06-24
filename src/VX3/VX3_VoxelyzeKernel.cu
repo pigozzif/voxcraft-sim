@@ -532,9 +532,9 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
 }
 
 __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, int is_passable) {
-    locomotion_score = /*currentCenterOfMass.Dist(target->pos);*/sqrt(pow(currentCenterOfMass.x - target->pos.x, 2) + pow(currentCenterOfMass.y - target->pos.y, 2));
-    locomotion_score /= /*initialCenterOfMass.Dist(target->pos);*/sqrt(pow(initialCenterOfMass.x - target->pos.x, 2) + pow(initialCenterOfMass.y - target->pos.y, 2));
-    locomotion_score = 1.0 - locomotion_score;
+    locomotion_score = currentCenterOfMass.Dist(target->pos);//sqrt(pow(currentCenterOfMass.x - target->pos.x, 2) + pow(currentCenterOfMass.y - target->pos.y, 2));
+    //locomotion_score /= /*initialCenterOfMass.Dist(target->pos);*/sqrt(pow(initialCenterOfMass.x - target->pos.x, 2) + pow(initialCenterOfMass.y - target->pos.y, 2));
+    //locomotion_score = 1.0 - locomotion_score;
     for (int i = 0; i < controller->votes->size(); ++i) {
       sensing_score += controller->votes->get(i) == is_passable;
     }
