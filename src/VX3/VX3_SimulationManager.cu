@@ -168,13 +168,13 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
             }
           }
         }
-        //printf("passable: %d\n", is_passable);
-        //printf("target: (%f, %f, %f)\n", d_v3->target->pos.x, d_v3->target->pos.y, d_v3->target->pos.z);
+        printf("passable: %d\n", is_passable);
+        printf("target: (%f, %f, %f)\n", d_v3->target->pos.x, d_v3->target->pos.y, d_v3->target->pos.z);
         d_v3->updateCurrentCenterOfMass();
-        //printf("center: (%f, %f, %f)\n", d_v3->currentCenterOfMass.x, d_v3->currentCenterOfMass.y, d_v3->currentCenterOfMass.z);
-        //printf("initial center: (%f, %f, %f)\n", d_v3->initialCenterOfMass.x, d_v3->initialCenterOfMass.y, d_v3->initialCenterOfMass.z);
+        printf("center: (%f, %f, %f)\n", d_v3->currentCenterOfMass.x, d_v3->currentCenterOfMass.y, d_v3->currentCenterOfMass.z);
+        printf("initial center: (%f, %f, %f)\n", d_v3->initialCenterOfMass.x, d_v3->initialCenterOfMass.y, d_v3->initialCenterOfMass.z);
         d_v3->computeFitness(controller, is_passable);
-        //printf("fitness: %f %f %f\n", d_v3->fitness_score, d_v3->locomotion_score, d_v3->sensing_score);
+        printf("fitness: %f %f %f\n", d_v3->fitness_score, d_v3->locomotion_score, d_v3->sensing_score);
         //VcudaFree(controller);
         printf(COLORCODE_BLUE "%d) Simulation %d ends: %s Time: %f, angleSampleTimes: %d.\n" COLORCODE_RESET, device_index, thread_index,
                d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);
