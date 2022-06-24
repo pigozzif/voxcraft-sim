@@ -22,17 +22,17 @@ __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double a,
   setWeights(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, aa, ab, ac, ad, ae, af, ag, ah, ai, aj, ak, al, am, an, ao, ap, aq, ar, as, at, au, av, aw, ax, ay, az, ba, bb, bc, bd, be, bf, bg, bh, bi, bj, bk, bl, bm, bn, bo, bp, bq, br, bs, bt, bu, bv, bw, bx, by, bz, ca, cb, cc, cd, ce, cf, cg, ch, ci, cj, ck, cl, cm, cn, co, cp, cq, cr, cs, ct, cu, cv, cw, cx, cy, cz);
 }
 
-__device__ void VX3_MLP::apply(void) const {
+__device__ void VX3_MLP::apply(VX3_Voxel* voxel) const {
   //apply input activation
   for (int i = 0; i < numInputs; ++i) {
-    inputs[i] = tanh(inputs[i]);
+    voxel->inputs[i] = tanh(voxel->inputs[i]);
   }
   for (int j = 0; j < numOutputs; ++j) {
     double sum = weights[j * (numInputs + 1)]; //the bias
     for (int k = 1; k < numInputs + 1; ++k) {
-      sum += inputs[k - 1] * weights[j * (numInputs + 1) + k]; //weight inputs
+      sum += voxel->inputs[k - 1] * weights[j * (numInputs + 1) + k]; //weight inputs
     }
-    outputs[j] = tanh(sum); //apply output activation
+    voxel->outputs[j] = tanh(sum); //apply output activation
   }
 }
 
@@ -42,6 +42,8 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
     VX3_Voxel* voxel = kernel->d_voxels + i;
     voxel->initArrays(mlp->numInputs, mlp->numOutputs, NUM_SIGNALS);
     for (int i = 0; i < NUM_SIGNALS; ++i) {
+      voxel->inputs[i] = 0.0;
+      voxel->outputs[i] = 0.0;
       voxel->lastSignals[i] = 0.0;
       voxel->currSignals[i] = 0.0;
     }
@@ -54,7 +56,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
   for (int i = 0 ; i < NUM_SENSORS; ++i) {
-    mlp->inputs[i] = -1.0;
+    voxel->inputs[i] = -1.0;
   }
   sense(voxel, kernel);
   
@@ -62,12 +64,12 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   mlp->apply();
   
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
-    voxel->currSignals[dir] = mlp->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
+    voxel->currSignals[dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
   }
   if (firstRightContact && firstLeftContact) {
-    tempVotes->push_back(mlp->outputs[1]);
+    tempVotes->push_back(voxel->outputs[1]);
   }
-  return mlp->outputs[0];
+  return voxel->outputs[0];
 }
 
 __device__ void VX3_DistributedNeuralController::vote(void) const {
@@ -100,7 +102,7 @@ __device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeK
 __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel) const {
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
     VX3_Voxel* adjVoxel = voxel->adjacentVoxel((linkDirection)dir); 
-    mlp->inputs[dir + NUM_SENSORS] = (adjVoxel) ? adjVoxel->lastSignals[dir] : 0.0;
+    voxel->inputs[dir + NUM_SENSORS] = (adjVoxel) ? adjVoxel->lastSignals[dir] : 0.0;
   }
 }
 
@@ -117,7 +119,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
         VX3_Voxel* other = (collision->pV1 == voxel) ? collision->pV2 : collision->pV1;
         if (VX3_Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
             VX3_Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
-          mlp->inputs[i] = 1.0;
+          voxel->inputs[i] = 1.0;
           if (!firstRightContact && other->matid == 1) {
             firstRightContact = true;
           }
@@ -130,7 +132,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   }
   
   if (voxel->iz == 0) {
-    mlp->inputs[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
+    voxel->inputs[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
   }
 }
 
