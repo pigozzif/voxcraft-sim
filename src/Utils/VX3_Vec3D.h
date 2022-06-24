@@ -5,7 +5,6 @@
 
 #include <math.h>
 #include <float.h>
-#include <iostream>
 
 #include "Vec3D.h"
 
@@ -69,8 +68,7 @@ public:
 	__device__ const VX3_Vec3D& operator*=(const T f)				{x *= f; y *= f; z *= f; return *this;} //!< overload multiply and set
 	__device__ const VX3_Vec3D& operator/=(const T f)				{T Inv = (T)1.0/f; x *= Inv; y *= Inv; z *= Inv; return *this;} //!< overload divide and set
 	__device__ const T& operator[](int index) const			{switch (index%3){case vec3_X: return x; case vec3_Y: return y; /*case vec3_Z:*/ default: return z;}} //!< overload index operator. 0 ("vec3_X") is x, 1 ("vec3_Y") is y and 2 ("vec3_Z") is z.
-	__device__ T& operator[](int index)						{switch (index%3){case vec3_X: return x; case vec3_Y: return y; /*case vec3_Z:*/ default: return z;}}  //!< overload  index operator. 0 ("vec3_X") is x, 1 ("vec3_Y") is y and 2 ("vec3_Z") is z.
-	__device__ std::ostream& operator<<(std::ostream& os) const {os << "(" << x << "," << y << "," << z << ")"; return os;}     
+	__device__ T& operator[](int index)						{switch (index%3){case vec3_X: return x; case vec3_Y: return y; /*case vec3_Z:*/ default: return z;}}  //!< overload  index operator. 0 ("vec3_X") is x, 1 ("vec3_Y") is y and 2 ("vec3_Z") is z.  
 
 	//Attributes
 	__device__ T		getX(void) const	{return x;} //!< returns the x value
