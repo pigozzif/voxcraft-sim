@@ -331,7 +331,7 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
         } else {
             recentAngle = acos((B - A).Dot(C - B) / (B.Dist(A) * C.Dist(B)));
         }
-        // printf("(%d) recentAngle = %f\n", angleSampleTimes, recentAngle);
+        printf("(%d) recentAngle = %f\n", angleSampleTimes, recentAngle);
 
         // Also calculate targetCloseness here.
         computeTargetCloseness();
