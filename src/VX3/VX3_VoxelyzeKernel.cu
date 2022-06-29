@@ -533,6 +533,9 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
 
 __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, int is_passable) {
     locomotion_score = currentCenterOfMass.Dist(target->pos);//sqrt(pow(currentCenterOfMass.x - target->pos.x, 2) + pow(currentCenterOfMass.y - target->pos.y, 2));
+    double target_angle = atan2((target->pos.y - initialCenterOfMass.y), (target->pos.x - initialCenterOfMass.x));
+    double final_angle = atan2((target->pos.y - currentCenterOfMass.y), (target->pos.x - currentCenterOfMass.x));
+    printf("target angle: %f and final angle: %f", target_angle, final_angle);
     //locomotion_score /= /*initialCenterOfMass.Dist(target->pos);*/sqrt(pow(initialCenterOfMass.x - target->pos.x, 2) + pow(initialCenterOfMass.y - target->pos.y, 2));
     //locomotion_score = 1.0 - locomotion_score;
     for (int i = 0; i < controller->votes->size(); ++i) {
