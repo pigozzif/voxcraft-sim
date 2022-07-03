@@ -700,6 +700,7 @@ __device__ bool is_neighbor(VX3_Voxel *voxel1, VX3_Voxel *voxel2, VX3_Link *inco
 
 __device__ void handle_collision_attachment(VX3_Voxel *voxel1, VX3_Voxel *voxel2, double watchDistance, VX3_VoxelyzeKernel *k) {
     // if both of the voxels are fixed, no need to compute.
+    printf("Checking attachment between (%d,%d,%d) and (%d,%d,%d)\n", voxel1->ix, voxel1->iy, voxel1->iz, voxel2->ix, voxel2->iy, voxel2->iz);
     if (voxel1->mat->fixed && voxel2->mat->fixed)
         return;
     printf("Handling attachment between (%d,%d,%d) and (%d,%d,%d)\n", voxel1->ix, voxel1->iy, voxel1->iz, voxel2->ix, voxel2->iy, voxel2->iz);
