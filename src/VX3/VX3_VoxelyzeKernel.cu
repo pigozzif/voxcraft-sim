@@ -289,7 +289,7 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
 
         regenerateSurfaceVoxels();
     }
-    printf("here we are: %d %d %d\n", enableAttach, EnableCollision, enableDetach);
+    //printf("here we are: %d %d %d\n", enableAttach, EnableCollision, enableDetach);
     if (enableAttach || EnableCollision) { // either attachment and collision need measurement for pairwise distances
         updateAttach();
     }
@@ -700,10 +700,10 @@ __device__ bool is_neighbor(VX3_Voxel *voxel1, VX3_Voxel *voxel2, VX3_Link *inco
 
 __device__ void handle_collision_attachment(VX3_Voxel *voxel1, VX3_Voxel *voxel2, double watchDistance, VX3_VoxelyzeKernel *k) {
     // if both of the voxels are fixed, no need to compute.
-    printf("Checking attachment between (%d,%d,%d) and (%d,%d,%d)\n", voxel1->ix, voxel1->iy, voxel1->iz, voxel2->ix, voxel2->iy, voxel2->iz);
+    //printf("Checking attachment between (%d,%d,%d) and (%d,%d,%d)\n", voxel1->ix, voxel1->iy, voxel1->iz, voxel2->ix, voxel2->iy, voxel2->iz);
     if (voxel1->mat->fixed && voxel2->mat->fixed)
         return;
-    printf("Handling attachment between (%d,%d,%d) and (%d,%d,%d)\n", voxel1->ix, voxel1->iy, voxel1->iz, voxel2->ix, voxel2->iy, voxel2->iz);
+    //printf("Handling attachment between (%d,%d,%d) and (%d,%d,%d)\n", voxel1->ix, voxel1->iy, voxel1->iz, voxel2->ix, voxel2->iy, voxel2->iz);
     VX3_Vec3D<double> diff = voxel1->pos - voxel2->pos;
     watchDistance = (voxel1->baseSizeAverage() + voxel2->baseSizeAverage()) * COLLISION_ENVELOPE_RADIUS;
 
