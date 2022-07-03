@@ -454,7 +454,7 @@ __device__ void VX3_VoxelyzeKernel::updateAttach() {
         blockSize = 16;
         dim3 dimBlock(blockSize, blockSize);
         dim3 dimGrid((num_d_surface_voxels + dimBlock.x - 1) / dimBlock.x, (num_d_surface_voxels + dimBlock.y - 1) / dimBlock.y);
-        printf("num_d_surface_voxels %d\n", num_d_surface_voxels);
+        //printf("num_d_surface_voxels %d\n", num_d_surface_voxels);
         gpu_update_attach<<<dimGrid, dimBlock>>>(d_surface_voxels, num_d_surface_voxels, watchDistance,
                                                  this); // invoke two dimensional gpu threads 'CUDA C++ Programming
                                                         // Guide', Nov 2019, P52.
@@ -854,7 +854,7 @@ __global__ void gpu_update_attach(VX3_Voxel **surface_voxels, int num, double wa
     int first = threadIdx.x + blockIdx.x * blockDim.x;
     int second = threadIdx.y + blockIdx.y * blockDim.y;
     if (first < num && second < first) {
-        printf("inside gpu_update_attach\n");
+        //printf("inside gpu_update_attach\n");
         VX3_Voxel *voxel1 = surface_voxels[first];
         VX3_Voxel *voxel2 = surface_voxels[second];
         if (voxel1->removed || voxel2->removed)
