@@ -289,7 +289,7 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
 
         regenerateSurfaceVoxels();
     }
-
+    printf("here we are: %d %d\n", enableAttach, enableCollision);
     if (enableAttach || EnableCollision) { // either attachment and collision need measurement for pairwise distances
         updateAttach();
     }
