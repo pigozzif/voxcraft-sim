@@ -854,6 +854,7 @@ __global__ void gpu_update_attach(VX3_Voxel **surface_voxels, int num, double wa
     int first = threadIdx.x + blockIdx.x * blockDim.x;
     int second = threadIdx.y + blockIdx.y * blockDim.y;
     if (first < num && second < first) {
+        printf("inside gpu_update_attach\n");
         VX3_Voxel *voxel1 = surface_voxels[first];
         VX3_Voxel *voxel2 = surface_voxels[second];
         if (voxel1->removed || voxel2->removed)
