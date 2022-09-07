@@ -87,6 +87,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
                 break;
             }
             printf("Number of collisions: %d or %d\n", d_v3->d_v_collisions.size(), d_v3->collisionCount);
+            d_v3->d_v_collisions.clear();
             if (d_v3->RecordStepSize) { // output History file
                 if (j % real_stepsize == 0) {
                     if (d_v3->RecordVoxel) {
