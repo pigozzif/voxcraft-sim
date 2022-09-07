@@ -746,6 +746,7 @@ __device__ void handle_collision_attachment(VX3_Voxel *voxel1, VX3_Voxel *voxel2
                 }
             }
         }
+        k->d_v_collisions.push_back(collision);
     }
 
     // determined by formula
