@@ -546,6 +546,7 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
     for (int i = 0; i < controller->votes->size(); ++i) {
       sensing_score += controller->votes->get(i) == is_passable;
     }
+    printf("touching: %d %d", controller->firstLeftContact, controller->firstRightContact);
     sensing_score /= (controller->votes->size() == 0) ? 1 : controller->votes->size();
     fitness_score = locomotion_score + sensing_score;
 }
@@ -652,8 +653,8 @@ __global__ void gpu_update_temperature(VX3_Voxel *voxels, int num, double TempAm
             return;
         if (t->mat->fixed)
             return; // fixed voxels, no need to update temperature
-        double currentTemperature =/*
-            TempAmplitude * controller->updateVoxelTemp(t, k);*/sin(2 * 3.1415926f * (currentTime / 1 + 500/*TempPeriod + t->phaseOffset*/)); // update the global temperature
+        double currentTemperature =
+            TempAmplitude * controller->updateVoxelTemp(t, k);//sin(2 * 3.1415926f * (currentTime / TempPeriod + t->phaseOffset)); // update the global temperature
         // TODO: if we decide not to use PhaseOffset any more, we can move this calculation outside.
         // By default we don't enable expansion. But we can enable that in VXA.
         //printf("temp for (%d,%d,%d) at %f neighbors {pos_x:(%d,%d,%d) neg_x:(%d,%d,%d) pos_y:(%d,%d,%d) neg_y:(%d,%d,%d) pos_z:(%d,%d,%d) neg_z:(%d,%d,%d)}: %f\n", t->ix, t->iy, t->iz, currentTime, (t->adjacentVoxel((linkDirection)0)) ? t->adjacentVoxel((linkDirection)0)->ix : -1, (t->adjacentVoxel((linkDirection)0)) ? t->adjacentVoxel((linkDirection)0)->iy : -1, (t->adjacentVoxel((linkDirection)0)) ? t->adjacentVoxel((linkDirection)0)->iz : -1, (t->adjacentVoxel((linkDirection)1)) ? t->adjacentVoxel((linkDirection)1)->ix : -1, (t->adjacentVoxel((linkDirection)1)) ? t->adjacentVoxel((linkDirection)1)->iy : -1, (t->adjacentVoxel((linkDirection)1)) ? t->adjacentVoxel((linkDirection)1)->iz : -1, (t->adjacentVoxel((linkDirection)2)) ? t->adjacentVoxel((linkDirection)2)->ix : -1, (t->adjacentVoxel((linkDirection)2)) ? t->adjacentVoxel((linkDirection)2)->iy : -1, (t->adjacentVoxel((linkDirection)2)) ? t->adjacentVoxel((linkDirection)2)->iz : -1, (t->adjacentVoxel((linkDirection)3)) ? t->adjacentVoxel((linkDirection)3)->ix : -1, (t->adjacentVoxel((linkDirection)3)) ? t->adjacentVoxel((linkDirection)3)->iy : -1, (t->adjacentVoxel((linkDirection)3)) ? t->adjacentVoxel((linkDirection)3)->iz : -1, (t->adjacentVoxel((linkDirection)4)) ? t->adjacentVoxel((linkDirection)4)->ix : -1, (t->adjacentVoxel((linkDirection)4)) ? t->adjacentVoxel((linkDirection)4)->iy : -1, (t->adjacentVoxel((linkDirection)4)) ? t->adjacentVoxel((linkDirection)4)->iz : -1, (t->adjacentVoxel((linkDirection)5)) ? t->adjacentVoxel((linkDirection)5)->ix : -1, (t->adjacentVoxel((linkDirection)5)) ? t->adjacentVoxel((linkDirection)5)->iy : -1, (t->adjacentVoxel((linkDirection)5)) ? t->adjacentVoxel((linkDirection)5)->iz : -1, currentTemperature);
