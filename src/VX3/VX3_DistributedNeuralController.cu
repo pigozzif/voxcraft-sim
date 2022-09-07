@@ -109,6 +109,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
       continue;
     }
     if (collision->pV1 == voxel || collision->pV2 == voxel) {
+      printf("COLLISION WITH (%d,%d,%d)\n", voxel->ix, voxel->iy, voxel->iz);
       if (collision->force == VX3_Vec3D<float>(0,0,0)) {
         continue;
       }
