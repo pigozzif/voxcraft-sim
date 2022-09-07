@@ -103,12 +103,12 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
 }
 
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
-  if (kernel->d_v_collisions.size() != 0) printf("NUMBER OF COLLISIONS: %d\n", kernel->d_v_collisions.size());
   for (int j = 0; j < kernel->d_v_collisions.size(); ++j) {
     VX3_Collision* collision = kernel->d_v_collisions.get(j);
     if (!collision) {
       continue;
     }
+    printf("COLLISION\n");
     if (collision->pV1 == voxel || collision->pV2 == voxel) {
       printf("COLLISION WITH (%d,%d,%d)\n", voxel->ix, voxel->iy, voxel->iz);
       if (collision->force == VX3_Vec3D<float>(0,0,0)) {
