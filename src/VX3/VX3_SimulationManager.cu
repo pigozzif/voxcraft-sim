@@ -36,7 +36,6 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
                    d_v3->vxa_filename);
             return;
         }
-        printf("Number of collisions: %d or %d", d_v3->d_v_collisions.size(), d_v3->collisionCount);
         d_v3->syncVectors();           // Everytime we pass a class with VX3_vectors in
                                        // it, we should sync hd_vector to d_vector first.
         d_v3->saveInitialPosition();
@@ -87,6 +86,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
                        d_v3->vxa_filename);
                 break;
             }
+            printf("Number of collisions: %d or %d\n", d_v3->d_v_collisions.size(), d_v3->collisionCount);
             if (d_v3->RecordStepSize) { // output History file
                 if (j % real_stepsize == 0) {
                     if (d_v3->RecordVoxel) {
