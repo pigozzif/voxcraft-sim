@@ -242,6 +242,7 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
     // clock_t time_measures[10];
     // time_measures[0] = clock();
     updateTemperature(controller);
+    d_v_collisions.clear();
     CurStepCount++;
     if (dt == 0)
         return true;
