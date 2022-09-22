@@ -125,7 +125,9 @@ void VX3_VoxelyzeKernel::cleanup() {
 
 __device__ void VX3_VoxelyzeKernel::syncVectors() {
     d_v_linkMats.clear();
-    d_v_collisions.clear();
+    for (int i = 0; i < num_d_voxels; i++) {
+        d_voxels[i].collisions.clear();
+    }
     d_targets.clear();
     // allocate memory for collision lookup table
     num_lookupGrids = lookupGrid_n * lookupGrid_n * lookupGrid_n;
@@ -242,7 +244,9 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
     // clock_t time_measures[10];
     // time_measures[0] = clock();
     updateTemperature(controller);
-    d_v_collisions.clear();
+    for (int i = 0; i < num_d_voxels; i++) {
+        d_voxels[i].collisions.clear();
+    }
     CurStepCount++;
     if (dt == 0)
         return true;
@@ -747,7 +751,8 @@ __device__ void handle_collision_attachment(VX3_Voxel *voxel1, VX3_Voxel *voxel2
                 }
             }
         }
-        k->d_v_collisions.push_back(&collision);
+        voxel1->collisions.push_back(&collision);
+        voxel2->collisions.push_back(&collision);
     }
 
     // determined by formula
