@@ -42,8 +42,8 @@ class VX3_VoxelyzeKernel {
     __device__ void registerTargets();
     __device__ void computeTargetCloseness();
     __device__ void saveInitialPosition();
-    __device__ bool check_left_wall_collision(VX3_Vec3D<float>* center_position);
-    __device__ bool check_right_wall_collision(VX3_Vec3D<float>* center_position);
+    __device__ bool check_left_wall_collision(VX3_Vec3D<float>* center_position, VX3_Vec3D<float>* base_size);
+    __device__ bool check_right_wall_collision(VX3_Vec3D<float>* center_position, VX3_Vec3D<float>* base_size);
 
 
     // for Secondary Experiment
