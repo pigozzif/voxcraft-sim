@@ -275,6 +275,7 @@ class VX3_Voxel {
     VX3_External *ext = NULL;
 
     VX3_Link *links[6]; // links in the 6 cardinal directions according to linkDirection enumeration
+    VX3_dVector<VX3_Collision *> collisions;
 
     // voxel state
     VX3_Vec3D<double> pos;     // current center position (meters) (GCS)
