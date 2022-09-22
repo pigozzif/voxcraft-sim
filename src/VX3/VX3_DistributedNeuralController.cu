@@ -103,11 +103,11 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
 }
 
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
-  for (int j = 0; j < kernel->d_v_collisions.size(); ++j) {
-    VX3_Collision* collision = kernel->d_v_collisions.get(j);
-    if (!collision) {
-      continue;
-    }
+  for (int j = 0; j < voxel->collisions.size(); ++j) {
+    VX3_Collision* collision = voxel->collisions.get(j);
+    //if (!collision) {
+    //  continue;
+    //}
     //if (!collision->pV1 || !collision->pV2) printf("One is NULL\n"); 
     //else printf("COLLISION\n");
     //if (collision->pV1 && collision->pV2) printf("COLLISION BETWEEN (%d,%d,%d) AND (%d,%d,%d)\n", collision->pV1->ix, collision->pV1->iy, collision->pV1->iz, collision->pV2->ix, collision->pV2->iy, collision->pV2->iz);
@@ -116,6 +116,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
         printf("ZERO FORCE\n");
         continue;
       }
+      printf("We made it!\n");
       for (int i = 0; i < NUM_SENSORS; ++i) {
         VX3_Vec3D<float>* offset = getOffset((linkDirection)i);
         double s = voxel->material()->nominalSize();
