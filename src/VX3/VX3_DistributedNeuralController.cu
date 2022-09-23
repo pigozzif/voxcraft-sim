@@ -104,7 +104,13 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
 
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
   for (int i = 0; i < NUM_SENSORS; ++i) {
-    VX3_Vec3D<float>* corner_pos = voxel->cornerPosition((voxelCorner)i);
+    if (i == 0) {
+      voxel->inputs[i] = sin(-2 * 3.14159 * kernel->CurStepCount);
+    }
+    else {
+      voxel->inputs[i] = 0.0;
+    }
+    /*VX3_Vec3D<float>* corner_pos = voxel->cornerPosition((voxelCorner)i);
     if (kernel->check_left_wall_collision(corner_pos)) {
       voxel->inputs[i] = 1.0;
       if (!firstLeftContact) {
@@ -116,7 +122,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
       if (!firstRightContact) {
         firstRightContact = true;
       }
-    }
+    }*/
   }
    /*for (int j = 0; j < voxel->collisions.size(); ++j) {
     VX3_Collision* collision = voxel->collisions.get(j);
@@ -150,9 +156,9 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
     }
   }*/
   
-  if (voxel->iz == 0) {
+  /*if (voxel->iz == 0) {
     voxel->inputs[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
-  }
+  }*/
 }
 
 __device__ VX3_Vec3D<float>* VX3_DistributedNeuralController::getOffset(const linkDirection dir) const {
