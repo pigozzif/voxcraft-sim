@@ -613,7 +613,7 @@ __device__ void VX3_VoxelyzeKernel::computeTargetCloseness() {
     // printf("targetCloseness: %f\n", targetCloseness);
 }
 
-__device__ bool check_left_wall_collision(VX3_Vec3D<float>* center_position, VX3_Vec3D<double>* base_size) {
+/*__device__ bool check_left_wall_collision(VX3_Vec3D<float>* center_position, VX3_Vec3D<double>* base_size) {
   return abs(center_position.x - left_wall_center.x) - (base_size.x + left_a.x) <= 0.0 && 
          abs(center_position.y - left_wall_center.y) - (base_size.y + left_a.y) <= 0.0 && 
          abs(center_position.z - left_wall_center.z) - (base_size.z + left_a.z) <= 0.0;
@@ -623,7 +623,7 @@ __device__ bool check_right_wall_collision(VX3_Vec3D<float>* center_position, VX
   return abs(center_position.x - right_wall_center.x) - (base_size.x + right_a.x) <= 0.0 && 
          abs(center_position.y - right_wall_center.y) - (base_size.y + right_a.y) <= 0.0 && 
          abs(center_position.z - right_wall_center.z) - (base_size.z + right_a.z) <= 0.0;
-}
+}*/
 
 /* Sub GPU Threads */
 __global__ void gpu_update_links(VX3_Link **links, int num) {
