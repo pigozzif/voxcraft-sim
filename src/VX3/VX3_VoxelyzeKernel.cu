@@ -103,6 +103,34 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
     // currentTemperature = TempBase + TempAmplitude;
 
     d_surface_voxels = NULL;
+    
+    std::vector<VX3_Vec3D<float>*> left_voxels;
+    std::vector<VX3_Vec3D<float>*> right_voxels;
+    for (int i = 0; i < num_d_voxels; i++) {
+      VX3_Voxel* voxel = d_voxels + i;
+      if (voxel->matid == 1) {
+        left_voxels.push_back(voxel->position());
+      }
+      else if (voxel->matid == 2) {
+        right_voxels.push_back(voxel->position());
+      }
+    }
+    
+    double sum_x_left, sum_y_left, sum_z_left = 0.0, 0.0, 0.0;
+    for (int i = 0; i < left_voxels.size(); ++i) {
+      sum_x_left += left_voxels.get(i).x;
+      sum_y_left += left_voxels.get(i).y;
+      sum_x_left += left_voxels.get(i).z;
+    }
+    left_wall_center = VX3_Vec3D<float>(sum_x_left / left_voxels.size(), sum_y_left / left_voxels.size(), sum_z_left / left_voxels.size());
+    
+    double sum_x_right, sum_y_right, sum_z_right = 0.0, 0.0, 0.0;
+    for (int i = 0; i < right_voxels.size(); ++i) {
+      sum_x_right += right_voxels.get(i).x;
+      sum_y_right += right_voxels.get(i).y;
+      sum_x_right += right_voxels.get(i).z;
+    }
+    right_wall_center = VX3_Vec3D<float>(sum_x_right / right_voxels.size(), sum_y_right / right_voxels.size(), sum_z_right / right_voxels.size());
 }
 
 void VX3_VoxelyzeKernel::cleanup() {
@@ -583,6 +611,18 @@ __device__ void VX3_VoxelyzeKernel::computeTargetCloseness() {
     }
     targetCloseness = ret;
     // printf("targetCloseness: %f\n", targetCloseness);
+}
+
+__device__ bool check_left_wall_collision(VX3_Vec3D<float>* center_position, VX3_Vec3D<double>* base_size) {
+  return abs(center_position.x - left_wall_center.x) - (base_size.x + left_a.x) <= 0.0 && 
+         abs(center_position.y - left_wall_center.y) - (base_size.y + left_a.y) <= 0.0 && 
+         abs(center_position.z - left_wall_center.z) - (base_size.z + left_a.z) <= 0.0;
+}
+
+__device__ bool check_right_wall_collision(VX3_Vec3D<float>* center_position, VX3_Vec3D<double>* base_size) {
+  return abs(center_position.x - right_wall_center.x) - (base_size.x + right_a.x) <= 0.0 && 
+         abs(center_position.y - right_wall_center.y) - (base_size.y + right_a.y) <= 0.0 && 
+         abs(center_position.z - right_wall_center.z) - (base_size.z + right_a.z) <= 0.0;
 }
 
 /* Sub GPU Threads */
