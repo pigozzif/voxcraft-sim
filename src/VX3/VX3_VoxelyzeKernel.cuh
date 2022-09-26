@@ -27,7 +27,7 @@ class VX3_VoxelyzeKernel {
 
     void cleanup();
   
-    addWeights(double* weights, int n);
+    void addWeights(double* weights, int n);
 
     /* Cuda methods */
     __device__ bool doTimeStep(VX3_DistributedNeuralController* controller, float dt = -1.0f);
