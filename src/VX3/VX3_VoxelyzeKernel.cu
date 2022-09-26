@@ -152,7 +152,6 @@ void VX3_VoxelyzeKernel::cleanup() {
  * filesystem. */
 
 void VX3_VoxelyzeKernel::addWeights(double* weights, int n) {
-  double* new_weights;
   VcudaMalloc((void**)&new_weights, sizeof(double) * n);
   VcudaMemcpy(new_weights, weights, sizeof(double) * n, VcudaMemcpyHostToDevice);
 }
