@@ -151,6 +151,14 @@ void VX3_VoxelyzeKernel::cleanup() {
 /* Cuda methods : cannot use any CVX_xxx, and no std::, no boost::, and no
  * filesystem. */
 
+void VX3_VoxelyzeKernel::addWeights(double* weights, int n) {
+  double* new_weights;
+  VcudaMalloc((void**)&new_weights, sizeof(double) * n);
+  for (int i = 0; i < n; ++i) {
+    new_weights[i] = weights[i];
+  }
+}
+
 __device__ void VX3_VoxelyzeKernel::setWeights() {
   weights = new VX3_dVector<double>();
   for (int i = 0; i < 12 * 8 + 8; ++i) {
