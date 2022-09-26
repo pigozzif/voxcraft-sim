@@ -29,16 +29,16 @@ __device__ void VX3_MLP::apply(VX3_Voxel* voxel) const {
     voxel->inputs[i] = tanh(voxel->inputs[i]);
   }
   for (int j = 0; j < numOutputs; ++j) {
-    double sum = weights->get(j * (numInputs + 1)); //the bias
+    double sum = weights[j * (numInputs + 1)]; //the bias
     for (int k = 1; k < numInputs + 1; ++k) {
-      sum += voxel->inputs[k - 1] * weights->get(j * (numInputs + 1) + k); //weight inputs
+      sum += voxel->inputs[k - 1] * weights[j * (numInputs + 1) + k]; //weight inputs
     }
     voxel->outputs[j] = tanh(sum); //apply output activation
   }
 }
 
-__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_VoxelyzeKernel* kernel, double* weights) {//double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k, double l, double m, double n, double o, double p, double q, double r, double s, double t, double u, double v, double w, double x, double y, double z, double aa, double ab, double ac, double ad, double ae, double af, double ag, double ah, double ai, double aj, double ak, double al, double am, double an, double ao, double ap, double aq, double ar, double as, double at, double au, double av, double aw, double ax, double ay, double az, double ba, double bb, double bc, double bd, double be, double bf, double bg, double bh, double bi, double bj, double bk, double bl, double bm, double bn, double bo, double bp, double bq, double br, double bs, double bt, double bu, double bv, double bw, double bx, double by, double bz, double ca, double cb, double cc, double cd, double ce, double cf, double cg, double ch, double ci, double cj, double ck, double cl, double cm, double cn, double co, double cp, double cq, double cr, double cs, double ct, double cu, double cv, double cw, double cx, double cy, double cz) {
-  mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);//a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, aa, ab, ac, ad, ae, af, ag, ah, ai, aj, ak, al, am, an, ao, ap, aq, ar, as, at, au, av, aw, ax, ay, az, ba, bb, bc, bd, be, bf, bg, bh, bi, bj, bk, bl, bm, bn, bo, bp, bq, br, bs, bt, bu, bv, bw, bx, by, bz, ca, cb, cc, cd, ce, cf, cg, ch, ci, cj, ck, cl, cm, cn, co, cp, cq, cr, cs, ct, cu, cv, cw, cx, cy, cz);
+__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_VoxelyzeKernel* kernel, double* weights) {
+  mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
     voxel->initArrays(mlp->numInputs, mlp->numOutputs, NUM_SIGNALS);
@@ -182,111 +182,3 @@ __device__ VX3_Vec3D<float>* VX3_DistributedNeuralController::getOffset(const li
       return new VX3_Vec3D<float>(0,0,-1);
   }
 }
-
-/*__device__ void VX3_MLP::setWeights(double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k, double l, double m, double n, double o, double p, double q, double r, double s, double t, double u, double v, double w, double x, double y, double z, double aa, double ab, double ac, double ad, double ae, double af, double ag, double ah, double ai, double aj, double ak, double al, double am, double an, double ao, double ap, double aq, double ar, double as, double at, double au, double av, double aw, double ax, double ay, double az, double ba, double bb, double bc, double bd, double be, double bf, double bg, double bh, double bi, double bj, double bk, double bl, double bm, double bn, double bo, double bp, double bq, double br, double bs, double bt, double bu, double bv, double bw, double bx, double by, double bz, double ca, double cb, double cc, double cd, double ce, double cf, double cg, double ch, double ci, double cj, double ck, double cl, double cm, double cn, double co, double cp, double cq, double cr, double cs, double ct, double cu, double cv, double cw, double cx, double cy, double cz) {
-  VcudaMalloc((void**) &weights, sizeof(double*) * numOutputs * (numInputs + 1));
-  weights[0] = a;
-  weights[1] = b;
-  weights[2] = c;
-  weights[3] = d;
-  weights[4] = e;
-  weights[5] = f;
-  weights[6] = g;
-  weights[7] = h;
-  weights[8] = i;
-  weights[9] = j;
-  weights[10] = k;
-  weights[11] = l;
-  weights[12] = m;
-  weights[13] = n;
-  weights[14] = o;
-  weights[15] = p;
-  weights[16] = q;
-  weights[17] = r;
-  weights[18] = s;
-  weights[19] = t;
-  weights[20] = u;
-  weights[21] = v;
-  weights[22] = w;
-  weights[23] = x;
-  weights[24] = y;
-  weights[25] = z;
-  weights[26] = aa;
-  weights[27] = ab;
-  weights[28] = ac;
-  weights[29] = ad;
-  weights[30] = ae;
-  weights[31] = af;
-  weights[32] = ag;
-  weights[33] = ah;
-  weights[34] = ai;
-  weights[35] = aj;
-  weights[36] = ak;
-  weights[37] = al;
-  weights[38] = am;
-  weights[39] = an;
-  weights[40] = ao;
-  weights[41] = ap;
-  weights[42] = aq;
-  weights[43] = ar;
-  weights[44] = as;
-  weights[45] = at;
-  weights[46] = au;
-  weights[47] = av;
-  weights[48] = aw;
-  weights[49] = ax;
-  weights[50] = ay;
-  weights[51] = az;
-  weights[52] = ba;
-  weights[53] = bb;
-  weights[54] = bc;
-  weights[55] = bd;
-  weights[56] = be;
-  weights[57] = bf;
-  weights[58] = bg;
-  weights[59] = bh;
-  weights[60] = bi;
-  weights[61] = bj;
-  weights[62] = bk;
-  weights[63] = bl;
-  weights[64] = bm;
-  weights[65] = bn;
-  weights[66] = bo;
-  weights[67] = bp;
-  weights[68] = bq;
-  weights[69] = br;
-  weights[70] = bs;
-  weights[71] = bt;
-  weights[72] = bu;
-  weights[73] = bv;
-  weights[74] = bw;
-  weights[75] = bx;
-  weights[76] = by;
-  weights[77] = bz;
-  weights[78] = ca;
-  weights[79] = cb;
-  weights[80] = cc;
-  weights[81] = cd;
-  weights[82] = ce;
-  weights[83] = cf;
-  weights[84] = cg;
-  weights[85] = ch;
-  weights[86] = ci;
-  weights[87] = cj;
-  weights[88] = ck;
-  weights[89] = cl;
-  weights[90] = cm;
-  weights[91] = cn;
-  weights[92] = co;
-  weights[93] = cp;
-  weights[94] = cq;
-  weights[95] = cr;
-  weights[96] = cs;
-  weights[97] = ct;
-  weights[98] = cu;
-  weights[99] = cv;
-  weights[100] = cw;
-  weights[101] = cx;
-  weights[102] = cy;
-  weights[103] = cz;
-}*/
