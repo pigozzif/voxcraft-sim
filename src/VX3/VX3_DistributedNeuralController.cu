@@ -25,9 +25,9 @@ __device__ void VX3_MLP::apply(VX3_Voxel* voxel) const {
     voxel->inputs[i] = tanh(voxel->inputs[i]);
   }
   for (int j = 0; j < numOutputs; ++j) {
-    double sum = weights[j * (numInputs + 1)]; //the bias
+    double sum = weights->get(j * (numInputs + 1)); //the bias
     for (int k = 1; k < numInputs + 1; ++k) {
-      sum += voxel->inputs[k - 1] * weights.get(j * (numInputs + 1) + k); //weight inputs
+      sum += voxel->inputs[k - 1] * weights->get(j * (numInputs + 1) + k); //weight inputs
     }
     voxel->outputs[j] = tanh(sum); //apply output activation
   }
