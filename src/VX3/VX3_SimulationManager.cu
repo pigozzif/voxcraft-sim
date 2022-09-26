@@ -173,7 +173,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
 }
 
 double* VX3_SimulationManager::readWeights() {
-  std::string delim = ",";
+  std::string delim = ',';
   double* d_weights = (double*) malloc(sizeof(double) * (std::count(weights.begin(), weights.end(), delim) + 1));
   std::size_t start = 0U;
   std::size_t end = weights.find(delim);
@@ -389,7 +389,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         this->weights = pt_VXD.get<std::string>("VXD.Controller.NeuralWeights", "not found");
         is_passable = pt_VXD.get<int>("VXD.Task.Passable", 1);
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
-        h_d_tmp.addWeights(readWeights());
+        h_d_tmp.addWeights(readWeights(), std::count(this->weights.begin(), this->weights.end(), ','));
         // More VXA settings which is new in VX3
         strcpy(h_d_tmp.vxa_filename, file.filename().c_str());
 
