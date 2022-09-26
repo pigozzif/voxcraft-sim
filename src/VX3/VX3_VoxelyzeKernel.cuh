@@ -165,6 +165,8 @@ class VX3_VoxelyzeKernel {
 
     int EnableExpansion=0;
   
+    VX3_dVector<double>* weights;
+  
     VX3_Voxel* target = NULL;
     VX3_Vec3D<float>* left_wall_center = NULL;
     VX3_Vec3D<float>* right_wall_center = NULL;
