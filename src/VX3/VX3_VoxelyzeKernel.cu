@@ -104,6 +104,11 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
 
     d_surface_voxels = NULL;
     
+    weights = new VX3_dVector<double>();
+    for (int i = 0; i < 12 * 8 + 8; ++i) {
+      weights->push_back(0.0);
+    }
+    
     /*std::vector<VX3_Vec3D<float>*> left_voxels;
     std::vector<VX3_Vec3D<float>*> right_voxels;
     for (int i = 0; i < num_d_voxels; i++) {
