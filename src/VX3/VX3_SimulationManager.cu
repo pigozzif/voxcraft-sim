@@ -495,7 +495,6 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     enlargeGPUPrintfFIFOSize();
     CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, x, y, is_passable);
     CUDA_CHECK_AFTER_CALL();
-    free(d_weights);
 }
 
 void VX3_SimulationManager::collectResults(int num_simulation, int device_index) {
