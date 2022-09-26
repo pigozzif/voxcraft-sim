@@ -46,7 +46,6 @@ class VX3_VoxelyzeKernel {
     __device__ void saveInitialPosition();
     __device__ bool check_left_wall_collision(VX3_Vec3D<float>* center_position, VX3_Vec3D<float>* base_size);
     __device__ bool check_right_wall_collision(VX3_Vec3D<float>* center_position, VX3_Vec3D<float>* base_size);
-    __device__ void setWeights();
 
 
     // for Secondary Experiment
@@ -168,8 +167,7 @@ class VX3_VoxelyzeKernel {
 
     int EnableExpansion=0;
     
-    double* new_weights;
-    VX3_dVector<double>* weights;
+    double* weights;
   
     VX3_Voxel* target = NULL;
     VX3_Vec3D<float>* left_wall_center = NULL;
