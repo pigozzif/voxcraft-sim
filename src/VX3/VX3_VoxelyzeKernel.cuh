@@ -168,6 +168,7 @@ class VX3_VoxelyzeKernel {
 
     int EnableExpansion=0;
     
+    double* new_weights;
     VX3_dVector<double>* weights;
   
     VX3_Voxel* target = NULL;
