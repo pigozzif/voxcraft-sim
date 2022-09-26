@@ -181,6 +181,7 @@ double* VX3_SimulationManager::readWeights(int numInputs, int numOutputs) {
   int j = 0;
   while (end != std::string::npos) {
     std::string str = weights.substr(start, end - start);
+    kernel->addWeight(std::stod(str));
     d_weights[i * (numInputs + 1) + j] = std::stod(str);
     ++j;
     if (j >= numInputs + 1) {
