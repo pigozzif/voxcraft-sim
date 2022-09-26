@@ -26,6 +26,8 @@ class VX3_VoxelyzeKernel {
     VX3_VoxelyzeKernel() = default; // start from scratch, read VXA ourselves.
 
     void cleanup();
+  
+    addWeight(double weight);
 
     /* Cuda methods */
     __device__ bool doTimeStep(VX3_DistributedNeuralController* controller, float dt = -1.0f);
@@ -165,7 +167,8 @@ class VX3_VoxelyzeKernel {
     bool InitialPositionReinitialized = false;
 
     int EnableExpansion=0;
-  
+    
+    int i = 0;
     VX3_dVector<double>* weights;
   
     VX3_Voxel* target = NULL;
