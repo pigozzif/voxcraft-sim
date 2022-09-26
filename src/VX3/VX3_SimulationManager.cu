@@ -173,8 +173,8 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
 }
 
 double* VX3_SimulationManager::readWeights() {
-  char delim = ',';
-  double* d_weights = (double*) malloc(sizeof(double) * (std::count(weights.begin(), weights.end(), delim) + 1));
+  std::string delim = ",";
+  double* d_weights = (double*) malloc(sizeof(double) * (std::count(weights.begin(), weights.end(), ',') + 1));
   std::size_t start = 0U;
   std::size_t end = weights.find(delim);
   int i = 0;
