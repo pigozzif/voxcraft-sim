@@ -159,7 +159,7 @@ void VX3_VoxelyzeKernel::addWeights(double* weights, int n) {
 __device__ void VX3_VoxelyzeKernel::setWeights() {
   weights = new VX3_dVector<double>();
   for (int i = 0; i < 12 * 8 + 8; ++i) {
-    weights->push_back(0.0);
+    weights->push_back(new_weights[i]);
   }
 }
 
