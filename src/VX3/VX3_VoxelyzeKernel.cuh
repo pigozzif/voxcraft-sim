@@ -170,10 +170,10 @@ class VX3_VoxelyzeKernel {
     double* weights;
   
     VX3_Voxel* target = NULL;
-    VX3_Vec3D<float>* left_wall_center = NULL;
-    VX3_Vec3D<float>* right_wall_center = NULL;
-    VX3_Vec3D<float>* left_a = NULL;
-    VX3_Vec3D<float>* right_a = NULL;
+    VX3_Vec3D<float> left_wall_center;
+    VX3_Vec3D<float> right_wall_center;
+    VX3_Vec3D<float> left_a;
+    VX3_Vec3D<float> right_a;
 };
 
 #endif // VX3_VOXELYZE_KERNEL_H
