@@ -467,9 +467,6 @@ bool CVX_Sim::IsVolumeEffectsEnabled() {
 
 void CVX_Sim::UpdateMatTemps(void) // updates expansions for each material
 {
-    if (!pEnv->GetController()) {
-      pEnv->InitController(&Vx);
-    }
     for (int iz = Vx.indexMinZ(); iz <= Vx.indexMaxZ(); iz++) {
         for (int iy = Vx.indexMinY(); iy <= Vx.indexMaxY(); iy++) {
             for (int ix = Vx.indexMinX(); ix <= Vx.indexMaxX(); ix++) {
@@ -483,8 +480,7 @@ void CVX_Sim::UpdateMatTemps(void) // updates expansions for each material
                 }
             }
         }
-    }
-    if (!pEnv->GetController()) pEnv->GetController()->updateLastSignals();	
+    }	
 }
 
 void CVX_Sim::SetGravityAccel(float grav) { Vx.setGravity(-grav / 9.80665); }
