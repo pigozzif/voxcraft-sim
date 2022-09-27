@@ -30,6 +30,7 @@ class VX3_VoxelyzeKernel {
     void addWeights(double* weights, int n);
 
     /* Cuda methods */
+    __device__ void init();
     __device__ bool doTimeStep(VX3_DistributedNeuralController* controller, float dt = -1.0f);
     __device__ double recommendedTimeStep();
     __device__ void updateCurrentCenterOfMass();
