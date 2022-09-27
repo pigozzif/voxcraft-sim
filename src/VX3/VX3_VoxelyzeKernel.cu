@@ -217,6 +217,9 @@ __device__ void VX3_VoxelyzeKernel::init() {
   right_a_x  = abs(right_max_x - right_min_x) + base_size.x * 2;
   a_y  = abs(max_y - min_y) + base_size.y * 2;
   a_z  = abs(max_z - min_z) + base_size.z * 2;
+  printf("Center right: (%d,%d,%d)", right_wall_center_x, right_wall_center_y, right_wall_center_z);
+  printf("Center left: (%d,%d,%d)", left_wall_center_x, left_wall_center_y, left_wall_center_z);
+  printf("Edges: (%d,%d,%d,%d)", right_a_x, left_a_y, a_y, a_z);
 }
 __device__ void VX3_VoxelyzeKernel::saveInitialPosition() {
     for (int i = 0; i < num_d_voxels; i++) {
