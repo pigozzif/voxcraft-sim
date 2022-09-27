@@ -104,7 +104,7 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
 
     d_surface_voxels = NULL;
     
-    /*std::vector<VX3_Vec3D<float>*> left_voxels;
+    std::vector<VX3_Vec3D<float>*> left_voxels;
     std::vector<VX3_Vec3D<float>*> right_voxels;
     for (int i = 0; i < num_d_voxels; i++) {
       VX3_Voxel* voxel = d_voxels + i;
@@ -114,7 +114,7 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
       else if (voxel->matid == 2) {
         right_voxels.push_back(voxel->position());
       }
-    }
+    }/*
     
     double sum_x_left, sum_y_left, sum_z_left = 0.0, 0.0, 0.0;
     for (int i = 0; i < left_voxels.size(); ++i) {
