@@ -109,10 +109,10 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
     for (int i = 0; i < num_d_voxels; i++) {
       VX3_Voxel* voxel = d_voxels + i;
       if (voxel->matid == 1) {
-        left_voxels.push_back(voxel->position());
+        left_voxels.push_back(&voxel->position());
       }
       else if (voxel->matid == 2) {
-        right_voxels.push_back(voxel->position());
+        right_voxels.push_back(&voxel->position());
       }
     }/*
     
