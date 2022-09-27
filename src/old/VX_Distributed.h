@@ -6,8 +6,6 @@
 #include "Voxelyze.h"
 #include <string>
 
-#define NUM_SENSORS 6
-#define NUM_SIGNALS 6
 
 class CVX_MLP
 {
