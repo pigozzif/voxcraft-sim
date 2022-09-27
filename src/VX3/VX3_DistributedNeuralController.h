@@ -4,7 +4,7 @@
 #include "VX3.cuh"
 #include "VX3_Voxel.h"
 
-#define NUM_SENSORS 6
+#define NUM_SENSORS 7
 #define NUM_SIGNALS 6
 
 class VX3_VoxelyzeKernel;
