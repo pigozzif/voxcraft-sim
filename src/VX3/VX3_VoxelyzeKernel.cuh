@@ -178,11 +178,9 @@ class VX3_VoxelyzeKernel {
     double right_wall_center_y;
     double right_wall_center_z;
     double left_a_x;
-    double left_a_y;
-    double left_a_z;
+    double a_y;
+    double a_z;
     double right_a_x;
-    double right_a_y;
-    double right_a_z;
 };
 
 #endif // VX3_VOXELYZE_KERNEL_H
