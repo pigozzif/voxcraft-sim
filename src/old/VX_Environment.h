@@ -13,7 +13,6 @@ See <http://www.opensource.org/licenses/lgpl-3.0.html> for license details.
 
 #include "VX_FRegion.h"
 #include "VX_Object.h"
-#include "VX_Distributed.h"
 #include "VX_Voxel.h"
 #include "Voxelyze.h"
 #include <string>
@@ -78,8 +77,6 @@ public:
 	vfloat GetTempPeriod(void) {return TempPeriod;} //!< Return current base temperature.
 	void SetNeuralWeights(std::string weights) {Weights = weights;} //!<Set neural net weights
 	std::string GetNeuralWeights(void) {return Weights;} //!<Return neural net weights
-	CVX_Distributed* GetController(void) {return Controller;}
-	void InitController(CVoxelyze* sim);
 	int GetX() {return x;}
 	int GetY() {return y;}
 	int GetPassability() {return is_passable;}
@@ -101,7 +98,6 @@ private:
 	bool VaryTempEnabled; //is periodic variation of temperature on?
 	vfloat TempBase, TempAmplitude, TempPeriod; //degress celcius
 	std::string Weights; //neural weights
-	CVX_Distributed* Controller;
 	double x;
 	double y;
 	int is_passable;
