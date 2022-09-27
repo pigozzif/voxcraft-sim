@@ -9,7 +9,6 @@ See <http://www.opensource.org/licenses/lgpl-3.0.html> for license details.
 *******************************************************************************/
 
 #include "VX_Environment.h"
-#include "VX_Distributed.h"
 #include "VX_Voxel.h"
 #include "Voxelyze.h"
 #include <iostream>
@@ -39,7 +38,6 @@ CVX_Environment::CVX_Environment(void)
 	TempPeriod = 0.1; //in seconds
 	CurTemp = 25;
 	Weights = "";
-	Controller = NULL;
 }
 
 CVX_Environment::~CVX_Environment(void)
@@ -330,11 +328,6 @@ void CVX_Environment::RemoveDisconnected(void) //removes regions not connected t
 	List = NULL;
 	delete[] Visited;
 	Visited = NULL;
-}
-
-void CVX_Environment::InitController(CVoxelyze* sim)
-{
-  Controller = new CVX_Distributed(pObj->GetStArraySize(), Weights, sim);
 }
 
 float CVX_Environment::UpdateCurTemp(vfloat time, CVX_Object* pUpdateInObj, CVX_Voxel* voxel)
