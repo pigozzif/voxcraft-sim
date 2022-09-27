@@ -109,12 +109,12 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
     for (int i = 0; i < num_d_voxels; i++) {
       VX3_Voxel* voxel = d_voxels + i;
       if (voxel->matid == 1) {
-        left_voxels.push_back(voxel->position());
+        left_voxels.push_back(voxel->pos);
       }
       else if (voxel->matid == 2) {
-        right_voxels.push_back(voxel->position());
+        right_voxels.push_back(voxel->pos);
       }
-    }/*
+    }
     
     double sum_x_left, sum_y_left, sum_z_left = 0.0, 0.0, 0.0;
     for (int i = 0; i < left_voxels.size(); ++i) {
@@ -130,7 +130,7 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
       sum_y_right += right_voxels.get(i).y;
       sum_x_right += right_voxels.get(i).z;
     }
-    right_wall_center = VX3_Vec3D<float>(sum_x_right / right_voxels.size(), sum_y_right / right_voxels.size(), sum_z_right / right_voxels.size());*/
+    right_wall_center = VX3_Vec3D<float>(sum_x_right / right_voxels.size(), sum_y_right / right_voxels.size(), sum_z_right / right_voxels.size());
 }
 
 void VX3_VoxelyzeKernel::cleanup() {
