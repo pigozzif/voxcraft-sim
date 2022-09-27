@@ -182,7 +182,7 @@ __device__ void VX3_VoxelyzeKernel::init() {
   VX3_Vec3D<double> base_size;
   for (int i = 0; i < num_d_voxels; i++) {
     VX3_Voxel* voxel = &d_voxels[i];
-    base_size = voxel->baseSize();
+    base_size = voxel->size();
     if (voxel->matid == 1) {
       sum_x_left += voxel->pos.x;
       sum_y_left += voxel->pos.y;
