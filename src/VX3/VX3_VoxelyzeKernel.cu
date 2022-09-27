@@ -103,38 +103,6 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
     // currentTemperature = TempBase + TempAmplitude;
 
     d_surface_voxels = NULL;
-    
-    /*double sum_x_left = 0.0;
-    double sum_y_left = 0.0;
-    double sum_z_left = 0.0;
-    double sum_x_right = 0.0;
-    double sum_y_right = 0.0;
-    double sum_z_right = 0.0;
-    int num_left_voxels = 0;
-    int num_right_voxels = 0;
-    for (int i = 0; i < num_d_voxels; i++) {
-      VX3_Voxel voxel = d_voxels[i];
-      if (voxel.matid == 1) {
-        sum_x_left += voxel.pos.x;
-        sum_y_left += voxel.pos.y;
-        sum_x_left += voxel.pos.z;
-        ++num_left_voxels;
-      }
-      else if (voxel.matid == 2) {
-        sum_x_right += voxel.pos.x;
-        sum_y_right += voxel.pos.y;
-        sum_x_right += voxel.pos.z;
-        ++num_right_voxels;
-      }
-    }
-    
-    left_wall_center_x = sum_x_left / num_left_voxels;
-    left_wall_center_y = sum_y_left / num_left_voxels;
-    left_wall_center_x = sum_z_left / num_left_voxels;
-    
-    right_wall_center_x = sum_x_right / num_right_voxels;
-    right_wall_center_y = sum_y_right / num_right_voxels;
-    right_wall_center_z = sum_z_right / num_right_voxels;*/
 }
 
 void VX3_VoxelyzeKernel::cleanup() {
@@ -204,17 +172,17 @@ __device__ void VX3_VoxelyzeKernel::init() {
   int num_left_voxels = 0;
   int num_right_voxels = 0;
   for (int i = 0; i < num_d_voxels; i++) {
-    VX3_Voxel voxel = d_voxels[i];
-    if (voxel.matid == 1) {
-      sum_x_left += voxel.pos.x;
-      sum_y_left += voxel.pos.y;
-      sum_x_left += voxel.pos.z;
+    VX3_Voxel* voxel = &d_voxels[i];
+    if (voxel->matid == 1) {
+      sum_x_left += voxel->pos.x;
+      sum_y_left += voxel->pos.y;
+      sum_x_left += voxel->pos.z;
       ++num_left_voxels;
     }
-    else if (voxel.matid == 2) {
-      sum_x_right += voxel.pos.x;
-      sum_y_right += voxel.pos.y;
-      sum_x_right += voxel.pos.z;
+    else if (voxel->matid == 2) {
+      sum_x_right += voxel->pos.x;
+      sum_y_right += voxel->pos.y;
+      sum_x_right += voxel->pos.z;
       ++num_right_voxels;
     }
   }
