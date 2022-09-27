@@ -647,13 +647,13 @@ __device__ void VX3_VoxelyzeKernel::computeTargetCloseness() {
     // printf("targetCloseness: %f\n", targetCloseness);
 }
 
-__device__ bool check_left_wall_collision(VX3_Vec3D<double> center_position, VX3_Vec3D<double> base_size) {
+__device__ bool VX3_VoxelyzeKernel::check_left_wall_collision(VX3_Vec3D<double> center_position, VX3_Vec3D<double> base_size) {
   return abs(center_position.x - left_wall_center_x) - (base_size.x + left_a_x) <= 0.0 && 
          abs(center_position.y - left_wall_center_y) - (base_size.y + a_y) <= 0.0 && 
          abs(center_position.z - left_wall_center_z) - (base_size.z + a_z) <= 0.0;
 }
 
-__device__ bool check_right_wall_collision(VX3_Vec3D<double> center_position, VX3_Vec3D<double> base_size) {
+__device__ bool VX3_VoxelyzeKernel::check_right_wall_collision(VX3_Vec3D<double> center_position, VX3_Vec3D<double> base_size) {
   return abs(center_position.x - right_wall_center_x) - (base_size.x + right_a_x) <= 0.0 && 
          abs(center_position.y - right_wall_center_y) - (base_size.y + a_y) <= 0.0 && 
          abs(center_position.z - right_wall_center_z) - (base_size.z + a_z) <= 0.0;
