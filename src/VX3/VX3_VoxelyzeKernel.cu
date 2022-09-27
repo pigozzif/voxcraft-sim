@@ -104,41 +104,37 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
 
     d_surface_voxels = NULL;
     
-    std::vector<VX3_Vec3D<double>> left_voxels;
-    std::vector<VX3_Vec3D<double>> right_voxels;
-    for (int i = 0; i < num_d_voxels; i++) {
-      VX3_Voxel* voxel = d_voxels + i;
-      if (voxel->matid == 1) {
-        left_voxels.push_back(voxel->pos);
-      }
-      else if (voxel->matid == 2) {
-        right_voxels.push_back(voxel->pos);
-      }
-    }
-    
     double sum_x_left = 0.0;
     double sum_y_left = 0.0;
     double sum_z_left = 0.0;
-    for (VX3_Vec3D<double> pos : left_voxels) {
-      sum_x_left += pos.x;
-      sum_y_left += pos.y;
-      sum_x_left += pos.z;
-    }
-    left_wall_center_x = sum_x_left / left_voxels.size();
-    left_wall_center_y = sum_y_left / left_voxels.size();
-    left_wall_center_x = sum_z_left / left_voxels.size();
-    
     double sum_x_right = 0.0;
     double sum_y_right = 0.0;
     double sum_z_right = 0.0;
-    for (VX3_Vec3D<double> pos : right_voxels) {
-      sum_x_right += pos.x;
-      sum_y_right += pos.y;
-      sum_x_right += pos.z;
+    int num_left_voxels = 0;
+    int num_right_voxels = 0;
+    for (int i = 0; i < num_d_voxels; i++) {
+      VX3_Voxel voxel = d_voxels[i];
+      if (voxel.matid == 1) {
+        sum_x_left += voxel.pos.x;
+        sum_y_left += voxel.pos.y;
+        sum_x_left += voxel.pos.z;
+        ++num_left_voxels;
+      }
+      else if (voxel.matid == 2) {
+        sum_x_right += voxel.pos.x;
+        sum_y_right += voxel.pos.y;
+        sum_x_right += voxel.pos.z;
+        ++num_right_voxels;
+      }
     }
-    right_wall_center_x = sum_x_right / right_voxels.size();
-    right_wall_center_y = sum_y_right / right_voxels.size();
-    right_wall_center_z = sum_z_right / right_voxels.size();
+    
+    left_wall_center_x = sum_x_left / num_left_voxels;
+    left_wall_center_y = sum_y_left / num_left_voxels;
+    left_wall_center_x = sum_z_left / num_left_voxels;
+    
+    right_wall_center_x = sum_x_right / num_right_voxels;
+    right_wall_center_y = sum_y_right / num_right_voxels;
+    right_wall_center_z = sum_z_right / num_right_voxels;
 }
 
 void VX3_VoxelyzeKernel::cleanup() {
