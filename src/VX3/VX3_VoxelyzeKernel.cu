@@ -171,20 +171,38 @@ __device__ void VX3_VoxelyzeKernel::init() {
   double sum_z_right = 0.0;
   int num_left_voxels = 0;
   int num_right_voxels = 0;
+  double left_max_x = 0.0;
+  double left_min_x = 0.0;
+  double right_max_x = 0.0;
+  double right_min_x = 0.0;
+  double max_y = 0.0;
+  double min_y = 0.0;
+  double max_z = 0.0;
+  double min_z = 0.0;
+  VX3_Vec3D<double> base_size;
   for (int i = 0; i < num_d_voxels; i++) {
     VX3_Voxel* voxel = &d_voxels[i];
+    base_size = voxel->baseSize();
     if (voxel->matid == 1) {
       sum_x_left += voxel->pos.x;
       sum_y_left += voxel->pos.y;
       sum_x_left += voxel->pos.z;
       ++num_left_voxels;
+      left_max_x = (voxel->pos.x > left_max_x) ? voxel->pos.x : left_max_x;
+      left_min_x = (voxel->pos.x > left_min_x) ? voxel->pos.x : left_min_x;
     }
     else if (voxel->matid == 2) {
       sum_x_right += voxel->pos.x;
       sum_y_right += voxel->pos.y;
       sum_x_right += voxel->pos.z;
       ++num_right_voxels;
+      right_max_x = (voxel->pos.x > right_max_x) ? voxel->pos.x : right_max_x;
+      right_min_x = (voxel->pos.x > right_min_x) ? voxel->pos.x : right_min_x;
     }
+    min_y = (voxel->pos.x > min_y) ? voxel->pos.y : min_y;
+    max_y = (voxel->pos.x > max_y) ? voxel->pos.y : max_y;
+    min_z = (voxel->pos.x > min_z) ? voxel->pos.z : min_z;
+    max_z = (voxel->pos.x > max_z) ? voxel->pos.z : max_z;
   }
     
   left_wall_center_x = sum_x_left / num_left_voxels;
@@ -194,6 +212,11 @@ __device__ void VX3_VoxelyzeKernel::init() {
   right_wall_center_x = sum_x_right / num_right_voxels;
   right_wall_center_y = sum_y_right / num_right_voxels;
   right_wall_center_z = sum_z_right / num_right_voxels;
+    
+  left_a_x  = abs(left_max_x - left_min_x) + base_size.x * 2;
+  right_a_x  = abs(right_max_x - right_min_x) + base_size.x * 2;
+  a_y  = abs(max_y - min_y) + base_size.y * 2;
+  a_z  = abs(max_z - min_z) + base_size.z * 2;
 }
 __device__ void VX3_VoxelyzeKernel::saveInitialPosition() {
     for (int i = 0; i < num_d_voxels; i++) {
@@ -624,17 +647,17 @@ __device__ void VX3_VoxelyzeKernel::computeTargetCloseness() {
     // printf("targetCloseness: %f\n", targetCloseness);
 }
 
-/*__device__ bool check_left_wall_collision(VX3_Vec3D<float>* center_position, VX3_Vec3D<double>* base_size) {
-  return abs(center_position.x - left_wall_center.x) - (base_size.x + left_a.x) <= 0.0 && 
-         abs(center_position.y - left_wall_center.y) - (base_size.y + left_a.y) <= 0.0 && 
-         abs(center_position.z - left_wall_center.z) - (base_size.z + left_a.z) <= 0.0;
+__device__ bool check_left_wall_collision(VX3_Vec3D<float> center_position, VX3_Vec3D<double> base_size) {
+  return abs(center_position.x - left_wall_center_x) - (base_size.x + left_a_x) <= 0.0 && 
+         abs(center_position.y - left_wall_center_y) - (base_size.y + a_y) <= 0.0 && 
+         abs(center_position.z - left_wall_center_z) - (base_size.z + a_z) <= 0.0;
 }
 
-__device__ bool check_right_wall_collision(VX3_Vec3D<float>* center_position, VX3_Vec3D<double>* base_size) {
-  return abs(center_position.x - right_wall_center.x) - (base_size.x + right_a.x) <= 0.0 && 
-         abs(center_position.y - right_wall_center.y) - (base_size.y + right_a.y) <= 0.0 && 
-         abs(center_position.z - right_wall_center.z) - (base_size.z + right_a.z) <= 0.0;
-}*/
+__device__ bool check_right_wall_collision(VX3_Vec3D<float> center_position, VX3_Vec3D<double> base_size) {
+  return abs(center_position.x - right_wall_center_x) - (base_size.x + right_a_x) <= 0.0 && 
+         abs(center_position.y - right_wall_center_y) - (base_size.y + a_y) <= 0.0 && 
+         abs(center_position.z - right_wall_center_z) - (base_size.z + a_z) <= 0.0;
+}
 
 /* Sub GPU Threads */
 __global__ void gpu_update_links(VX3_Link **links, int num) {
