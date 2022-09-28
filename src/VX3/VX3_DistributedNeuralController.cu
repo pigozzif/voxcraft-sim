@@ -107,12 +107,14 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   for (int i = 1; i < NUM_SENSORS + 1; ++i) {
     VX3_Vec3D<double> corner_pos = voxel->cornerPosition((voxelCorner)i);
     if (kernel->check_left_wall_collision(corner_pos, voxel->size())) {
+      printf("collision left\n");
       voxel->inputs[i] = 1.0;
       if (!firstLeftContact) {
         firstLeftContact = true;
       }
     }
     else if (kernel->check_right_wall_collision(corner_pos, voxel->size())) {
+      printf("collision right\n");
       voxel->inputs[i] = 1.0;
       if (!firstRightContact) {
         firstRightContact = true;
