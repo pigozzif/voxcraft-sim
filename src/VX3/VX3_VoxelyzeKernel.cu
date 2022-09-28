@@ -619,7 +619,7 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
       sensing_score += controller->votes->get(i) == is_passable;
     }
     printf("touching: %d %d\n", controller->firstLeftContact, controller->firstRightContact);
-    sensing_score /= (controller->votes->size() == 0) ? 1 : controller->votes->size();
+    sensing_score /= CurrStepCount;//(controller->votes->size() == 0) ? 1 : controller->votes->size();
     fitness_score = locomotion_score + sensing_score;
 }
 
