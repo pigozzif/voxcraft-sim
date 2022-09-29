@@ -104,7 +104,7 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
 
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
   voxel->inputs[0] = sin(-2 * 3.14159 * kernel->CurStepCount);
-  for (int i = 1; i < NUM_SENSORS + 1; ++i) {
+  /*for (int i = 1; i < NUM_SENSORS + 1; ++i) {
     VX3_Vec3D<double> corner_pos = voxel->cornerPosition((voxelCorner)i);
     if (kernel->check_left_wall_collision(corner_pos, voxel->size())) {
       printf("collision left\n");
@@ -120,8 +120,8 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
         firstRightContact = true;
       }
     }
-  }
-   /*for (int j = 0; j < voxel->collisions.size(); ++j) {
+  }*/
+   for (int j = 0; j < voxel->collisions.size(); ++j) {
     VX3_Collision* collision = voxel->collisions.get(j);
     //if (!collision) {
     //  continue;
@@ -129,7 +129,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
     if (!collision->pV1 || !collision->pV2) printf("One is NULL\n"); 
     else printf("COLLISION\n");
     if (collision->pV1 && collision->pV2) printf("COLLISION BETWEEN (%d,%d,%d) AND (%d,%d,%d)\n", collision->pV1->ix, collision->pV1->iy, collision->pV1->iz, collision->pV2->ix, collision->pV2->iy, collision->pV2->iz);
-    if (collision->pV1 == voxel || collision->pV2 == voxel) {
+    /*if (collision->pV1 == voxel || collision->pV2 == voxel) {
       if (collision->force == VX3_Vec3D<float>(0,0,0)) {
         printf("ZERO FORCE\n");
         continue;
@@ -150,8 +150,8 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
           }
         }
       }
-    }
-  }*/
+    }*/
+  }
   
   if (voxel->iz == 0) {
     voxel->inputs[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
