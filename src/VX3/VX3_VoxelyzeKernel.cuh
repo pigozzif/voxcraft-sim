@@ -119,9 +119,10 @@ class VX3_VoxelyzeKernel {
     VX3_ForceField force_field;
 
     VX3_MathTreeToken fitness_function[1024];
-    double fitness_score = 0;
+    double fitness_score = 0.0;
     double locomotion_score = 0.0;
     double sensing_score = 0.0;
+    int voteStepCount = 0;
 
     VX3_MathTreeToken AttachCondition[5][1024];
     VX3_MathTreeToken StopConditionFormula[1024];
