@@ -242,6 +242,7 @@ __device__ void VX3_VoxelyzeKernel::updateTemperature(VX3_DistributedNeuralContr
         }
         controller->updateLastSignals(this);
         controller->vote();
+        ++voteStepCount;
     }
 }
 
@@ -556,8 +557,8 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
     for (int i = 0; i < controller->votes->size(); ++i) {
       sensing_score += controller->votes->get(i) == is_passable;
     }
-    printf("number of votes: %d and time steps: %d\n", controller->votes->size(), CurStepCount);
-    sensing_score /= CurStepCount;//(controller->votes->size() == 0) ? 1 : controller->votes->size();
+    printf("number of votes: %d and time steps: %d\n", controller->votes->size(), voteStepCount);
+    sensing_score /= voteStepCount;//(controller->votes->size() == 0) ? 1 : controller->votes->size();
     fitness_score = locomotion_score + sensing_score;
 }
 
