@@ -121,8 +121,11 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
       }
     }
   }*/
-   for (int j = 0; j < voxel->collisions.size(); ++j) {
-    VX3_Collision* collision = voxel->collisions.get(j);
+  if (voxel->collisions.size() != 0) {
+    voxel->inputs[1] = 1.0;
+  }
+   //for (int j = 0; j < voxel->collisions.size(); ++j) {
+   // VX3_Collision* collision = voxel->collisions.get(j);
     //if (!collision) {
     //  continue;
     //}
@@ -154,7 +157,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   }
   
   if (voxel->iz == 0) {
-    voxel->inputs[5] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
+    voxel->inputs[2] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
   }
 }
 
