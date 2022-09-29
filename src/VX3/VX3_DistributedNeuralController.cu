@@ -126,6 +126,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   }
   for (int j = 0; j < voxel->collisions.size(); ++j) {
     int collision = voxel->collisions.get(j);
+    printf("collision with %d\n", collision);
     if (!firstRightContact && collision == 2) {
       firstRightContact = true;
     }
