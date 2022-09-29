@@ -171,16 +171,6 @@ class VX3_VoxelyzeKernel {
     double* weights;
   
     VX3_Voxel* target = NULL;
-    double left_wall_center_x;
-    double left_wall_center_y;
-    double left_wall_center_z;
-    double right_wall_center_x;
-    double right_wall_center_y;
-    double right_wall_center_z;
-    double left_a_x;
-    double a_y;
-    double a_z;
-    double right_a_x;
 };
 
 #endif // VX3_VOXELYZE_KERNEL_H
