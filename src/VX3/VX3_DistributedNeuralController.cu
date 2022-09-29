@@ -104,23 +104,6 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
 
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
   voxel->inputs[0] = sin(-2 * 3.14159 * kernel->CurStepCount);
-  /*for (int i = 1; i < NUM_SENSORS + 1; ++i) {
-    VX3_Vec3D<double> corner_pos = voxel->cornerPosition((voxelCorner)i);
-    if (kernel->check_left_wall_collision(corner_pos, voxel->size())) {
-      printf("collision left\n");
-      voxel->inputs[i] = 1.0;
-      if (!firstLeftContact) {
-        firstLeftContact = true;
-      }
-    }
-    else if (kernel->check_right_wall_collision(corner_pos, voxel->size())) {
-      printf("collision right\n");
-      voxel->inputs[i] = 1.0;
-      if (!firstRightContact) {
-        firstRightContact = true;
-      }
-    }
-  }*/
   if (voxel->collisions.size() != 0) {
     voxel->inputs[1] = 1.0;
   }
@@ -133,34 +116,6 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
     if (!firstLeftContact && collision == 1) {
       firstLeftContact = true;
     }
-    //if (!collision) {
-    //  continue;
-    //}
-    //if (!collision->pV1 || !collision->pV2) printf("One is NULL\n"); 
-    //else printf("COLLISION\n");
-    //if (collision->pV1 && collision->pV2) printf("COLLISION BETWEEN (%d,%d,%d) AND (%d,%d,%d)\n", collision->pV1->ix, collision->pV1->iy, collision->pV1->iz, collision->pV2->ix, collision->pV2->iy, collision->pV2->iz);
-    /*if (collision->pV1 == voxel || collision->pV2 == voxel) {
-      if (collision->force == VX3_Vec3D<float>(0,0,0)) {
-        printf("ZERO FORCE\n");
-        continue;
-      }
-      printf("We made it!\n");
-      for (int i = 0; i < NUM_SENSORS; ++i) {
-        VX3_Vec3D<float>* offset = getOffset((linkDirection)i);
-        double s = voxel->material()->nominalSize();
-        VX3_Voxel* other = (collision->pV1 == voxel) ? collision->pV2 : collision->pV1;
-        if (VX3_Vec3D<float>(other->pos.x / s + offset->x, other->pos.y / s + offset->y, other->pos.z / s + offset->z) == 
-            VX3_Vec3D<float>(voxel->pos.x / s + offset->x, voxel->pos.y / s + offset->y, voxel->pos.z / s + offset->z)) {
-          voxel->inputs[i] = 1.0;
-          if (!firstRightContact && other->matid == 1) {
-            firstRightContact = true;
-          }
-          if (!firstLeftContact && other->matid == 2) {
-            firstLeftContact = true;
-          }
-        }
-      }
-    }*/
   }
   
   if (voxel->iz == 0) {
