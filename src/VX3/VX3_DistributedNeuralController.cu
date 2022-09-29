@@ -124,8 +124,14 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   if (voxel->collisions.size() != 0) {
     voxel->inputs[1] = 1.0;
   }
-   //for (int j = 0; j < voxel->collisions.size(); ++j) {
-   // VX3_Collision* collision = voxel->collisions.get(j);
+  for (int j = 0; j < voxel->collisions.size(); ++j) {
+    VX3_Collision* collision = voxel->collisions.get(j);
+    if (!firstRightContact && (collision->pV1->matid == 1 || collision->pV2->matid == 1)) {
+      firstRightContact = true;
+    }
+    if (!firstLeftContact && (collision->pV1->matid == 2 || collision->pV2->matid == 2)) {
+      firstLeftContact = true;
+    }
     //if (!collision) {
     //  continue;
     //}
