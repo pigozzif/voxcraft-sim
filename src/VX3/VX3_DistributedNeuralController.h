@@ -29,7 +29,7 @@ public:
 class VX3_DistributedNeuralController
 {
 public:
-  __device__ VX3_DistributedNeuralController(VX3_VoxelyzeKernel* kernel, double* weights);  
+  __device__ VX3_DistributedNeuralController(VX3_VoxelyzeKernel* kernel, double* weights, int random_seed=0);  
   __device__ double updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel);
   __device__ void updateLastSignals(VX3_VoxelyzeKernel* kernel);
   __device__ void getLastSignals(VX3_Voxel* voxel) const;
