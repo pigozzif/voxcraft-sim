@@ -49,6 +49,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
   tempVotes = new VX3_dVector<double>();
   firstRightContact = false;
   firstLeftContact = false;
+  count = 0;
 }
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
