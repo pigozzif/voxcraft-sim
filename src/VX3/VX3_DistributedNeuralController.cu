@@ -8,14 +8,12 @@
 #include <math.h>
 #include <string.h>
 #include <cstdlib>
-#include <curand.h>
-#include <curand_kernel.h>
 
 __device__ VX3_MLP::~VX3_MLP(void) {
   VcudaFree(weights);
 }
 
-__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double* weights) {//double a, double b, double c, double d, double e, double f, double g, double h, double i, double j, double k, double l, double m, double n, double o, double p, double q, double r, double s, double t, double u, double v, double w, double x, double y, double z, double aa, double ab, double ac, double ad, double ae, double af, double ag, double ah, double ai, double aj, double ak, double al, double am, double an, double ao, double ap, double aq, double ar, double as, double at, double au, double av, double aw, double ax, double ay, double az, double ba, double bb, double bc, double bd, double be, double bf, double bg, double bh, double bi, double bj, double bk, double bl, double bm, double bn, double bo, double bp, double bq, double br, double bs, double bt, double bu, double bv, double bw, double bx, double by, double bz, double ca, double cb, double cc, double cd, double ce, double cf, double cg, double ch, double ci, double cj, double ck, double cl, double cm, double cn, double co, double cp, double cq, double cr, double cs, double ct, double cu, double cv, double cw, double cx, double cy, double cz) {
+__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double* weights) {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
   this->weights = weights;
@@ -86,9 +84,9 @@ __device__ void VX3_DistributedNeuralController::vote(void) const {
       numNeg += 1;
     }
   }
-  printf("next random: %f\n", (float) curand_uniform(&state));
-  votes->push_back(((float) random(RAND_MAX) > 0.5) ? 1 : 0);//(numPos >= numNeg) ? 1 : 0);
+  votes->push_back((count % 2 == 0) ? 1 : 0);//(numPos >= numNeg) ? 1 : 0);
   tempVotes->clear();
+  ++count;
 }
 
 __device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeKernel* kernel) {
