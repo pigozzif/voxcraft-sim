@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <string.h>
-#include <cstdlib.h>
+#include <cstdlib>
 
 __device__ VX3_MLP::~VX3_MLP(void) {
   VcudaFree(weights);
