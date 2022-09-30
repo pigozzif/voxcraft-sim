@@ -3,6 +3,8 @@
 
 #include "VX3.cuh"
 #include "VX3_Voxel.h"
+#include <curand.h>
+#include <curand_kernel.h>
 
 #define NUM_SENSORS 3
 #define NUM_SIGNALS 6
