@@ -3,8 +3,6 @@
 
 #include "VX3.cuh"
 #include "VX3_Voxel.h"
-#include <curand.h>
-#include <curand_kernel.h>
 
 #define NUM_SENSORS 3
 #define NUM_SIGNALS 6
@@ -45,7 +43,7 @@ public:
   VX3_dVector<double>* tempVotes;
   bool firstRightContact;
   bool firstLeftContact;
-  curandState state;
+  int count = 0;
 };
 
 #endif //VX3_DISTRIBUTED_H
