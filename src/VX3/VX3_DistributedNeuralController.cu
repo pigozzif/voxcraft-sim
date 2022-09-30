@@ -33,7 +33,7 @@ __device__ void VX3_MLP::apply(VX3_Voxel* voxel) const {
   }
 }
 
-__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_VoxelyzeKernel* kernel, double* weights, int random_seed=0) {
+__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_VoxelyzeKernel* kernel, double* weights, int random_seed) {
   mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
