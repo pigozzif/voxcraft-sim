@@ -49,7 +49,6 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
   tempVotes = new VX3_dVector<double>();
   firstRightContact = false;
   firstLeftContact = false;
-  curand_init(random_seed, 0, 0, &state);
 }
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
@@ -86,7 +85,7 @@ __device__ void VX3_DistributedNeuralController::vote(void) const {
   }
   votes->push_back((count % 2 == 0) ? 1 : 0);//(numPos >= numNeg) ? 1 : 0);
   tempVotes->clear();
-  ++count;
+  count = count + 1;
 }
 
 __device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeKernel* kernel) {
