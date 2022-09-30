@@ -43,7 +43,7 @@ public:
   VX3_dVector<double>* tempVotes;
   bool firstRightContact;
   bool firstLeftContact;
-  curandState_t state;
+  curandState state;
 };
 
 #endif //VX3_DISTRIBUTED_H
