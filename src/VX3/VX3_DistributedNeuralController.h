@@ -43,7 +43,7 @@ public:
   VX3_dVector<double>* tempVotes;
   bool firstRightContact;
   bool firstLeftContact;
-  int count;
+  bool count;
 };
 
 #endif //VX3_DISTRIBUTED_H
