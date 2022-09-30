@@ -33,7 +33,7 @@ __device__ void VX3_MLP::apply(VX3_Voxel* voxel) const {
   }
 }
 
-__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_VoxelyzeKernel* kernel, double* weights) {
+__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_VoxelyzeKernel* kernel, double* weights, int random_seed=0) {
   mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
@@ -49,6 +49,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
   tempVotes = new VX3_dVector<double>();
   firstRightContact = false;
   firstLeftContact = false;
+  curand_init(random_seed, 0, 0, &state);
 }
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
@@ -83,7 +84,7 @@ __device__ void VX3_DistributedNeuralController::vote(void) const {
       numNeg += 1;
     }
   }
-  printf("next random: %f\n", (float) random(RAND_MAX, i++));
+  printf("next random: %f\n", (float) curand_uniform(&state));
   votes->push_back(((float) random(RAND_MAX) > 0.5) ? 1 : 0);//(numPos >= numNeg) ? 1 : 0);
   tempVotes->clear();
 }
