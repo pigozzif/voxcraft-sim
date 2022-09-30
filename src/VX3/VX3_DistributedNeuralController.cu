@@ -83,7 +83,7 @@ __device__ void VX3_DistributedNeuralController::vote(void) const {
       numNeg += 1;
     }
   }
-  printf("next random: %f\n", (float) random(RAND_MAX));
+  printf("next random: %f\n", (float) random(RAND_MAX, i++));
   votes->push_back(((float) random(RAND_MAX) > 0.5) ? 1 : 0);//(numPos >= numNeg) ? 1 : 0);
   tempVotes->clear();
 }
