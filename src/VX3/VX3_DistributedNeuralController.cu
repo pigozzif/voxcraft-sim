@@ -84,7 +84,7 @@ __device__ void VX3_DistributedNeuralController::vote(void) {
       numNeg += 1;
     }
   }
-  votes->push_back((count) ? 1 : 0);//(numPos >= numNeg) ? 1 : 0);
+  votes->push_back((numPos >= numNeg) ? 1 : 0);
   tempVotes->clear();
   count = !count;
 }
