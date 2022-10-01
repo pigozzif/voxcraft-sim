@@ -545,7 +545,7 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
 __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, int is_passable) {
     double max_distance = initialCenterOfMass.Dist(target->pos);
     locomotion_score = (max_distance - currentCenterOfMass.Dist(target->pos)) / max_distance;//sqrt(pow(currentCenterOfMass.x - target->pos.x, 2) + pow(currentCenterOfMass.y - target->pos.y, 2));
-    printf("MAX_DISTANCE: %f DISTANCE: %f SCORE: %f", max_distance, currentCenterOfMass.Dist(target->pos), locomotion_score);
+    printf("MAX_DISTANCE: %f DISTANCE: %f SCORE: %f\n", max_distance, currentCenterOfMass.Dist(target->pos), locomotion_score);
     if (locomotion_score > 1.0) {
       locomotion_score = 1.0;
     }
@@ -556,6 +556,7 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
     //locomotion_score = 1.0 - locomotion_score;
     for (int i = 0; i < controller->votes->size(); ++i) {
       sensing_score += controller->votes->get(i) == is_passable;
+      printf("vote: %d\n", controller->votes->get(i));
     }
     printf("number of votes: %d and time steps: %d\n", controller->votes->size(), voteStepCount);
     sensing_score /= voteStepCount;//(controller->votes->size() == 0) ? 1 : controller->votes->size();
