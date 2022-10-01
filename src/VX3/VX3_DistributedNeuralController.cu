@@ -65,6 +65,7 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
     voxel->currSignals[dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
   }
   if (firstRightContact && firstLeftContact) {
+    printf("I am %d,%d,%d and output %f\n", voxel->ix, voxel->iy, voxel->iz, voxel->outputs[1]);
     tempVotes->push_back(voxel->outputs[1]);
   }
   return voxel->outputs[0];
