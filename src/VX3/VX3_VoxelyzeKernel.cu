@@ -544,22 +544,15 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
 
 __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, int is_passable) {
     double max_distance = initialCenterOfMass.Dist(target->pos);
-    locomotion_score = (max_distance - currentCenterOfMass.Dist(target->pos)) / max_distance;//sqrt(pow(currentCenterOfMass.x - target->pos.x, 2) + pow(currentCenterOfMass.y - target->pos.y, 2));
-    printf("MAX_DISTANCE: %f DISTANCE: %f SCORE: %f\n", max_distance, currentCenterOfMass.Dist(target->pos), locomotion_score);
+    locomotion_score = (max_distance - currentCenterOfMass.Dist(target->pos)) / max_distance;
     if (locomotion_score > 1.0) {
       locomotion_score = 1.0;
     }
-    //double target_angle = atan2((target->pos.y - initialCenterOfMass.y), (target->pos.x - initialCenterOfMass.x));
-    //double final_angle = atan2((target->pos.y - currentCenterOfMass.y), (target->pos.x - currentCenterOfMass.x));
-    //printf("target angle: %f and final angle: %f", target_angle, final_angle);
-    //locomotion_score /= initialCenterOfMass.Dist(target->pos);//sqrt(pow(initialCenterOfMass.x - target->pos.x, 2) + pow(initialCenterOfMass.y - target->pos.y, 2));
-    //locomotion_score = 1.0 - locomotion_score;
     for (int i = 0; i < controller->votes->size(); ++i) {
       sensing_score += controller->votes->get(i) == is_passable;
-      printf("vote: %d\n", controller->votes->get(i));
+      //printf("vote: %d\n", controller->votes->get(i));
     }
-    printf("number of votes: %d and time steps: %d\n", controller->votes->size(), voteStepCount);
-    sensing_score /= voteStepCount;//(controller->votes->size() == 0) ? 1 : controller->votes->size();
+    sensing_score /= voteStepCount;
     fitness_score = locomotion_score + sensing_score;
 }
 
