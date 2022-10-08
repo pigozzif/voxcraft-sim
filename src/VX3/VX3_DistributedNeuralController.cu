@@ -106,9 +106,9 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
 }
 
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
-  //voxel->inputs[0] = sin(-2 * 3.14159 * kernel->CurStepCount);
+  voxel->inputs[0] = sin(-2 * 3.14159 * kernel->CurStepCount);
   if (voxel->collisions.size() != 0) {
-    voxel->inputs[0] = 1.0;
+    voxel->inputs[1] = 1.0;
   }
   for (int j = 0; j < voxel->collisions.size(); ++j) {
     int collision = voxel->collisions.get(j);
@@ -121,7 +121,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   }
   
   if (voxel->iz == 0) {
-    voxel->inputs[1] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
+    voxel->inputs[2] = (voxel->floorPenetration() >= 0) ? 1.0 : -1.0;
   }
 }
 
