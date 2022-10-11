@@ -42,7 +42,7 @@ public:
 
 	//Stuff to make code with mixed template parameters work...
 	template <typename U> __device__ VX3_Vec3D<T>(const VX3_Vec3D<U>& s)						{x = (T)s.x; y = (T)s.y; z = (T)s.z;} //!< Copy constructor from another template type
-	template <typename U> __device__ operator VX3_Vec3D<U>() const							{return VX3_Vec3D<U>(x, y, z);} //!< overload conversion operator for different template types
+	//template <typename U> __device__ operator VX3_Vec3D<U>() const							{return VX3_Vec3D<U>(x, y, z);} //!< overload conversion operator for different template types
 	template <typename U> __device__ VX3_Vec3D<T> operator=(const VX3_Vec3D<U>& s)				{x = s.x; y = s.y; z = s.z; return *this; } //!< equals operator for different template types
 	template <typename U> __device__ const VX3_Vec3D<T> operator+(const VX3_Vec3D<U>& s)		{return VX3_Vec3D<T>(x+s.x, y+s.y, z+s.z);} //!< addition operator for different template types
 	template <typename U> __device__ const VX3_Vec3D<T> operator-(const VX3_Vec3D<U>& s)		{return VX3_Vec3D<T>(x-s.x, y-s.y, z-s.z);} //!< subtraction operator for different template types
