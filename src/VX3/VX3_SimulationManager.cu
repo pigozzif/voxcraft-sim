@@ -140,7 +140,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
               is_passable = 1;
               break;
             }
-            else if (voxel->matid == 4) {
+            else if (voxel->matid == 5) {
               d_v3->target = voxel;
               is_passable = 0;
               break;
