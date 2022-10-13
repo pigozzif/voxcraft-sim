@@ -146,20 +146,6 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
               break;
             }
         }
-        /*if (!is_passable) {
-          double distance = DBL_MAX;
-          for (int i = 0; i < d_v3->num_d_voxels; ++i) {
-            VX3_Voxel* voxel = d_v3->d_voxels + i;
-            if (voxel->matid == 1 || voxel->matid == 2) {
-              double new_distance = d_v3->initialCenterOfMass.Dist(voxel->pos);//sqrt(pow(d_v3->initialCenterOfMass.x - voxel->pos.x, 2) + pow(d_v3->initialCenterOfMass.y - voxel->pos.y, 2) + pow(d_v3->initialCenterOfMass.z - voxel->pos.z, 2));
-              if (new_distance <= distance) {
-                d_v3->target = voxel;
-                distance = new_distance;
-                break;
-              }
-            }
-          }
-        }*/
         printf("passable: %d\n", is_passable);
         printf("target: (%f, %f, %f)\n", d_v3->target->pos.x, d_v3->target->pos.y, d_v3->target->pos.z);
         d_v3->updateCurrentCenterOfMass();
