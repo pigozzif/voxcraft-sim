@@ -256,7 +256,7 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
     int num_flying = 0;
     for (int i = 0; i < num_d_voxels; ++i) {
       for (int j = 0; j < 6; ++j) {
-        printf("corner position %f", d_voxels[i]->cornerPosition((voxelCorner) j));  
+        printf("corner position %f", d_voxels[i].cornerPosition((voxelCorner) j));  
       }
     }
     CurStepCount++;
