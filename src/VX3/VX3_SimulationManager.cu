@@ -140,11 +140,13 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
               is_passable = 1;
               break;
             }
-            if (i == d_v3->num_d_voxels - 1) {
+            else if (voxel->matid == 4) {
+              d_v3->target = voxel;
               is_passable = 0;
+              break;
             }
         }
-        if (!is_passable) {
+        /*if (!is_passable) {
           double distance = DBL_MAX;
           for (int i = 0; i < d_v3->num_d_voxels; ++i) {
             VX3_Voxel* voxel = d_v3->d_voxels + i;
@@ -157,7 +159,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
               }
             }
           }
-        }
+        }*/
         printf("passable: %d\n", is_passable);
         printf("target: (%f, %f, %f)\n", d_v3->target->pos.x, d_v3->target->pos.y, d_v3->target->pos.z);
         d_v3->updateCurrentCenterOfMass();
