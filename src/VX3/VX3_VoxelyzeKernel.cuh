@@ -123,6 +123,7 @@ class VX3_VoxelyzeKernel {
     double locomotion_score = 0.0;
     double sensing_score = 0.0;
     int voteStepCount = 0;
+    int is_flying = 0;
 
     VX3_MathTreeToken AttachCondition[5][1024];
     VX3_MathTreeToken StopConditionFormula[1024];
