@@ -255,7 +255,7 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
     }
     int num_flying = 0;
     for (int i = 0; i < num_d_voxels; ++i) {
-      if (d_voxels[i]->removed || d_voxels[i]->mat->TurnOnThermalExpansionAfterThisManySeconds > currentTime || d_voxels[i]->mat->fixed) {
+      if (d_voxels[i].removed || d_voxels[i].mat->TurnOnThermalExpansionAfterThisManySeconds > currentTime || d_voxels[i].mat->fixed) {
         continue;
       }
       num_flying += (d_voxels[i].floorPenetration() >= 0) ? 0 : 1;
