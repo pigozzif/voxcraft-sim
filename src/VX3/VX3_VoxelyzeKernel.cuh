@@ -104,6 +104,7 @@ class VX3_VoxelyzeKernel {
 
     // bool* d_collisionsStale;
     VX3_dVector<VX3_Collision *> d_v_collisions;
+    int flying_voxels = 0;
 
     bool enableAttach;
     bool enableDetach;
