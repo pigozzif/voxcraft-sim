@@ -13,7 +13,7 @@ struct Vote {
   int v;
   int x;
   int y;
-  int z'
+  int z;
 };
 
 class VX3_MLP
