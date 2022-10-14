@@ -46,7 +46,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
     }
   }
   votes = new VX3_dVector<int>();
-  tempVotes = new VX3_dVector<double>();
+  tempVotes = new VX3_dVector<Vote>();
   firstRightContact = false;
   firstLeftContact = false;
   count = false;
@@ -65,7 +65,7 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
     voxel->currSignals[dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
   }
   if (firstRightContact && firstLeftContact) {
-    tempVotes->push_back(voxel->outputs[1]);
+    tempVotes->push_back({voxel->outputs[1], voxel->ix, voxel->iy, voxel->iz});
   }
   return voxel->outputs[0];
 }
@@ -81,7 +81,7 @@ __device__ void VX3_DistributedNeuralController::vote(void) {
   int numPos = 0;
   int numNeg = 0;
   for (int i = 0; i < tempVotes->size(); ++i) {
-    if (tempVotes->get(i) > 0.0) {
+    if (tempVotes->get(i).v > 0.0) {
       numPos += 1;
     }
     else {
