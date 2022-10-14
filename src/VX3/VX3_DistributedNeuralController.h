@@ -14,7 +14,7 @@ struct Vote {
   int x;
   int y;
   int z'
-}
+};
 
 class VX3_MLP
 {
