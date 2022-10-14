@@ -106,10 +106,6 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
 }
 
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
-  for (int j = 0; j < 8; ++j) {
-    VX3_Vec3D<float> corner = voxel->cornerPosition((voxelCorner) j);
-    printf("corner position %f %f %f\n", corner.x, corner.y, corner.z);  
-  }
   voxel->inputs[0] = sin(-2 * 3.14159 * kernel->CurStepCount);
   if (voxel->collisions.size() != 0) {
     voxel->inputs[1] = 1.0;
