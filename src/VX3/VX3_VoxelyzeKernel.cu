@@ -573,6 +573,7 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
       printf("vote: %d\n", controller->votes->get(i));
     }
     sensing_score /= voteStepCount;
+    locomotion_score = (is_passable == 0) ? - locomotion_score : locomotion_score;
     fitness_score = locomotion_score + sensing_score;
 }
 
