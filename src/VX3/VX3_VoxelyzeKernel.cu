@@ -242,6 +242,7 @@ __device__ void VX3_VoxelyzeKernel::updateTemperature(VX3_DistributedNeuralContr
         }
         controller->updateLastSignals(this);
         controller->vote();
+        controller->printVotes(this);
         ++voteStepCount;
     }
 }
