@@ -255,10 +255,10 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
     }
     int num_flying = 0;
     for (int i = 0; i < num_d_voxels; ++i) {
-      for (int j = 0; j < 6; ++j) {;
-        //VX3_Vec3D<float> corner = d_voxels[i].cornerPosition((voxelCorner) j);
-        //printf("corner position %f %f %f\n", corner.x, corner.y, corner.z);  
-      }
+      num_flying += (voxel->floorPenetration() >= 0) ? 0 : 1;
+    }
+    if (num_flying >= num_d_voxels * 0.75 && !is_flying) {
+      is_flying = true;
     }
     CurStepCount++;
     if (dt == 0)
@@ -550,10 +550,19 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
 }
 
 __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, int is_passable) {
+    if (is_flying) {
+      locomotion_score = -1.0;
+      sensing_score = 0.0;
+      fitness_score = locomotion_score + sensing_score;
+      return;
+    }
     double max_distance = initialCenterOfMass.Dist(target->pos);
     locomotion_score = (max_distance - currentCenterOfMass.Dist(target->pos)) / max_distance;
     if (locomotion_score > 1.0) {
       locomotion_score = 1.0;
+    }
+    else if (locomotion_score < -1.0) {
+      locomotion_score = -1.0;
     }
     for (int i = 0; i < controller->votes->size(); ++i) {
       sensing_score += controller->votes->get(i) == is_passable;
