@@ -10,7 +10,7 @@
 class VX3_VoxelyzeKernel;
 
 struct Vote {
-  int v;
+  double v;
   int x;
   int y;
   int z;
