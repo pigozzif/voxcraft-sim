@@ -9,6 +9,13 @@
 
 class VX3_VoxelyzeKernel;
 
+struct Vote {
+  int v;
+  int x;
+  int y;
+  int z'
+}
+
 class VX3_MLP
 {
 public:
@@ -41,7 +48,7 @@ public:
 
   VX3_MLP* mlp;
   VX3_dVector<int>* votes;
-  VX3_dVector<double>* tempVotes;
+  VX3_dVector<Vote>* tempVotes;
   bool firstRightContact;
   bool firstLeftContact;
   bool count;
