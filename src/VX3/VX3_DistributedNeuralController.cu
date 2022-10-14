@@ -70,6 +70,10 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   return voxel->outputs[0];
 }
 
+__device__ void printVotes(VX3_VoxelyzeKernel* kernel) {
+  printf("it's %d\n", kernel->CurStepCount);
+}
+
 __device__ void VX3_DistributedNeuralController::vote(void) {
   if (!firstLeftContact && !firstRightContact) {
     return;
