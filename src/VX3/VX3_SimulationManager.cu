@@ -129,6 +129,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
                         printf("[[[]]]");
                     }
                     printf("\n");
+                    controller->printVotes(d_v3);
                 }
             }
         }
