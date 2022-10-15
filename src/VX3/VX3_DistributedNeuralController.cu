@@ -71,7 +71,7 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
 }
 
 __device__ void VX3_DistributedNeuralController::printVotes(VX3_VoxelyzeKernel* kernel) {
-  printf("it's %ld\n", kernel->CurStepCount);
+  ;//printf("it's %ld\n", kernel->CurStepCount);
 }
 
 __device__ void VX3_DistributedNeuralController::vote(void) {
