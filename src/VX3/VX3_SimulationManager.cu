@@ -87,6 +87,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
                 break;
             }
             if (d_v3->RecordStepSize) { // output History file
+                controller->printVotes(d_v3);
                 if (j % real_stepsize == 0) {
                     if (d_v3->RecordVoxel) {
                         // Voxels
@@ -129,7 +130,6 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
                         printf("[[[]]]");
                     }
                     printf("\n");
-                    controller->printVotes(d_v3);
                 }
             }
         }
