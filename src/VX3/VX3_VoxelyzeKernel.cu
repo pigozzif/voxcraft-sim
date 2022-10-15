@@ -229,6 +229,7 @@ __device__ void VX3_VoxelyzeKernel::updateTemperature(VX3_DistributedNeuralContr
     // updates the temperatures For Actuation!
     // different temperatures in different objs are not support for now.
     if (VaryTempEnabled) {
+        controller->vote();
         if (TempPeriod > 0) {
             int blockSize = 512;
             int minGridSize;
@@ -241,8 +242,6 @@ __device__ void VX3_VoxelyzeKernel::updateTemperature(VX3_DistributedNeuralContr
             VcudaDeviceSynchronize();
         }
         controller->updateLastSignals(this);
-        controller->vote();
-        controller->printVotes(this);
         ++voteStepCount;
     }
 }
