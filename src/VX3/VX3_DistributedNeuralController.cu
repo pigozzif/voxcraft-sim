@@ -73,7 +73,7 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
 __device__ void VX3_DistributedNeuralController::printVotes(VX3_VoxelyzeKernel* kernel) {
   printf("%ld:", kernel->CurStepCount);
   for (int i = 0; i < tempVotes->size(); ++i) {
-    printf("{%f,%d,%d,%d}", tempVotes->get(i).v, tempVotes->get(i).x, tempVotes->get(i).y, tempVotes->get(i).z);
+    printf("%f,%d,%d,%d,%d/", tempVotes->get(i).v, tempVotes->get(i).x, tempVotes->get(i).y, tempVotes->get(i).z, tempVotes->get(i).is_touching);
   }
   printf("\n");
 }
