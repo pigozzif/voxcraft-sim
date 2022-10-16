@@ -14,6 +14,7 @@ struct Vote {
   int x;
   int y;
   int z;
+  int is_touching;
 };
 
 class VX3_MLP
