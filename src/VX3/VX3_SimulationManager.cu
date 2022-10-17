@@ -137,15 +137,11 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         for (int i = 0; i < d_v3->num_d_voxels; ++i) {
             VX3_Voxel* voxel = d_v3->d_voxels + i;
             if (voxel->matid == 3) {
-              printf("hit 3\n");
               d_v3->target = voxel;
-              is_passable = 1;
               break;
             }
             else if (voxel->matid == 5) {
-              printf("hit 5\n");
               d_v3->target = voxel;
-              is_passable = 0;
               break;
             }
         }
@@ -378,7 +374,6 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         // }
         this->weights = pt_VXD.get<std::string>("VXD.Controller.NeuralWeights", "not found");
         is_passable = pt_VXD.get<int>("VXD.Task.Passable", 1);
-        printf("is_passable at beginning: %d\n", is_passable);
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
         h_d_tmp.addWeights(readWeights(), std::count(this->weights.begin(), this->weights.end(), ',') + 1);
         // More VXA settings which is new in VX3
