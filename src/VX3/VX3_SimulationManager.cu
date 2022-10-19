@@ -137,12 +137,10 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         for (int i = 0; i < d_v3->num_d_voxels; ++i) {
             VX3_Voxel* voxel = d_v3->d_voxels + i;
             if (voxel->matid == 3) {
-              printf("hit 3\n");
               d_v3->target = voxel;
               break;
             }
             else if (voxel->matid == 5) {
-              printf("hit 5\n");
               d_v3->target = voxel;
               break;
             }
@@ -501,8 +499,6 @@ void VX3_SimulationManager::collectResults(int num_simulation, int device_index)
         tmp.z = result_voxelyze_kernel[i].currentCenterOfMass.z;
         result_voxelyze_kernel[i].initialCenterOfMass.copyTo(tmp.initialCenterOfMass);
         result_voxelyze_kernel[i].currentCenterOfMass.copyTo(tmp.currentCenterOfMass);
-        //printf("target: (%f, %f, %f)\n", result_voxelyze_kernel[i].target->pos.x, result_voxelyze_kernel[i].target->pos.y, result_voxelyze_kernel[i].target->pos.z);
-        result_voxelyze_kernel[i]->target->pos.copyTo(tmp.targetPos);
 
         tmp.numClosePairs = result_voxelyze_kernel[i].numClosePairs;
         tmp.voxSize = result_voxelyze_kernel[i].voxSize;
