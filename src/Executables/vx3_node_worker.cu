@@ -104,7 +104,6 @@ int main(int argc, char** argv) {
 
     // this will be too much to write into the report.
     for (auto &res: sm.h_results) {
-        printf("final fitness and locomotion: %f %f\n", res.fitness_score, res.locomotion_score);
         std::string simulation_name = split(res.vxd_filename, '.')[0];
         tr_result.put("report.detail."+simulation_name+".currentTime", res.currentTime);
         tr_result.put("report.detail."+simulation_name+".fitness_score", res.fitness_score);
@@ -120,9 +119,6 @@ int main(int argc, char** argv) {
         tr_result.put("report.detail."+simulation_name+".currentCenterOfMass.x", res.currentCenterOfMass.x);
         tr_result.put("report.detail."+simulation_name+".currentCenterOfMass.y", res.currentCenterOfMass.y);
         tr_result.put("report.detail."+simulation_name+".currentCenterOfMass.z", res.currentCenterOfMass.z);
-        tr_result.put("report.detail."+simulation_name+".targetPos.x", res.targetPos.x);
-        tr_result.put("report.detail."+simulation_name+".targetPos.y", res.targetPos.y);
-        tr_result.put("report.detail."+simulation_name+".targetPos.z", res.targetPos.z);
         tr_result.put("report.detail."+simulation_name+".total_distance_of_all_voxels", res.total_distance_of_all_voxels);
 
         if (res.SavePositionOfAllVoxels) {
