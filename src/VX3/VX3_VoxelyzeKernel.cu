@@ -558,6 +558,7 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
       return;
     }
     double max_distance = initialCenterOfMass.Dist(target->pos);
+    printf("max distance: %f\n", max_distance);
     locomotion_score = (max_distance - currentCenterOfMass.Dist(target->pos)) / max_distance;
     if (locomotion_score > 1.0) {
       locomotion_score = 1.0;
