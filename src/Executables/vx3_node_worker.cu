@@ -120,7 +120,9 @@ int main(int argc, char** argv) {
         tr_result.put("report.detail."+simulation_name+".currentCenterOfMass.x", res.currentCenterOfMass.x);
         tr_result.put("report.detail."+simulation_name+".currentCenterOfMass.y", res.currentCenterOfMass.y);
         tr_result.put("report.detail."+simulation_name+".currentCenterOfMass.z", res.currentCenterOfMass.z);
-
+        tr_result.put("report.detail."+simulation_name+".targetPos.x", res.targetPos.x);
+        tr_result.put("report.detail."+simulation_name+".targetPos.y", res.targetPos.y);
+        tr_result.put("report.detail."+simulation_name+".targetPos.z", res.targetPos.z);
         tr_result.put("report.detail."+simulation_name+".total_distance_of_all_voxels", res.total_distance_of_all_voxels);
 
         if (res.SavePositionOfAllVoxels) {
