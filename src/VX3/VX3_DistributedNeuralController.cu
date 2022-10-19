@@ -80,7 +80,7 @@ __device__ void VX3_DistributedNeuralController::printVotes(VX3_VoxelyzeKernel* 
 }
 
 __device__ void VX3_DistributedNeuralController::vote(void) {
-  if (!firstLeftContact && !firstRightContact) {
+  if (!firstLeftContact || !firstRightContact) {
     return;
   }
   int numPos = 0;
