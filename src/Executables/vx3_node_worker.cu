@@ -104,7 +104,7 @@ int main(int argc, char** argv) {
 
     // this will be too much to write into the report.
     for (auto &res: sm.h_results) {
-        printf("final fitness and locomotion: %f %f", res.fitness_score, res.locomotion_score);
+        printf("final fitness and locomotion: %f %f\n", res.fitness_score, res.locomotion_score);
         std::string simulation_name = split(res.vxd_filename, '.')[0];
         tr_result.put("report.detail."+simulation_name+".currentTime", res.currentTime);
         tr_result.put("report.detail."+simulation_name+".fitness_score", res.fitness_score);
