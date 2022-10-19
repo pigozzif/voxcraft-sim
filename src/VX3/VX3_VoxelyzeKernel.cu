@@ -548,26 +548,24 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
 
 __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, int is_passable) {
     if (is_flying) {
-      locomotion_score = -1.0;
+      locomotion_score = 0.0;
       sensing_score = 0.0;
       fitness_score = locomotion_score + sensing_score;
       return;
     }
-    double max_distance = initialCenterOfMass.Dist(target->pos);
-    printf("max distance: %f\n", max_distance);
+    double max_distance = 3.5;
     locomotion_score = (max_distance - currentCenterOfMass.Dist(target->pos)) / max_distance;
     if (locomotion_score > 1.0) {
       locomotion_score = 1.0;
     }
     else if (locomotion_score < -1.0) {
-      locomotion_score = -1.0;
+      locomotion_score = 0.0;
     }
     for (int i = 0; i < controller->votes->size(); ++i) {
       sensing_score += controller->votes->get(i) == is_passable;
       printf("vote: %d\n", controller->votes->get(i));
     }
     sensing_score /= voteStepCount;
-    locomotion_score = (is_passable == 0) ? - locomotion_score : locomotion_score;
     fitness_score = locomotion_score + sensing_score;
 }
 
