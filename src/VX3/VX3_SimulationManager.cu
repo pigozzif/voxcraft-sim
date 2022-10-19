@@ -499,6 +499,7 @@ void VX3_SimulationManager::collectResults(int num_simulation, int device_index)
         tmp.z = result_voxelyze_kernel[i].currentCenterOfMass.z;
         result_voxelyze_kernel[i].initialCenterOfMass.copyTo(tmp.initialCenterOfMass);
         result_voxelyze_kernel[i].currentCenterOfMass.copyTo(tmp.currentCenterOfMass);
+        printf("target: (%f, %f, %f)\n", result_voxelyze_kernel[i].target->pos.x, result_voxelyze_kernel[i].target->pos.y, result_voxelyze_kernel[i].target->pos.z);
         result_voxelyze_kernel[i].target->pos.copyTo(tmp.targetPos);
 
         tmp.numClosePairs = result_voxelyze_kernel[i].numClosePairs;
