@@ -553,16 +553,9 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
       fitness_score = locomotion_score + sensing_score;
       return;
     }
-    double max_distance = 3.5;
-    locomotion_score = (max_distance - currentCenterOfMass.Dist(target->pos)) / max_distance;
-    if (locomotion_score > 1.0) {
-      locomotion_score = 1.0;
-    }
-    else if (locomotion_score < -1.0) {
-      locomotion_score = 0.0;
-    }
+    locomotion_score = currentCenterOfMass.Dist(target->pos);
     for (int i = 0; i < controller->votes->size(); ++i) {
-      sensing_score += controller->votes->get(i) == is_passable;
+      sensing_score += (controller->votes->get(i) == is_passable) ? 1.0 : 0.0;
       printf("vote: %d\n", controller->votes->get(i));
     }
     sensing_score /= voteStepCount;
