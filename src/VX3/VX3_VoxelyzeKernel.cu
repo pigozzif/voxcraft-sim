@@ -253,7 +253,7 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
     for (int i = 0; i < num_d_voxels; ++i) {
       d_voxels[i].collisions.clear();
     }
-    if (flying_voxels >= num_d_voxels * 0.75 && !is_flying) {
+    if (flying_voxels >= num_d_voxels * 0.5 && !is_flying) {
       is_flying = true;
     }
     flying_voxels = 0;
@@ -548,12 +548,15 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
 
 __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, int is_passable) {
     if (is_flying) {
-      locomotion_score = 0.0;
+      locomotion_score = 5.0;
       sensing_score = 0.0;
       fitness_score = locomotion_score + sensing_score;
       return;
     }
     locomotion_score = currentCenterOfMass.Dist(target->pos);
+    if (locomotion_score > 5.0) {
+      locomotion_score = 5.0;
+    }
     for (int i = 0; i < controller->votes->size(); ++i) {
       sensing_score += (controller->votes->get(i) == is_passable) ? 1.0 : 0.0;
       printf("vote: %d\n", controller->votes->get(i));
