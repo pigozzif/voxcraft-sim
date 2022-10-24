@@ -345,7 +345,8 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         // (input_dir/file).c_str());
         pt::ptree pt_VXD;
         std::string name = (input_dir / file).string();
-        printf("%s \n", name);
+        printf(name);
+        printf("\n");
         pt::read_xml(name, pt_VXD);
         vxd_files->insert({std::pair<int,int>(device_index, i), split_aux(split_aux(name, '/')[2], '.')[0]});
         pt::ptree pt_merged = pt_baseVXA;
