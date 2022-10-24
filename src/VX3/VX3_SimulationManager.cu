@@ -376,7 +376,8 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         // }
         this->weights = pt_VXD.get<std::string>("VXD.Controller.NeuralWeights", "not found");
         int is_passable = pt_VXD.get<int>("VXD.Task.Passable", 1);
-        std::string vxd_name = name.substr(name.find("_") - 3);
+        printf("%ld \n", name.find("_"));
+        //std::string vxd_name = name.substr(name.find("_") - 3);
         //int robot_id = stoi(vxd_name.substr(vxd_name.find("_") + 1, vxd_name.find("-")));
         //printf("%d\n", robot_id);
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
