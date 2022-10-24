@@ -546,7 +546,7 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
     return newMat;
 }
 
-__device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller, int is_passable) {
+__device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller) {
     if (is_flying) {
       locomotion_score = 5.0;
       sensing_score = 0.0;
