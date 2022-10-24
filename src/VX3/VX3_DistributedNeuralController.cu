@@ -68,7 +68,7 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
     tempVotes->push_back({voxel->outputs[1], voxel->ix, voxel->iy, voxel->iz, (voxel->inputs[1] > 0.0) ? 1 : 0});
   }
   count = !count;
-  return (count) ? 1 : 0;//voxel->outputs[0];
+  return /*(count) ? 1 : 0;*/voxel->outputs[0];
 }
 
 __device__ void VX3_DistributedNeuralController::printVotes(VX3_VoxelyzeKernel* kernel) {
@@ -93,7 +93,7 @@ __device__ void VX3_DistributedNeuralController::vote(void) {
       numNeg += 1;
     }
   }
-  votes->push_back((count) ? 1 : 0);//(numPos >= numNeg) ? 1 : 0);
+  votes->push_back(/*(count) ? 1 : 0);*/(numPos >= numNeg) ? 1 : 0);
   tempVotes->clear();
 }
 
