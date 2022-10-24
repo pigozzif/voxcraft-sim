@@ -126,6 +126,7 @@ class VX3_VoxelyzeKernel {
     int voteStepCount = 0;
     int is_flying = 0;
     int is_passable;
+    int robot_id;
 
     VX3_MathTreeToken AttachCondition[5][1024];
     VX3_MathTreeToken StopConditionFormula[1024];
