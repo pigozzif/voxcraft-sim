@@ -42,7 +42,6 @@ class VX3_SimulationManager {
     std::string weights;
     double x;
     double y;
-    int is_passable;
 
     // fs::path input_directory;
     // fs::path output_file;
