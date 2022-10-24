@@ -341,12 +341,10 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
     int i = 0;
     for (auto &file : files) {
         // Read VXD file, clone base VXA, replace parts specified in VXD, send
-        // to MainSim.ReadVXA to process. printf("reading %s\n",
-        // (input_dir/file).c_str());
+        // to MainSim.ReadVXA to process. 
+        printf("reading %s\n", (input_dir/file).c_str());
         pt::ptree pt_VXD;
         std::string name = (input_dir / file).string();
-        printf(name);
-        printf("\n");
         pt::read_xml(name, pt_VXD);
         vxd_files->insert({std::pair<int,int>(device_index, i), split_aux(split_aux(name, '/')[2], '.')[0]});
         pt::ptree pt_merged = pt_baseVXA;
