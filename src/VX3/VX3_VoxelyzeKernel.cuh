@@ -41,7 +41,7 @@ class VX3_VoxelyzeKernel {
     __device__ void updateDetach();
     __device__ void regenerateSurfaceVoxels();
     __device__ VX3_MaterialLink *combinedMaterial(VX3_MaterialVoxel *mat1, VX3_MaterialVoxel *mat2);
-    __device__ void computeFitness(VX3_DistributedNeuralController* controller, int is_passable);
+    __device__ void computeFitness(VX3_DistributedNeuralController* controller);
     __device__ void registerTargets();
     __device__ void computeTargetCloseness();
     __device__ void saveInitialPosition();
