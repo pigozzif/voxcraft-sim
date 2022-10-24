@@ -26,7 +26,7 @@ std::vector<std::string> split_aux(const std::string& s, char delimiter)
     return tokens;
 }
 
-__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, double X, double Y, int is_passable) {
+__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, double X, double Y) {
     int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (thread_index < num_simulation) {
         VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
@@ -145,12 +145,12 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
               break;
             }
         }
-        printf("passable: %d\n", is_passable);
+        printf("passable: %d\n", d_v3->is_passable);
         printf("target: (%f, %f, %f)\n", d_v3->target->pos.x, d_v3->target->pos.y, d_v3->target->pos.z);
         d_v3->updateCurrentCenterOfMass();
         printf("center: (%f, %f, %f)\n", d_v3->currentCenterOfMass.x, d_v3->currentCenterOfMass.y, d_v3->currentCenterOfMass.z);
         printf("initial center: (%f, %f, %f)\n", d_v3->initialCenterOfMass.x, d_v3->initialCenterOfMass.y, d_v3->initialCenterOfMass.z);
-        d_v3->computeFitness(controller, is_passable);
+        d_v3->computeFitness(controller);
         printf("fitness_score: %f\n", d_v3->fitness_score);
         printf("locomotion_score: %f\n", d_v3->locomotion_score);
         printf("sensing_score: %f\n", d_v3->sensing_score);
@@ -375,9 +375,10 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         //     }
         // }
         this->weights = pt_VXD.get<std::string>("VXD.Controller.NeuralWeights", "not found");
-        is_passable = pt_VXD.get<int>("VXD.Task.Passable", 1);
+        int is_passable = pt_VXD.get<int>("VXD.Task.Passable", 1);
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
         h_d_tmp.addWeights(readWeights(), std::count(this->weights.begin(), this->weights.end(), ',') + 1);
+        h_d_tmp.is_passable = is_passable;
         // More VXA settings which is new in VX3
         strcpy(h_d_tmp.vxa_filename, file.filename().c_str());
 
@@ -482,7 +483,7 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     //             cudaMemcpyDeviceToHost);
     enlargeGPUHeapSize();
     enlargeGPUPrintfFIFOSize();
-    CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, x, y, is_passable);
+    CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, x, y);
     CUDA_CHECK_AFTER_CALL();
 }
 
