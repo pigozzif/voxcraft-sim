@@ -384,13 +384,13 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         h_d_tmp.addWeights(readWeights(), std::count(this->weights.begin(), this->weights.end(), ',') + 1);
         h_d_tmp.is_passable = is_passable;
         h_d_tmp.robot_id = robot_id;
-        if (is_passable == 0) {
+        if (terrain == "impassable") {
           h_d_tmp.terrain_id = 0; 
         }
-        else if (is_passable == 1 && vxd_name.find("left") != std::string::npos) {
+        else if (terrain == "passable_left") {
           h_d_tmp.terrain_id = 1;
         }
-        else if (is_passable == 1 && vxd_name.find("right") != std::string::npos) {
+        else if (terrain == "passable_right") {
           h_d_tmp.terrain_id = 2;
         }
         h_d_tmp.robot_id = robot_id;
