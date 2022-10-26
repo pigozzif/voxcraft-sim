@@ -559,7 +559,7 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
     }
     for (int i = 0; i < controller->votes->size(); ++i) {
       sensing_score += (controller->votes->get(i) == is_passable) ? 1.0 : 0.0;
-      printf("vote: %d\n", controller->votes->get(i));
+      //printf("vote: %d\n", controller->votes->get(i));
     }
     printf("passable inside: %d\n", is_passable);
     sensing_score /= voteStepCount;
