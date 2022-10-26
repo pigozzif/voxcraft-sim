@@ -393,7 +393,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         else if (is_passable == 1 && vxd_name.find("right")) {
           h_d_tmp.terrain_id = 2;
         }
-        h_d_tmp.robot_id = robot_i;
+        h_d_tmp.robot_id = robot_id;
         // More VXA settings which is new in VX3
         strcpy(h_d_tmp.vxa_filename, file.filename().c_str());
 
