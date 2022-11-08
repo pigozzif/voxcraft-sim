@@ -57,7 +57,7 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
     voxel->inputs[i] = -1.0;
   }
   sense(voxel, kernel);
-  printf("%d\n", kernel->CurStepCount);
+  printf("%ld\n", kernel->CurStepCount);
   
   getLastSignals(voxel);
   mlp->apply(voxel);
