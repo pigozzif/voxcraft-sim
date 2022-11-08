@@ -127,7 +127,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   if (voxel->idx >= TOUCH_HISTORY) {
     voxel->idx = 0;
   }
-  voxel->inputs[1] = (has(voxel->touches, 1, TOUCH_HISTORY)) ? 1.0 : 0.0;
+  voxel->inputs[1] = (has(voxel->touches, 1, TOUCH_HISTORY)) ? 1.0 : -1.0;
   for (int j = 0; j < voxel->collisions.size(); ++j) {
     int collision = voxel->collisions.get(j);
     if (!firstRightContact && collision == 2) {
