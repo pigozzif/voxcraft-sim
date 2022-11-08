@@ -144,7 +144,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   }
 }
 
-__device__ bool has(int* values, int value, int n) {
+__device__ bool VX3_DistributedNeuralController::has(int* values, int value, int n) {
   for (int i = 0; i < n; ++i) {
     if (values[i] == value) {
       return true;
