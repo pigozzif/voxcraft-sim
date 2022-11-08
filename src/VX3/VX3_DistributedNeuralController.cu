@@ -64,11 +64,12 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
     voxel->currSignals[dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
   }
+  int id = voxel->iy * 9 + voxel->ix;
+  int vote = random(1000, clock() + id));
+  voxel->outputs[1] = vote / 1000;
   if (firstRightContact || firstLeftContact) {
     tempVotes->push_back({voxel->outputs[1], voxel->ix, voxel->iy, voxel->iz, (voxel->inputs[1] > 0.0) ? 1 : 0});
   }
-  int id = voxel->iy * 9 + voxel->ix;
-  printf("%d\n", random(100, clock() + id));
   count = !count;
   return /*(count) ? 1 : 0;*/voxel->outputs[0];
 }
