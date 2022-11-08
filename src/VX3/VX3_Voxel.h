@@ -321,6 +321,7 @@ class VX3_Voxel {
     double* lastSignals = NULL;
     double* currSignals = NULL;
     VX3_dVector<int>* touches;
+    int idx = 0;
 };
 
 #endif // VX3_VOXEL_H
