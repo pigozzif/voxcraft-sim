@@ -43,7 +43,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
       voxel->outputs[i] = 0.0;
       voxel->lastSignals[i] = 0.0;
       voxel->currSignals[i] = 0.0;
-      voxel->touches[i] = 0.0;
+      voxel->touches[i] = 0;
     }
   }
   votes = new VX3_dVector<int>();
