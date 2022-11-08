@@ -10,6 +10,8 @@
 #include "VX3_Signal.h"
 #include "VX3_queue.cuh"
 
+#define TOUCH_HISTORY 100
+
 class VX3_Collision;
 class VX3_VoxelyzeKernel;
 
