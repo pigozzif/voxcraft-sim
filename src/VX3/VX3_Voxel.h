@@ -320,7 +320,7 @@ class VX3_Voxel {
     double* outputs = NULL;
     double* lastSignals = NULL;
     double* currSignals = NULL;
-    VX3_dVector<int>* touches;
+    int* touches = NULL;
     int idx = 0;
 };
 
