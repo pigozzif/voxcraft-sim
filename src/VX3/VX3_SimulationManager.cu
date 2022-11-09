@@ -390,7 +390,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         else if (terrain == "passable_left") {
           h_d_tmp.terrain_id = 1;
         }
-        else if (terrain == "passable_right") {
+        else {
           h_d_tmp.terrain_id = 2;
         }
         h_d_tmp.robot_id = robot_id;
