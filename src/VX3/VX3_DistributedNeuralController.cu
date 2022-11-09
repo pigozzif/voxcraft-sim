@@ -64,11 +64,11 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
     voxel->currSignals[dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
   }
-  int id = voxel->iy * 9 + voxel->ix;
-  int vote = random(1000, clock() + id);
-  int vote2 = random(1000, clock() + id + 20);
-  voxel->outputs[0] = (vote - 500.0) / 500.0;
-  voxel->outputs[1] = (vote2 - 500.0) / 500.0;
+  //int id = voxel->iy * 9 + voxel->ix;
+  //int vote = random(1000, clock() + id);
+  //int vote2 = random(1000, clock() + id + 20);
+  //voxel->outputs[0] = (vote - 500.0) / 500.0;
+  //voxel->outputs[1] = (vote2 - 500.0) / 500.0;
   if (firstRightContact || firstLeftContact) {
     tempVotes->push_back({voxel->outputs[1], voxel->ix, voxel->iy, voxel->iz, (voxel->inputs[1] > 0.0) ? 1 : 0});
   }
@@ -121,6 +121,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   voxel->inputs[0] = sin(-2 * 3.14159 * kernel->CurStepCount);
   if (voxel->collisions.size() != 0) {
     voxel->touches[voxel->idx] = 1;
+    voxel->inputs[2] = 1.0;
   }
   else {
     voxel->touches[voxel->idx] = 0;
@@ -142,7 +143,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   
   if (voxel->iz == 0) {
     bool is_flying = voxel->floorPenetration() >= 0;
-    voxel->inputs[2] = (is_flying) ? 1.0 : -1.0;
+    //voxel->inputs[2] = (is_flying) ? 1.0 : -1.0;
     kernel->flying_voxels += 1;
   }
 }
