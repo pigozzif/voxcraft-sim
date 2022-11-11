@@ -62,14 +62,16 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   getLastSignals(voxel);
   mlp->apply(voxel);
   
-  for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
-    voxel->currSignals[dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
-  }
   //int id = voxel->iy * 9 + voxel->ix;
   //int vote = random(1000, clock() + id);
   //int vote2 = random(1000, clock() + id + 20);
   //voxel->outputs[0] = (vote - 500.0) / 500.0;
   //voxel->outputs[1] = (vote2 - 500.0) / 500.0;
+  for (int dir = 0; dir < NUM_SIGNALS / 2; ++dir) {
+    dir = dir * 2;
+    voxel->currSignals[dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
+    voxel->currSignals[dir + 1] = voxel->outputs[1];
+  }
   if (firstRightContact || firstLeftContact) {
     tempVotes->push_back({voxel->outputs[1], voxel->ix, voxel->iy, voxel->iz, (voxel->inputs[1] > 0.0) ? 1 : 0});
   }
@@ -112,9 +114,11 @@ __device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeK
 }
 
 __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel) const {
-  for (int dir = 0; dir < NUM_SIGNALS; ++dir) {
-    VX3_Voxel* adjVoxel = voxel->adjacentVoxel((linkDirection)dir); 
-    voxel->inputs[dir + NUM_SENSORS] = (adjVoxel) ? adjVoxel->lastSignals[dir] : 0.0;
+  for (int dir = 0; dir < NUM_SIGNALS / 2; ++dir) {
+    VX3_Voxel* adjVoxel = voxel->adjacentVoxel((linkDirection)dir);
+    for (int i = 0; i < 2; ++i) {
+      voxel->inputs[dir * 2 + i + NUM_SENSORS] = (adjVoxel) ? adjVoxel->lastSignals[dir * 2 + i] : 0.0;
+    }
   }
 }
 
