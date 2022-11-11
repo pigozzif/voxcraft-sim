@@ -38,12 +38,13 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
     voxel->initArrays(mlp->numInputs, mlp->numOutputs, NUM_SIGNALS);
+    voxel->outputs[0] = 0.0;
+    voxel->outputs[1] = 0.0;
     for (int i = 0; i < NUM_SIGNALS; ++i) {
-      voxel->inputs[i] = 0.0;
-      voxel->outputs[i] = 0.0;
+      voxel->inputs[NUM_SENSORS + i] = 0.0;
+      voxel->outputs[2 + i] = 0.0;
       voxel->lastSignals[i] = 0.0;
       voxel->currSignals[i] = 0.0;
-      voxel->touches[i] = 0;
     }
   }
   votes = new VX3_dVector<int>();
@@ -120,11 +121,7 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
   voxel->inputs[0] = sin(-2 * 3.14159 * kernel->CurStepCount);
   if (voxel->collisions.size() != 0) {
-    voxel->touches[voxel->idx] = 1;
     voxel->inputs[1] = 1.0;
-  }
-  else {
-    voxel->touches[voxel->idx] = 0;
   }
   voxel->idx += 1;
   if (voxel->idx >= TOUCH_HISTORY) {
