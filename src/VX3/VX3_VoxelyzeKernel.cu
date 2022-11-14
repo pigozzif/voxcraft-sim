@@ -557,11 +557,24 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
     if (locomotion_score > 5.0) {
       locomotion_score = 5.0;
     }
+    int num_pos = 0;
+    int num_neg = 0;
     for (int i = 0; i < controller->votes->size(); ++i) {
+      if (controller->votes->get(i) == 1) {
+        num_pos += 1;
+      }
+      else {
+        num_neg += 1;
+      }
       sensing_score += (controller->votes->get(i) == is_passable) ? 1.0 : 0.0;
       //printf("vote: %d\n", controller->votes->get(i));
     }
     sensing_score /= voteStepCount;
+    double p_0 = num_pos / voteStepCount;
+    double p_1 = num_neg / voteStepCount;
+    double entropy = p_0 * log(p_0) + p_1 * log(p_1);
+    printf("num_pos: %d num_neg: %d entropy: %f norm_entropy: %f\n", num_pos, num_neg, entropy, entropy / (0.5 * log(0.5) + 0.5 * log(0.5)));
+    sensing_score += entropy / (0.5 * log(0.5) + 0.5 * log(0.5));
     fitness_score = locomotion_score + sensing_score;
 }
 
