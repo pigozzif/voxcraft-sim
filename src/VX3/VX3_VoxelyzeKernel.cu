@@ -573,7 +573,7 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
     double p_1 = num_neg / voteStepCount;
     double entropy = p_0 * ((num_pos == 0) ? 0.0 : log(p_0)) + p_1 * ((num_neg == 0) ? 0.0 : log(p_1));
     sensing_score += entropy / 0.6931471805599453;
-    fitness_score = locomotion_score + ((sensing_score >= 0.0) ? sensing_score: 0.0;
+    fitness_score = locomotion_score + ((sensing_score >= 0.0) ? sensing_score: 0.0);
 }
 
 __device__ void VX3_VoxelyzeKernel::registerTargets() {
