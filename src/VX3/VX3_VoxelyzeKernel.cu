@@ -557,23 +557,23 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
     if (locomotion_score > 5.0) {
       locomotion_score = 5.0;
     }
-    int num_pos = 0;
-    int num_neg = 0;
+    int num_corr = 0;
+    int num_miss = 0;
     for (int i = 0; i < controller->votes->size(); ++i) {
-      if (controller->votes->get(i) == 1) {
-        num_pos += 1;
+      if (controller->votes->get(i) == is_passable) {
+        num_corr += 1;
       }
       else {
-        num_neg += 1;
+        num_miss += 1;
       }
-      sensing_score += (controller->votes->get(i) == is_passable) ? 1.0 : 0.0;
+      //sensing_score += (controller->votes->get(i) == is_passable) ? 1.0 : 0.0;
     }
-    sensing_score /= voteStepCount;
-    double p_0 = num_pos / voteStepCount;
-    double p_1 = num_neg / voteStepCount;
+    //sensing_score /= voteStepCount;
+    double p_0 = num_corr / voteStepCount;
+    double p_1 = num_miss / voteStepCount;
     double entropy = p_0 * ((p_0 == 0.0) ? 0.0 : log(p_0)) + p_1 * ((p_1 == 0.0) ? 0.0 : log(p_1));
-    sensing_score += entropy / 0.6931471805599453;
-    fitness_score = locomotion_score + ((sensing_score >= 0.0) ? sensing_score: 0.0);
+    sensing_score = entropy / 0.6931471805599453;
+    fitness_score = locomotion_score + sensing_score);
 }
 
 __device__ void VX3_VoxelyzeKernel::registerTargets() {
