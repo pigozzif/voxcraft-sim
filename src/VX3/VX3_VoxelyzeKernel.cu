@@ -549,7 +549,7 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
 __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller) {
     if (is_flying) {
       locomotion_score = 5.0;
-      sensing_score = 0.0;
+      sensing_score = -1.0;
       fitness_score = locomotion_score + sensing_score;
       return;
     }
@@ -573,7 +573,7 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
     double p_1 = num_miss / voteStepCount;
     double entropy = p_0 * ((p_0 == 0.0) ? 0.0 : log(p_0)) + p_1 * ((p_1 == 0.0) ? 0.0 : log(p_1));
     sensing_score = entropy / 0.6931471805599453;
-    fitness_score = locomotion_score + sensing_score);
+    fitness_score = locomotion_score + sensing_score;
 }
 
 __device__ void VX3_VoxelyzeKernel::registerTargets() {
