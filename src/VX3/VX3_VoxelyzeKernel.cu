@@ -558,11 +558,17 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
       locomotion_score = 5.0;
     }
     for (int i = 0; i < controller->votes->size(); ++i) {
-      if (controller->votes->get(i) == is_passable) {
+      /*if (controller->votes->get(i) == is_passable) {
         sensing_score += 1;
       }
       else if (controller->votes->get(i) == -1) {
         sensing_score += 0.5;
+      }*/
+      if (is_passable == 1) {
+        sensing_score += controller->votes->get(i) / 17;
+      }
+      else {
+        sensing_score += (17 - controller->votes->get(i)) / 17;
       }
       //sensing_score += (controller->votes->get(i) == is_passable) ? 1.0 : 0.0;
     }
