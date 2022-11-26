@@ -253,9 +253,11 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
     for (int i = 0; i < num_d_voxels; ++i) {
       d_voxels[i].collisions.clear();
     }
-    for (int i = 0; i < num_d_voxels; ++i) {
-      if (num_belly_voxels == 0 && d_voxels[i].matid == 4 && d_voxels[i].iz == 0) {
-        num_belly_voxels += 1;
+    if (num_belly_voxels != 0) {
+      for (int i = 0; i < num_d_voxels; ++i) {
+        if (d_voxels[i].matid == 4 && d_voxels[i].iz == 0) {
+          num_belly_voxels += 1;
+        }
       }
     }
     printf("num belly voxels: %d\n", num_belly_voxels);
