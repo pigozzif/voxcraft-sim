@@ -106,7 +106,7 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
     
     for (int i = 0; i < num_d_voxels; ++i) {
       VX3_Voxel* voxel = d_voxels + i;
-      if (voxel->matid == 4) {
+      if (voxel->matid == 4 && voxel->iz == 0) {
         num_belly_voxels += 1;
       }
     }
@@ -261,7 +261,7 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
     for (int i = 0; i < num_d_voxels; ++i) {
       d_voxels[i].collisions.clear();
     }
-    if (flying_voxels >= num_d_voxels * 0.5 && !is_flying) {
+    if (flying_voxels >= num_belly_voxels * 0.5 && !is_flying) {
       is_flying = true;
     }
     flying_voxels = 0;
