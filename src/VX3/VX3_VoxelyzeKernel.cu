@@ -103,14 +103,6 @@ VX3_VoxelyzeKernel::VX3_VoxelyzeKernel(CVX_Sim *In) {
     // currentTemperature = TempBase + TempAmplitude;
 
     d_surface_voxels = NULL;
-    
-    for (int i = 0; i < num_d_voxels; ++i) {
-      VX3_Voxel* voxel = d_voxels + i;
-      if (voxel->matid == 4 && voxel->iz == 0) {
-        num_belly_voxels += 1;
-      }
-    }
-    printf("num belly voxels: %d\n", num_belly_voxels);
 }
 
 void VX3_VoxelyzeKernel::cleanup() {
@@ -261,6 +253,12 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
     for (int i = 0; i < num_d_voxels; ++i) {
       d_voxels[i].collisions.clear();
     }
+    for (int i = 0; i < num_d_voxels; ++i) {
+      if (num_belly_voxels == 0 && d_voxels[i].matid == 4 && d_voxels[i].iz == 0) {
+        num_belly_voxels += 1;
+      }
+    }
+    printf("num belly voxels: %d\n", num_belly_voxels);
     if (flying_voxels >= num_belly_voxels * 0.5 && !is_flying) {
       is_flying = true;
     }
