@@ -153,9 +153,9 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   }
   
   if (voxel->iz == 0) {
-    bool is_flying = voxel->floorPenetration() >= 0;
-    voxel->inputs[2] = (is_flying) ? 1.0 : -1.0;
-    kernel->flying_voxels += 1;
+    bool is_flying = voxel->floorPenetration() < 0;
+    voxel->inputs[2] = (is_flying) ? -1.0 : 1.0;
+    kernel->flying_voxels += (is_flying) ? 1 : 0;
   }
 }
 
