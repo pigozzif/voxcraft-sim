@@ -128,6 +128,7 @@ class VX3_VoxelyzeKernel {
     int is_passable;
     int robot_id;
     int terrain_id;
+    int age;
     int num_belly_voxels = 0;
 
     VX3_MathTreeToken AttachCondition[5][1024];
