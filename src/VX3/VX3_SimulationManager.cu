@@ -145,15 +145,11 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
               break;
             }
         }
-        printf("passable: %d\n", d_v3->is_passable);
-        printf("target: (%f, %f, %f)\n", d_v3->target->pos.x, d_v3->target->pos.y, d_v3->target->pos.z);
         d_v3->updateCurrentCenterOfMass();
-        printf("center: (%f, %f, %f)\n", d_v3->currentCenterOfMass.x, d_v3->currentCenterOfMass.y, d_v3->currentCenterOfMass.z);
-        printf("initial center: (%f, %f, %f)\n", d_v3->initialCenterOfMass.x, d_v3->initialCenterOfMass.y, d_v3->initialCenterOfMass.z);
         d_v3->computeFitness(controller);
-        printf("%d-%d-fitness_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->fitness_score);
-        printf("%d-%d-locomotion_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->locomotion_score);
-        printf("%d-%d-sensing_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->sensing_score);
+        printf("%d-%d-%d-fitness_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->fitness_score);
+        printf("%d-%d-%d-locomotion_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->locomotion_score);
+        printf("%d-%d-%d-sensing_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->sensing_score);
         //VcudaFree(controller);
         printf(COLORCODE_BLUE "%d) Simulation %d ends: %s Time: %f, angleSampleTimes: %d.\n" COLORCODE_RESET, device_index, thread_index,
                d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);
@@ -376,24 +372,16 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         // }
         this->weights = pt_VXD.get<std::string>("VXD.Controller.NeuralWeights", "not found");
         int is_passable = pt_VXD.get<int>("VXD.Task.Passable", 1);
+        int terrain_id = pt_VXD.get<int>("VXD.Task.TerrainID", 0);
+        int age = pt_VXD.get<int>("VXD.Controller.Age", 0);
         std::string vxd_name = name.substr(name.find("_") - 3);
         int robot_id = stoi(vxd_name.substr(vxd_name.find("_") + 1, vxd_name.find("-")));
-        std::string partial_terrain = vxd_name.substr(vxd_name.find("-") + 1);
-        std::string terrain = partial_terrain.substr(partial_terrain.find("-") + 1, partial_terrain.find(".") - 2);
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
         h_d_tmp.addWeights(readWeights(), std::count(this->weights.begin(), this->weights.end(), ',') + 1);
         h_d_tmp.is_passable = is_passable;
         h_d_tmp.robot_id = robot_id;
-        if (terrain == "impassable") {
-          h_d_tmp.terrain_id = 0; 
-        }
-        else if (terrain == "passable_left") {
-          h_d_tmp.terrain_id = 1;
-        }
-        else {
-          h_d_tmp.terrain_id = 2;
-        }
-        h_d_tmp.robot_id = robot_id;
+        h_d_tmp.terrain_id = terrain_id;
+        h_d_tmp.age = age;
         // More VXA settings which is new in VX3
         strcpy(h_d_tmp.vxa_filename, file.filename().c_str());
 
