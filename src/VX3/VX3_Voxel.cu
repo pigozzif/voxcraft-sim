@@ -536,5 +536,4 @@ __device__ void VX3_Voxel::initArrays(int numInputs, int numOutputs, int numSign
   VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
   VcudaMalloc((void **) &lastSignals, sizeof(double) * numSignals);
   VcudaMalloc((void **) &currSignals, sizeof(double) * numSignals);
-  VcudaMalloc((void **) &weights, sizeof(double) * (numInputs * numOutputs));
 }
