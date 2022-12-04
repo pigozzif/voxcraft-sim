@@ -322,6 +322,7 @@ class VX3_Voxel {
     double* outputs = NULL;
     double* lastSignals = NULL;
     double* currSignals = NULL;
+    double* weights = NULL;
     int* touches = NULL;
     int idx = 0;
 };
