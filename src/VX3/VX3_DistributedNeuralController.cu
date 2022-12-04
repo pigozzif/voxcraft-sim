@@ -11,12 +11,13 @@
 
 __device__ VX3_MLP::~VX3_MLP(void) {
   VcudaFree(weights);
+  VcudaFree(abcd);
 }
 
 __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double* weights) {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
-  this->weights = weights;
+  this->abcd = weights;
 }
 
 __device__ void VX3_MLP::apply(VX3_Voxel* voxel) const {
@@ -25,11 +26,24 @@ __device__ void VX3_MLP::apply(VX3_Voxel* voxel) const {
     voxel->inputs[i] = tanh(voxel->inputs[i]);
   }
   for (int j = 0; j < numOutputs; ++j) {
-    double sum = weights[j * (numInputs + 1)]; //the bias
-    for (int k = 1; k < numInputs + 1; ++k) {
-      sum += voxel->inputs[k - 1] * weights[j * (numInputs + 1) + k]; //weight inputs
+    double sum = 0.0;
+    for (int k = 0; k < numInputs; ++k) {
+      sum += voxel->inputs[k] * voxel->weights[j * numInputs + k]; //weight inputs
     }
     voxel->outputs[j] = tanh(sum); //apply output activation
+  }
+  hebbianUpdate(voxel);
+}
+
+__device__ void VX3_MLP::hebbianUpdate(VX3_Voxel* voxel) {
+  for (int i = 0; i < numOutputs; ++i) {
+    for (int j = 0; j < numInputs; ++j) {
+      int w = ((i * numInputs) + j) * 4;
+      double x_j = voxel->inputs[j];
+      double y_i = voxel->outputs[i];
+      double dw = eta * (abcd[w] * x_j * y_i + abcd[w + 1] * x_j + abcd[w + 2] * y_i + abcd[w + 3]);
+      voxel->weights[w / 4] += dw;
+    }
   }
 }
 
@@ -45,6 +59,11 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
       voxel->outputs[2 + i] = 0.0;
       voxel->lastSignals[i] = 0.0;
       voxel->currSignals[i] = 0.0;
+    }
+    for (int i = 0; i < mlp->numOutputs; ++i) {
+      for (int j = 0; j < mlp->numInputs; ++j) {
+        voxel->weights[(i * numInputs) + j] = 0.0;
+      }
     }
   }
   votes = new VX3_dVector<int>();
