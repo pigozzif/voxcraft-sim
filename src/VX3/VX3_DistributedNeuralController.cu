@@ -10,7 +10,6 @@
 #include <cstdlib>
 
 __device__ VX3_MLP::~VX3_MLP(void) {
-  VcudaFree(weights);
   VcudaFree(abcd);
 }
 
@@ -20,7 +19,7 @@ __device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double* w
   this->abcd = weights;
 }
 
-__device__ void VX3_MLP::apply(VX3_Voxel* voxel) const {
+__device__ void VX3_MLP::apply(VX3_Voxel* voxel) {
   //apply input activation
   for (int i = 0; i < numInputs; ++i) {
     voxel->inputs[i] = tanh(voxel->inputs[i]);
@@ -62,7 +61,7 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
     }
     for (int i = 0; i < mlp->numOutputs; ++i) {
       for (int j = 0; j < mlp->numInputs; ++j) {
-        voxel->weights[(i * numInputs) + j] = 0.0;
+        voxel->weights[(i * mlp->numInputs) + j] = 0.0;
       }
     }
   }
