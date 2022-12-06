@@ -25,6 +25,7 @@ public:
   
   __device__ void apply(VX3_Voxel* voxel);
   __device__ void hebbianUpdate(VX3_Voxel* voxel);
+  __device__ void normalizeWeights(VX3_Voxel* voxel);
   __device__ inline int getNumInputs(void) const { return numInputs; }
   __device__ inline int getNumOutputs(void) const { return numOutputs; }
   __device__ double* getWeights(void) const { return abcd; };
