@@ -32,6 +32,7 @@ __device__ void VX3_MLP::apply(VX3_Voxel* voxel) {
     voxel->outputs[j] = tanh(sum); //apply output activation
   }
   hebbianUpdate(voxel);
+  normalizeWeights(voxel);
 }
 
 __device__ void VX3_MLP::hebbianUpdate(VX3_Voxel* voxel) {
@@ -42,6 +43,20 @@ __device__ void VX3_MLP::hebbianUpdate(VX3_Voxel* voxel) {
       double y_i = voxel->outputs[i];
       double dw = eta * (abcd[w] * x_j * y_i + abcd[w + 1] * x_j + abcd[w + 2] * y_i + abcd[w + 3]);
       voxel->weights[w / 4] += dw;
+    }
+  }
+}
+
+__device__ void VX3_MLP::normalizeWeights(VX3_Voxel* voxel) {
+  for (int i = 0; i < numOutputs; ++i) {
+    double norm = 0.0;
+    for (int j = 0; j < numInputs; ++j) {
+      double w = voxel->weights[((i * numInputs) + j)];
+      norm += w * w;
+    }
+    norm = sqrt(norm);
+    for (int j = 0; j < numInputs; ++j) {
+      voxel->weights[((i * numInputs) + j)] /= norm;
     }
   }
 }
