@@ -33,7 +33,7 @@ __device__ void VX3_MLP::apply(VX3_Voxel* voxel) {
   }
   for (int i = 0; i < numOutputs; ++i) {
     for (int j = 0; j < numInputs; ++j) {
-      int w = ((i * numInputs) + j) * 4;
+      int w = ((i * numInputs) + j);
       printf("%f;", voxel->weights[w]);
     }
   }
