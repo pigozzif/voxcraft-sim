@@ -31,13 +31,13 @@ __device__ void VX3_MLP::apply(VX3_Voxel* voxel) {
     }
     voxel->outputs[j] = tanh(sum); //apply output activation
   }
-  /*for (int i = 0; i < numOutputs; ++i) {
+  for (int i = 0; i < numOutputs; ++i) {
     for (int j = 0; j < numInputs; ++j) {
       int w = ((i * numInputs) + j);
       printf("%d: %f\n", w, voxel->weights[w]);
     }
   }
-  printf("\n");*/
+  printf("\n");
   hebbianUpdate(voxel);
   //normalizeWeights(voxel);
 }
