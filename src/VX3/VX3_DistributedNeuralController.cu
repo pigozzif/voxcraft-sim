@@ -62,6 +62,9 @@ __device__ void VX3_MLP::normalizeWeights(VX3_Voxel* voxel) {
       norm += w * w;
     }
     norm = sqrt(norm);
+    if (norm == 0.0) {
+      continue;
+    }
     for (int j = 0; j < numInputs; ++j) {
       voxel->weights[((i * numInputs) + j)] /= norm;
     }
