@@ -72,15 +72,15 @@ __device__ void VX3_MLP::normalizeWeights(VX3_Voxel* voxel) {
 }
 
 __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_VoxelyzeKernel* kernel, double* weights, int random_seed) {
-  mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
+  mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, (NUM_SIGNALS / 2) + 2, weights);
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
     voxel->initArrays(mlp->numInputs, mlp->numOutputs, NUM_SIGNALS);
-    voxel->outputs[0] = 0.0;
-    voxel->outputs[1] = 0.0;
+    for (int i = 0; i < mlp->numOutputs; ++i) {
+      voxel->outputs[i] = 0.0;
+    }
     for (int i = 0; i < NUM_SIGNALS; ++i) {
       voxel->inputs[NUM_SENSORS + i] = 0.0;
-      voxel->outputs[2 + i] = 0.0;
       voxel->lastSignals[i] = 0.0;
       voxel->currSignals[i] = 0.0;
     }
@@ -111,9 +111,9 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   //voxel->outputs[0] = (vote - 500.0) / 500.0;
   //voxel->outputs[1] = (vote2 - 500.0) / 500.0;
   for (int dir = 0; dir < NUM_SIGNALS / 2; ++dir) {
-    dir = dir * 2;
-    voxel->currSignals[dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
-    voxel->currSignals[dir + 1] = voxel->outputs[1];
+    int new_dir = dir * 2;
+    voxel->currSignals[new_dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
+    voxel->currSignals[new_dir + 1] = voxel->outputs[1];
   }
   if (firstRightContact || firstLeftContact) {
     tempVotes->push_back({voxel->outputs[1], voxel->ix, voxel->iy, voxel->iz, (voxel->inputs[1] > 0.0) ? 1 : 0});
