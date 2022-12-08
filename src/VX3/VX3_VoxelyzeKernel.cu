@@ -258,6 +258,11 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
         if (d_voxels[i].matid == 4 && d_voxels[i].iz == 0) {
           num_belly_voxels += 1;
         }
+        else if (d_voxels[i].matid == 1 || d_voxels[i].matid == 2) {
+          max_x = (max_x > d_voxels[i].pos.x) ? max_x : d_voxels[i].pos.x;
+          min_x = (min_x < d_voxels[i].pos.x) ? min_x : d_voxels[i].pos.x;
+          max_z = (max_z > d_voxels[i].pos.z) ? max_z : d_voxels[i].pos.z;
+        }
       }
     }
     if (flying_voxels >= num_belly_voxels * 0.5 && !is_flying) {
