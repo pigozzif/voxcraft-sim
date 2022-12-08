@@ -130,6 +130,7 @@ class VX3_VoxelyzeKernel {
     int terrain_id;
     int age;
     int num_belly_voxels = 0;
+    int out_of_bounds = 0;
 
     VX3_MathTreeToken AttachCondition[5][1024];
     VX3_MathTreeToken StopConditionFormula[1024];
