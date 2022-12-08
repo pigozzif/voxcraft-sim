@@ -186,7 +186,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
     voxel->inputs[2] = (is_flying) ? -1.0 : 1.0;
     kernel->flying_voxels += (is_flying) ? 1 : 0;
   }
-  if (!(kernel->min_x < voxel->pos.x < kernel->max_x) || !(voxel->pos.z < kernel->max_z)) {
+  if ((kernel->min_x > voxel->pos.x) || (voxel->pos.x > kernel->max_x) || (voxel->pos.z > kernel->max_z)) {
     printf("(%d,%d,%d) is out-of-bounds with (%f,%f,%f)\n", voxel->ix, voxel->iy, voxel->iz, voxel->pos.x, voxel->pos.y, voxel->pos.z);
     kernel->out_of_bounds = 1;
   }
