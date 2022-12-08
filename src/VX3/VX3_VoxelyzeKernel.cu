@@ -265,7 +265,7 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
         }
       }
     }
-    printf("max_x: %f min_x: %f max_z: %f\n", max_x, min_x, max_z);
+    printf("out-of-bounds: %d\n", out_of_bounds);
     if (flying_voxels >= num_belly_voxels * 0.5 && !is_flying) {
       is_flying = true;
     }
