@@ -39,7 +39,7 @@ __device__ void VX3_MLP::apply(VX3_Voxel* voxel) {
   }
   printf("\n");*/
   hebbianUpdate(voxel);
-  //normalizeWeights(voxel);
+  normalizeWeights(voxel);
 }
 
 __device__ void VX3_MLP::hebbianUpdate(VX3_Voxel* voxel) {
