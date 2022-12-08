@@ -55,6 +55,9 @@ public:
   VX3_dVector<Vote>* tempVotes;
   bool firstRightContact;
   bool firstLeftContact;
+  int max_x;
+  int min_x;
+  int max_z;
 };
 
 #endif //VX3_DISTRIBUTED_H
