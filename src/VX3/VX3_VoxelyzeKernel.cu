@@ -258,6 +258,11 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
         if (d_voxels[i].matid == 4 && d_voxels[i].iz == 0) {
           num_belly_voxels += 1;
         }
+        else if (d_voxels[i].matid == 1 || d_voxels[i].matid == 2) {
+          max_x = (max_x > d_voxels[i].pos.x) ? max_x : d_voxels[i].pos.x;
+          min_x = (min_x < d_voxels[i].pos.x) ? min_x : d_voxels[i].pos.x;
+          max_z = (max_z > d_voxels[i].pos.z) ? max_z : d_voxels[i].pos.z;
+        }
       }
     }
     if (flying_voxels >= num_belly_voxels * 0.5 && !is_flying) {
@@ -554,7 +559,7 @@ __device__ VX3_MaterialLink *VX3_VoxelyzeKernel::combinedMaterial(VX3_MaterialVo
 }
 
 __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralController* controller) {
-    if (is_flying) {
+    if (is_flying || out_of_bounds) {
       locomotion_score = 5.0;
       sensing_score = 0.0;
       fitness_score = locomotion_score + sensing_score;
