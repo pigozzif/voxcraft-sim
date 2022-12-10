@@ -137,11 +137,6 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   if (voxel->collisions.size() != 0) {
     voxel->inputs[1] = 1.0;
   }
-  voxel->idx += 1;
-  if (voxel->idx >= TOUCH_HISTORY) {
-    voxel->idx = 0;
-  }
-  //voxel->inputs[1] = (has(voxel->touches, 1, TOUCH_HISTORY)) ? 1.0 : -1.0;
   for (int j = 0; j < voxel->collisions.size(); ++j) {
     int collision = voxel->collisions.get(j);
     if (!firstRightContact && collision == 2) {
@@ -157,6 +152,11 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
     voxel->inputs[2] = (is_flying) ? -1.0 : 1.0;
     kernel->flying_voxels += (is_flying) ? 1 : 0;
   }
+  voxel->inputs[3] = voxel->velocity().y;
+  voxel->inputs[4] = voxel->velocity().x;
+  VX3_Vec3D<float> baseSize = voxel->baseSize();
+  voxel->inputs[5] = baseSize.x * baseSize.y * baseSize.z;
+  printf("%f\n", voxel->inputs[5]);
   if (kernel->CurStepCount != 0 && ((kernel->min_x > voxel->pos.x) || (voxel->pos.x > kernel->max_x) || (voxel->pos.z > kernel->max_z))) {
     kernel->out_of_bounds = 1;
   }
