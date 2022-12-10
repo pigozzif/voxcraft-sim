@@ -154,7 +154,7 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
   }
   voxel->inputs[3] = voxel->velocity().y;
   voxel->inputs[4] = voxel->velocity().x;
-  VX3_Vec3D<float> baseSize = voxel->baseSize();
+  VX3_Vec3D<double> baseSize = voxel->baseSize();
   voxel->inputs[5] = baseSize.x * baseSize.y * baseSize.z;
   printf("%f\n", voxel->inputs[5]);
   if (kernel->CurStepCount != 0 && ((kernel->min_x > voxel->pos.x) || (voxel->pos.x > kernel->max_x) || (voxel->pos.z > kernel->max_z))) {
