@@ -27,7 +27,7 @@ class VX3_VoxelyzeKernel {
 
     void cleanup();
   
-    void addWeights(double* weights_x, int n_x, double* weights_h, int n_h, double* weights_y, int n_y);
+    void addWeights(double* weights, int n);
 
     /* Cuda methods */
     __device__ void init();
