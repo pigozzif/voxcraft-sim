@@ -180,7 +180,9 @@ class VX3_VoxelyzeKernel {
 
     int EnableExpansion=0;
     
-    double* weights;
+    double* weights_x;
+    double* weights_h;
+    double* weights_y;
   
     VX3_Voxel* target = NULL;
 };
