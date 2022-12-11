@@ -270,7 +270,7 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
     }
     flying_voxels = 0;
     CurStepCount++;
-    printf("POSITION: (%f,%f,%f)\n", currentCenterOfMass.x, currentCenterOfMass.y, currentCenterOfMass.z);
+    printf("P %f,%f\n", currentCenterOfMass.x, currentCenterOfMass.y);
     if (dt == 0)
         return true;
     else if (dt < 0) {
