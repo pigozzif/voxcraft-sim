@@ -20,18 +20,17 @@ struct Vote {
 class VX3_MLP
 {
 public:
-  __device__ VX3_MLP(const int numInputs, const int numOutputs, double* weights);
+  __device__ VX3_MLP(const int numInputs, const int numOutputs, int numHidden, double* weights_x, double* weights_h, double* weights_y);
   __device__ ~VX3_MLP(void);
   
   __device__ void apply(VX3_Voxel* voxel) const;
-  __device__ inline int getNumInputs(void) const { return numInputs; }
-  __device__ inline int getNumOutputs(void) const { return numOutputs; }
-
-  __device__ double* getWeights(void) const { return weights; };
   
   int numInputs;
   int numOutputs;
-  double* weights;
+  int numHidden;
+  double* weights_x;
+  double* weights_h;
+  double* weights_y;
 };
 
 class VX3_DistributedNeuralController
