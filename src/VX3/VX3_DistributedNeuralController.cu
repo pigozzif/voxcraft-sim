@@ -10,13 +10,18 @@
 #include <cstdlib>
 
 __device__ VX3_MLP::~VX3_MLP(void) {
-  VcudaFree(weights);
+  VcudaFree(weights_x);
+  VcudaFree(weights_h);
+  VcudaFree(weights_y);
 }
 
-__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double* weights) {
+__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double* weights_x, double* weights_h, double* weights_y) {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
-  this->weights = weights;
+  this->numHidden = numHidden;
+  this->weights_x = weights_x;
+  this->weights_h = weights_h;
+  this->weights_y = weights_y;
 }
 
 __device__ void VX3_MLP::apply(VX3_Voxel* voxel) const {
@@ -24,22 +29,41 @@ __device__ void VX3_MLP::apply(VX3_Voxel* voxel) const {
   for (int i = 0; i < numInputs; ++i) {
     voxel->inputs[i] = tanh(voxel->inputs[i]);
   }
+  for (int j = 0; j < numHidden; ++j) {
+    double sum = 0.0;
+    for (int k = 0; k < numInputs; ++k) {
+      sum += voxel->inputs[k] * weights_x[j * numInputs + k]; //weight inputs
+    }
+    voxel->temp_hidden[j] = tanh(sum); //apply output activation
+  }
+  for (int j = 0; j < numHidden; ++j) {
+    double sum = weights_h[j * (numHidden + 1)] + voxel->temp_hidden[j]; //the bias
+    for (int k = 1; k < numHidden + 1; ++k) {
+      sum += voxel->prev_hidden[k - 1] * weights_h[j * (numHidden + 1) + k]; //weight inputs
+    }
+    voxel->hidden[j] = tanh(sum); //apply output activation
+  }
   for (int j = 0; j < numOutputs; ++j) {
-    double sum = weights[j * (numInputs + 1)]; //the bias
-    for (int k = 1; k < numInputs + 1; ++k) {
-      sum += voxel->inputs[k - 1] * weights[j * (numInputs + 1) + k]; //weight inputs
+    double sum = weights_y[j * (numHidden + 1)]; //the bias
+    for (int k = 1; k < numHidden + 1; ++k) {
+      sum += voxel->hidden[k - 1] * weights_y[j * (numHidden + 1) + k]; //weight inputs
     }
     voxel->outputs[j] = tanh(sum); //apply output activation
   }
 }
 
-__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_VoxelyzeKernel* kernel, double* weights, int random_seed) {
-  mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, 2 + NUM_SIGNALS / 2, weights);
+__device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_VoxelyzeKernel* kernel, double* weights_x, double* weights_h, double* weights_y, int random_seed) {
+  mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, 2 + NUM_SIGNALS / 2, NUM_HIDDEN, weights_x, weights_h, weights_y);
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
-    voxel->initArrays(mlp->numInputs, mlp->numOutputs, NUM_SIGNALS);
+    voxel->initArrays(mlp->numInputs, mlp->numOutputs, mlp->numHidden, NUM_SIGNALS);
     for (int i = 0; i < mlp->numOutputs; ++i) {
       voxel->outputs[i] = 0.0;
+    }
+    for (int i = 0; i < mlp->numHidden; ++i) {
+      voxel->hidden[i] = 0.0;
+      voxel->prev_hidden[i] = 0.0;
+      voxel->temp_hidden[i] = 0.0;
     }
     for (int i = 0; i < NUM_SIGNALS; ++i) {
       voxel->inputs[NUM_SENSORS + i] = 0.0;
