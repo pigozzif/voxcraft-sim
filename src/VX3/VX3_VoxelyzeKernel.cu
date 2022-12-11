@@ -123,9 +123,13 @@ void VX3_VoxelyzeKernel::cleanup() {
 /* Cuda methods : cannot use any CVX_xxx, and no std::, no boost::, and no
  * filesystem. */
 
-void VX3_VoxelyzeKernel::addWeights(double* weights, int n) {
-  VcudaMalloc((void**)&this->weights, sizeof(double) * n);
-  VcudaMemcpy(this->weights, weights, sizeof(double) * n, VcudaMemcpyHostToDevice);
+void VX3_VoxelyzeKernel::addWeights(double* weights_x, int n_x, double* weights_h, int n_h, double* weights_y, int n_y) {
+  VcudaMalloc((void**)&this->weights_x, sizeof(double) * n_x);
+  VcudaMemcpy(this->weights_x, weights_x, sizeof(double) * n_x, VcudaMemcpyHostToDevice);
+  VcudaMalloc((void**)&this->weights_h, sizeof(double) * n_h);
+  VcudaMemcpy(this->weights_h, weights_h, sizeof(double) * n_h, VcudaMemcpyHostToDevice);
+  VcudaMalloc((void**)&this->weights_y, sizeof(double) * n_y);
+  VcudaMemcpy(this->weights_y, weights_y, sizeof(double) * n_y, VcudaMemcpyHostToDevice);
 }
 
 __device__ void VX3_VoxelyzeKernel::syncVectors() {
