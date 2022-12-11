@@ -258,7 +258,6 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
       d_voxels[i].collisions.clear();
     }
     if (num_belly_voxels == 0) {
-      printf("?");
       for (int i = 0; i < num_d_voxels; ++i) {
         if (d_voxels[i].matid == 4 && d_voxels[i].iz == 0) {
           num_belly_voxels += 1;
@@ -267,17 +266,14 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
           max_x = (max_x > d_voxels[i].pos.x) ? max_x : d_voxels[i].pos.x;
           min_x = (min_x < d_voxels[i].pos.x) ? min_x : d_voxels[i].pos.x;
           max_z = (max_z > d_voxels[i].pos.z) ? max_z : d_voxels[i].pos.z;
-          printf("%f %f/", d_voxels[i].pos.x, d_voxels[i].pos.y);
         }
       }
-      printf("?\n");
     }
     if (flying_voxels >= num_belly_voxels * 0.5 && !is_flying) {
       is_flying = true;
     }
     flying_voxels = 0;
     CurStepCount++;
-    printf("P %f,%f\n", currentCenterOfMass.x, currentCenterOfMass.y);
     if (dt == 0)
         return true;
     else if (dt < 0) {
