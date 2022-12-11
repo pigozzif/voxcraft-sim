@@ -384,7 +384,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         std::string vxd_name = name.substr(name.find("_") - 3);
         int robot_id = stoi(vxd_name.substr(vxd_name.find("_") + 1, vxd_name.find("-")));
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
-        h_d_tmp.addWeights(readWeights(this->weights), std::count(this->weights.begin(), this->weights_x.end(), ',') + 1);
+        h_d_tmp.addWeights(readWeights(), std::count(this->weights.begin(), this->weights.end(), ',') + 1);
         h_d_tmp.is_passable = is_passable;
         h_d_tmp.robot_id = robot_id;
         h_d_tmp.terrain_id = terrain_id;
