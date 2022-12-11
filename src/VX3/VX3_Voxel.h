@@ -266,7 +266,7 @@ class VX3_Voxel {
 
     __device__ void syncVectors();
   
-    __device__ void initArrays(int numInputs, int numOutputs, int numHidden, int numSignals);
+    __device__ void initArrays(int numInputs, int numOutputs, int numSignals);
 
     /* data */
     CVX_Voxel *_voxel;
@@ -320,7 +320,6 @@ class VX3_Voxel {
   
     double* inputs = NULL;
     double* outputs = NULL;
-    double* hidden = NULL;
     double* lastSignals = NULL;
     double* currSignals = NULL;
     int* touches = NULL;
