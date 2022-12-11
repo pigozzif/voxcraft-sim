@@ -68,12 +68,12 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   //voxel->outputs[0] = (vote - 500.0) / 500.0;
   //voxel->outputs[1] = (vote2 - 500.0) / 500.0;
   for (int dir = 0; dir < NUM_SIGNALS / 2; ++dir) {
-    //int new_dir = dir * 2;
-    //voxel->currSignals[new_dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
-    //voxel->currSignals[new_dir + 1] = voxel->outputs[1];
-    dir = dir * 2;
-    voxel->currSignals[dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
-    voxel->currSignals[dir + 1] = voxel->outputs[1];
+    int new_dir = dir * 2;
+    voxel->currSignals[new_dir] = voxel->outputs[0];
+    voxel->currSignals[new_dir + 1] = voxel->outputs[1];
+    //dir = dir * 2;
+    //voxel->currSignals[dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
+    //voxel->currSignals[dir + 1] = voxel->outputs[1];
   }
   if (firstRightContact || firstLeftContact) {
     tempVotes->push_back({voxel->outputs[1], voxel->ix, voxel->iy, voxel->iz, (voxel->inputs[1] > 0.0) ? 1 : 0});
