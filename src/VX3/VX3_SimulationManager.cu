@@ -88,6 +88,13 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
             }
             if (d_v3->RecordStepSize) { // output History file
                 controller->printVotes(d_v3);
+                printf("?");
+                for (int i = 0; i < d_v3->num_d_voxels; ++i) {
+                  if (d_v3->d_voxels[i].matid == 1 || d_v3->d_voxels[i].matid == 2) {
+                      printf("%f %f/", d_v3->d_voxels[i].pos.x, d_v3->d_voxels[i].pos.y);
+                  }
+                }
+                printf("?\n");
                 if (j % real_stepsize == 0) {
                     if (d_v3->RecordVoxel) {
                         // Voxels
