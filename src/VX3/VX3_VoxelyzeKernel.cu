@@ -263,7 +263,7 @@ __device__ bool VX3_VoxelyzeKernel::doTimeStep(VX3_DistributedNeuralController* 
           max_x = (max_x > d_voxels[i].pos.x) ? max_x : d_voxels[i].pos.x;
           min_x = (min_x < d_voxels[i].pos.x) ? min_x : d_voxels[i].pos.x;
           max_z = (max_z > d_voxels[i].pos.z) ? max_z : d_voxels[i].pos.z;
-          printf("%f%f/", d_voxels[i].pos.x, d_voxels[i].pos.y);
+          printf("%f %f/", d_voxels[i].pos.x, d_voxels[i].pos.y);
         }
       }
       printf("?\n");
