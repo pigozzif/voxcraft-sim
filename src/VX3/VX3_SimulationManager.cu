@@ -30,7 +30,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
     int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (thread_index < num_simulation) {
         VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
-        VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(d_v3, d_v3->weights);
+        VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(d_v3, d_v3->weights_x, d_v3->weights_h, d_v3->weights_y);
         if (d_v3->num_d_links == 0 and d_v3->num_d_voxels == 0) {
             printf(COLORCODE_BOLD_RED "No links and no voxels. Simulation %d (%s) abort.\n" COLORCODE_RESET, thread_index,
                    d_v3->vxa_filename);
@@ -88,6 +88,13 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
             }
             if (d_v3->RecordStepSize) { // output History file
                 controller->printVotes(d_v3);
+                printf("?");
+                for (int i = 0; i < d_v3->num_d_voxels; ++i) {
+                  if (d_v3->d_voxels[i].matid == 1 || d_v3->d_voxels[i].matid == 2) {
+                      printf("%f %f/", d_v3->d_voxels[i].pos.x, d_v3->d_voxels[i].pos.y);
+                  }
+                }
+                printf("?\n");
                 if (j % real_stepsize == 0) {
                     if (d_v3->RecordVoxel) {
                         // Voxels
@@ -156,7 +163,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
     }
 }
 
-double* VX3_SimulationManager::readWeights() {
+double* VX3_SimulationManager::readWeights(std::string weights) {
   std::string delim = ",";
   double* d_weights = (double*) malloc(sizeof(double) * (std::count(weights.begin(), weights.end(), ',') + 1));
   std::size_t start = 0U;
@@ -370,14 +377,18 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         //         m->dependentMaterials.size(), mm); i++;
         //     }
         // }
-        this->weights = pt_VXD.get<std::string>("VXD.Controller.NeuralWeights", "not found");
+        this->weights_x = pt_VXD.get<std::string>("VXD.Controller.NeuralWeightsX", "not found");
+        this->weights_h = pt_VXD.get<std::string>("VXD.Controller.NeuralWeightsH", "not found");
+        this->weights_y = pt_VXD.get<std::string>("VXD.Controller.NeuralWeightsY", "not found");
         int is_passable = pt_VXD.get<int>("VXD.Task.Passable", 1);
         int terrain_id = pt_VXD.get<int>("VXD.Task.TerrainID", 0);
         int age = pt_VXD.get<int>("VXD.Controller.Age", 0);
         std::string vxd_name = name.substr(name.find("_") - 3);
         int robot_id = stoi(vxd_name.substr(vxd_name.find("_") + 1, vxd_name.find("-")));
         VX3_VoxelyzeKernel h_d_tmp(&MainSim);
-        h_d_tmp.addWeights(readWeights(), std::count(this->weights.begin(), this->weights.end(), ',') + 1);
+        h_d_tmp.addWeights(readWeights(this->weights_x), std::count(this->weights_x.begin(), this->weights_x.end(), ',') + 1,
+                           readWeights(this->weights_h), std::count(this->weights_h.begin(), this->weights_h.end(), ',') + 1,
+                           readWeights(this->weights_y), std::count(this->weights_y.begin(), this->weights_y.end(), ',') + 1);
         h_d_tmp.is_passable = is_passable;
         h_d_tmp.robot_id = robot_id;
         h_d_tmp.terrain_id = terrain_id;
