@@ -6,6 +6,7 @@
 
 #define NUM_SENSORS 5
 #define NUM_SIGNALS 12
+#define NUM_HIDDEN 6
 
 class VX3_VoxelyzeKernel;
 
