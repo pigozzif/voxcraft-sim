@@ -15,7 +15,7 @@ __device__ VX3_MLP::~VX3_MLP(void) {
   VcudaFree(weights_y);
 }
 
-__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, double* weights_x, double* weights_h, double* weights_y) {
+__device__ VX3_MLP::VX3_MLP(const int numInputs, const int numOutputs, int numHidden, double* weights_x, double* weights_h, double* weights_y) {
   this->numInputs = numInputs;
   this->numOutputs = numOutputs;
   this->numHidden = numHidden;
