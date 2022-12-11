@@ -22,7 +22,7 @@ class VX3_SimulationManager {
     void start();
     std::vector<std::vector<fs::path>> splitIntoSubBatches();
     void readVXD(fs::path base, std::vector<fs::path> files, int device_index);
-    double* readWeights();
+    double* readWeights(std::string weights);
     void startKernel(int num_tasks, int device_index);
     void collectResults(int num_simulation, int device_index);
     void sortResults();
@@ -39,7 +39,9 @@ class VX3_SimulationManager {
     fs::path input_dir;
     fs::path base;
     VX3_VoxelyzeKernel h_d_base;
-    std::string weights;
+    std::string weights_x;
+    std::string weights_h;
+    std::string weights_y;
     double x;
     double y;
 
