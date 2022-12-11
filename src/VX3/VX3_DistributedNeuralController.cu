@@ -34,7 +34,7 @@ __device__ void VX3_MLP::apply(VX3_Voxel* voxel) const {
 }
 
 __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_VoxelyzeKernel* kernel, double* weights, int random_seed) {
-  mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, NUM_SIGNALS + 2, weights);
+  mlp = new VX3_MLP(NUM_SENSORS + NUM_SIGNALS, 2, weights);
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     VX3_Voxel* voxel = kernel->d_voxels + i;
     voxel->initArrays(mlp->numInputs, mlp->numOutputs, NUM_SIGNALS);
@@ -54,9 +54,6 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
 }
 
 __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
-  for (int i = 0 ; i < NUM_SENSORS; ++i) {
-    voxel->inputs[i] = -1.0;
-  }
   sense(voxel, kernel);
   
   getLastSignals(voxel);
@@ -69,11 +66,8 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   //voxel->outputs[1] = (vote2 - 500.0) / 500.0;
   for (int dir = 0; dir < NUM_SIGNALS / 2; ++dir) {
     int new_dir = dir * 2;
-    voxel->currSignals[new_dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
+    voxel->currSignals[new_dir] = voxel->outputs[0];
     voxel->currSignals[new_dir + 1] = voxel->outputs[1];
-    //dir = dir * 2;
-    //voxel->currSignals[dir] = voxel->outputs[2 + ((dir % 2 == 0) ? dir + 1 : dir - 1)];
-    //voxel->currSignals[dir + 1] = voxel->outputs[1];
   }
   if (firstRightContact || firstLeftContact) {
     tempVotes->push_back({voxel->outputs[1], voxel->ix, voxel->iy, voxel->iz, (voxel->inputs[1] > 0.0) ? 1 : 0});
@@ -137,9 +131,7 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
 
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
   voxel->inputs[0] = sin(-2 * 3.14159 * kernel->CurStepCount);
-  if (voxel->collisions.size() != 0) {
-    voxel->inputs[1] = 1.0;
-  }
+  voxel->inputs[1] = (voxel->collisions.size() != 0) ? 1.0 : -1.0;
   for (int j = 0; j < voxel->collisions.size(); ++j) {
     int collision = voxel->collisions.get(j);
     if (!firstRightContact && collision == 2) {
@@ -155,8 +147,8 @@ __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_Vox
     voxel->inputs[2] = (is_flying) ? -1.0 : 1.0;
     kernel->flying_voxels += (is_flying) ? 1 : 0;
   }
-  voxel->inputs[3] = 0.0;//voxel->velocity().y;
-  voxel->inputs[4] = 0.0;//voxel->velocity().x;
+  voxel->inputs[3] = voxel->velocity().y;
+  voxel->inputs[4] = voxel->velocity().x;
   if (kernel->CurStepCount != 0 && ((kernel->min_x > voxel->pos.x) || (voxel->pos.x > kernel->max_x) || (voxel->pos.z > kernel->max_z))) {
     kernel->out_of_bounds = 1;
   }
