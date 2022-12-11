@@ -95,7 +95,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
             }
             if (d_v3->RecordStepSize) { // output History file
                 controller->printVotes(d_v3);
-                printf("P %f,%f\n", currentCenterOfMass.x, currentCenterOfMass.y);
+                printf("P %f,%f\n", d_v3->currentCenterOfMass.x, d_v3->currentCenterOfMass.y);
                 if (j % real_stepsize == 0) {
                     if (d_v3->RecordVoxel) {
                         // Voxels
