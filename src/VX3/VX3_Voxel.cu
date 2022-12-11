@@ -531,9 +531,10 @@ __device__ void VX3_Voxel::generateNearby(int linkDepth, int gindex, bool surfac
     assert(false); // not used. near by has logic flaws.
 }
 
-__device__ void VX3_Voxel::initArrays(int numInputs, int numOutputs, int numSignals) {
+__device__ void VX3_Voxel::initArrays(int numInputs, int numOutputs, int numHidden, int numSignals) {
   VcudaMalloc((void **) &inputs, sizeof(double) * numInputs);
   VcudaMalloc((void **) &outputs, sizeof(double) * numOutputs);
+  VcudaMalloc((void **) &hidden, sizeof(double) * numHidden);
   VcudaMalloc((void **) &lastSignals, sizeof(double) * numSignals);
   VcudaMalloc((void **) &currSignals, sizeof(double) * numSignals);
 }
