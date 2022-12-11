@@ -320,6 +320,9 @@ class VX3_Voxel {
   
     double* inputs = NULL;
     double* outputs = NULL;
+    double* hidden = NULL;
+    double* prev_hidden = NULL;
+    double* temp_hidden = NULL;
     double* lastSignals = NULL;
     double* currSignals = NULL;
     int* touches = NULL;
