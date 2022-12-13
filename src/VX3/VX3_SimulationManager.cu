@@ -378,7 +378,7 @@ void VX3_SimulationManager::readVXD(fs::path base, std::vector<fs::path> files, 
         //         m->dependentMaterials.size(), mm); i++;
         //     }
         // }
-        this->weights = pt_VXD.get<std::string>("VXD.Controller.NeuralWeights", "not found");
+        this->weights = pt_VXD.get<std::string>("VXD.Controller.NeuralWeightsX", "not found");
         int is_passable = pt_VXD.get<int>("VXD.Task.Passable", 1);
         int terrain_id = pt_VXD.get<int>("VXD.Task.TerrainID", 0);
         int age = pt_VXD.get<int>("VXD.Controller.Age", 0);
