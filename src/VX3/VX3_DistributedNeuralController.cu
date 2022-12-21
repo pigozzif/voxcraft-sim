@@ -132,7 +132,7 @@ __device__ void VX3_DistributedNeuralController::getLastSignals(VX3_Voxel* voxel
 __device__ void VX3_DistributedNeuralController::sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel) {
   voxel->inputs[0] = sin(-2 * 3.14159 * kernel->CurStepCount);
   voxel->last_touch = (voxel->collisions.size() != 0) ? 0 : voxel->last_touch + 1;
-  voxel->inputs[1] = (voxel->last_touch <= TOUCH_HISTORY) ? 1.0 : -1.0;
+  voxel->inputs[1] = (voxel->last_touch < TOUCH_HISTORY) ? 1.0 : -1.0;
   for (int j = 0; j < voxel->collisions.size(); ++j) {
     int collision = voxel->collisions.get(j);
     if (!firstRightContact && collision == 2) {
