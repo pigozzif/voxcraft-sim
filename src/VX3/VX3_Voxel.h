@@ -323,7 +323,7 @@ class VX3_Voxel {
     double* lastSignals = NULL;
     double* currSignals = NULL;
     int* touches = NULL;
-    int last_touch = 0;
+    int last_touch = TOUCH_HISTORY;
 };
 
 #endif // VX3_VOXEL_H
