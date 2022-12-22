@@ -777,8 +777,12 @@ __device__ void handle_collision_attachment(VX3_Voxel *voxel1, VX3_Voxel *voxel2
                 }
             }
         }
-        voxel1->collisions.push_back(voxel2->matid);
-        voxel2->collisions.push_back(voxel1->matid);
+        if (voxel1->matid == 4 && (voxel2->matid == 1 || voxel2->matid == 2)) {
+          voxel1->collisions.push_back(voxel2->matid);
+        }
+        if (voxel2->matid == 4 && (voxel1->matid == 1 || voxel1->matid == 2)) {
+          voxel2->collisions.push_back(voxel1->matid);
+        }
     }
 
     // determined by formula
