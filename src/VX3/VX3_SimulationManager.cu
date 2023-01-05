@@ -198,7 +198,8 @@ VX3_SimulationManager::~VX3_SimulationManager() {
 }
 
 void VX3_SimulationManager::start() {
-    for (int device_index = 0; device_index < num_of_devices; device_index++) { // multi GPUs
+    return;
+    /*for (int device_index = 0; device_index < num_of_devices; device_index++) { // multi GPUs
         auto files = sub_batches[device_index];
         if (files.size()) {
             VcudaSetDevice(device_index);
@@ -213,7 +214,7 @@ void VX3_SimulationManager::start() {
         auto files = sub_batches[device_index];
         collectResults(files.size(), device_index);
     }
-    sortResults();
+    sortResults();*/
 }
 
 void VX3_SimulationManager::ParseMathTree(VX3_MathTreeToken *field_ptr, size_t max_length, std::string node_address, pt::ptree &tree) {
