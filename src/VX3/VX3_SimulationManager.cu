@@ -29,7 +29,7 @@ std::vector<std::string> split_aux(const std::string& s, char delimiter)
 __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, double X, double Y) {
     int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (thread_index < num_simulation) {
-        VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
+        /*VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
         //VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(d_v3, d_v3->weights);
         if (d_v3->num_d_links == 0 and d_v3->num_d_voxels == 0) {
             printf(COLORCODE_BOLD_RED "No links and no voxels. Simulation %d (%s) abort.\n" COLORCODE_RESET, thread_index,
@@ -40,8 +40,8 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
                                        // it, we should sync hd_vector to d_vector first.
         d_v3->saveInitialPosition();
         d_v3->isSurfaceChanged = true; // trigger surface regenerating and calculate normal thrust for the first time
-        d_v3->registerTargets();
-        printf(COLORCODE_GREEN "%d) Simulation %d runs: %s.\n" COLORCODE_RESET, device_index, thread_index, d_v3->vxa_filename);
+        d_v3->registerTargets();*/
+        //printf(COLORCODE_GREEN "%d) Simulation %d runs: %s.\n" COLORCODE_RESET, device_index, thread_index, d_v3->vxa_filename);
         return;
         // printf("%d) Simulation %d: links %d, voxels %d.\n", device_index, i,
         // d_v3->num_d_links, d_v3->num_d_voxels); printf("%d) Simulation %d
