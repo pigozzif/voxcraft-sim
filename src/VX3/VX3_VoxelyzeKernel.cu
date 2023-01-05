@@ -574,19 +574,13 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
       locomotion_score = 5.0;
     }
     for (int i = 0; i < controller->votes->size(); ++i) {
-      /*if (controller->votes->get(i) == is_passable) {
-        sensing_score += 1;
-      }
-      else if (controller->votes->get(i) == -1) {
-        sensing_score += 0.5;
-      }*/
-      /*if (is_passable == 1) {
+      if (is_passable == 1) {
         sensing_score += controller->votes->get(i) / 17.0;
       }
       else {
         sensing_score += (17.0 - controller->votes->get(i)) / 17.0;
-      }*/
-      sensing_score += (controller->votes->get(i) == is_passable) ? 1.0 : 0.0;
+      }
+      //sensing_score += (controller->votes->get(i) == is_passable) ? 1.0 : 0.0;
     }
     sensing_score /= voteStepCount;
     fitness_score = locomotion_score + sensing_score;
@@ -787,12 +781,8 @@ __device__ void handle_collision_attachment(VX3_Voxel *voxel1, VX3_Voxel *voxel2
                 }
             }
         }
-        if (voxel1->matid == 4 && (voxel2->matid == 1 || voxel2->matid == 2)) {
-          voxel1->collisions.push_back(voxel2->matid);
-        }
-        if (voxel2->matid == 4 && (voxel1->matid == 1 || voxel1->matid == 2)) {
-          voxel2->collisions.push_back(voxel1->matid);
-        }
+        voxel1->collisions.push_back(voxel2->matid);
+        voxel2->collisions.push_back(voxel1->matid);
     }
 
     // determined by formula
