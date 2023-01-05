@@ -198,15 +198,14 @@ VX3_SimulationManager::~VX3_SimulationManager() {
 }
 
 void VX3_SimulationManager::start() {
-    return;
-    /*for (int device_index = 0; device_index < num_of_devices; device_index++) { // multi GPUs
+    for (int device_index = 0; device_index < num_of_devices; device_index++) { // multi GPUs
         auto files = sub_batches[device_index];
         if (files.size()) {
             VcudaSetDevice(device_index);
             printf("=== set device to %d for %ld simulations ===\n", device_index, files.size());
             // readVXA(base)
             readVXD(base, files, device_index);
-            startKernel(files.size(), device_index);
+            //startKernel(files.size(), device_index);
         }
     }
     VcudaDeviceSynchronize();
@@ -214,7 +213,7 @@ void VX3_SimulationManager::start() {
         auto files = sub_batches[device_index];
         collectResults(files.size(), device_index);
     }
-    sortResults();*/
+    sortResults();
 }
 
 void VX3_SimulationManager::ParseMathTree(VX3_MathTreeToken *field_ptr, size_t max_length, std::string node_address, pt::ptree &tree) {
