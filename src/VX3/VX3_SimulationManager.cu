@@ -27,8 +27,9 @@ std::vector<std::string> split_aux(const std::string& s, char delimiter)
 }
 
 __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, double X, double Y) {
-    int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
-    if (thread_index < num_simulation) {
+    return;
+    //int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
+    /*if (thread_index < num_simulation) {
         VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
         //VX3_DistributedNeuralController* controller = new VX3_DistributedNeuralController(d_v3, d_v3->weights);
         if (d_v3->num_d_links == 0 and d_v3->num_d_voxels == 0) {
@@ -57,7 +58,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         //     printf(" [%d]%p ", j, d_v3->d_surface_voxels[j]);
         // }
         //
-        /*if (d_v3->RecordStepSize) { // output History file
+        if (d_v3->RecordStepSize) { // output History file
             // rescale the whole space. so history file can contain less digits. ( e.g. not 0.000221, but 2.21 )
             printf("\n{{{setting}}}<rescale>0.001</rescale>\n");
             // materials' color
@@ -161,8 +162,8 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         printf("%d-%d-%d-sensing_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->sensing_score);
         //VcudaFree(controller);
         printf(COLORCODE_BLUE "%d) Simulation %d ends: %s Time: %f, angleSampleTimes: %d.\n" COLORCODE_RESET, device_index, thread_index,
-               d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);*/
-    }
+               d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);
+    }*/
 }
 
 double* VX3_SimulationManager::readWeights() {
