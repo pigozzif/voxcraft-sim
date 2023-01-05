@@ -42,6 +42,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         d_v3->isSurfaceChanged = true; // trigger surface regenerating and calculate normal thrust for the first time
         d_v3->registerTargets();
         printf(COLORCODE_GREEN "%d) Simulation %d runs: %s.\n" COLORCODE_RESET, device_index, thread_index, d_v3->vxa_filename);
+        return;
         // printf("%d) Simulation %d: links %d, voxels %d.\n", device_index, i,
         // d_v3->num_d_links, d_v3->num_d_voxels); printf("%d) Simulation %d
         // enableAttach %d.\n", device_index, i, d_v3->enableAttach);
