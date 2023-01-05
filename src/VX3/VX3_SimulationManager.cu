@@ -497,7 +497,7 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     enlargeGPUHeapSize();
     enlargeGPUPrintfFIFOSize();
     printf("before simulation\n");
-    CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, x, y);
+    //CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, x, y);
     printf("after simulation\n");
     CUDA_CHECK_AFTER_CALL();
 }
