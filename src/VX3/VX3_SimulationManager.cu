@@ -26,7 +26,7 @@ std::vector<std::string> split_aux(const std::string& s, char delimiter)
     return tokens;
 }
 
-__global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simulation, int device_index, double X, double Y) {
+__global__ void CUDA_Simulation(/*VX3_VoxelyzeKernel *d_voxelyze_3, */int num_simulation, int device_index, double X, double Y) {
     int thread_index = blockIdx.x * blockDim.x + threadIdx.x;
     if (thread_index < num_simulation) {
         /*VX3_VoxelyzeKernel *d_v3 = &d_voxelyze_3[thread_index];
@@ -496,7 +496,7 @@ void VX3_SimulationManager::startKernel(int num_simulation, int device_index) {
     enlargeGPUHeapSize();
     enlargeGPUPrintfFIFOSize();
     printf("before simulation\n");
-    //CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(d_voxelyze_3s[device_index], num_simulation, device_index, x, y);
+    CUDA_Simulation<<<numBlocks, threadsPerBlock>>>(/*d_voxelyze_3s[device_index], */num_simulation, device_index, x, y);
     printf("after simulation\n");
     CUDA_CHECK_AFTER_CALL();
 }
