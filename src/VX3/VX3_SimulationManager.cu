@@ -57,7 +57,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         //     printf(" [%d]%p ", j, d_v3->d_surface_voxels[j]);
         // }
         //
-        if (d_v3->RecordStepSize) { // output History file
+        /*if (d_v3->RecordStepSize) { // output History file
             // rescale the whole space. so history file can contain less digits. ( e.g. not 0.000221, but 2.21 )
             printf("\n{{{setting}}}<rescale>0.001</rescale>\n");
             // materials' color
@@ -161,7 +161,7 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
         printf("%d-%d-%d-sensing_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->sensing_score);
         //VcudaFree(controller);
         printf(COLORCODE_BLUE "%d) Simulation %d ends: %s Time: %f, angleSampleTimes: %d.\n" COLORCODE_RESET, device_index, thread_index,
-               d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);
+               d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);*/
     }
 }
 
