@@ -510,9 +510,9 @@ void VX3_SimulationManager::collectResults(int num_simulation, int device_index)
     VcudaMemcpy(result_voxelyze_kernel, d_voxelyze_3s[device_index], num_simulation * sizeof(VX3_VoxelyzeKernel), cudaMemcpyDeviceToHost);
     for (int i = 0; i < num_simulation; i++) {
         VX3_VoxelyzeKernel d_v3 = result_voxelyze_kernel[i];
-        printf("%d-%d-%d-fitness_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->fitness_score);
-        printf("%d-%d-%d-locomotion_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->locomotion_score);
-        printf("%d-%d-%d-sensing_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->sensing_score);
+        printf("%d-%d-%d-fitness_score: %f\n", d_v3.robot_id, d_v3.terrain_id, d_v3.age, d_v3.fitness_score);
+        printf("%d-%d-%d-locomotion_score: %f\n", d_v3.robot_id, d_v3.terrain_id, d_v3.age, d_v3.locomotion_score);
+        printf("%d-%d-%d-sensing_score: %f\n", d_v3.robot_id, d_v3.terrain_id, d_v3.age, d_v3.sensing_score);
         VX3_SimulationResult tmp;
         tmp.currentTime = result_voxelyze_kernel[i].currentTime;
         tmp.fitness_score = result_voxelyze_kernel[i].fitness_score;
