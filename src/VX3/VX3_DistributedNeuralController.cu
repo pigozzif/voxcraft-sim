@@ -83,11 +83,11 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
   getLastSignals(voxel);
   mlp->apply(voxel);
   
-  int id = voxel->iy * 9 + voxel->ix;
+  //int id = voxel->iy * 9 + voxel->ix;
   //int vote = random(1000, clock() + id);
-  int vote2 = random(1000, clock() + id + 20);
+  //int vote2 = random(1000, clock() + id + 20);
   //voxel->outputs[0] = (vote - 500.0) / 500.0;
-  voxel->outputs[1] = (vote2 - 500.0) / 500.0;
+  //voxel->outputs[1] = (vote2 - 500.0) / 500.0;
   for (int dir = 0; dir < NUM_SIGNALS / 2; ++dir) {
     int new_dir = dir * 2;
     voxel->currSignals[new_dir] = voxel->outputs[0];
