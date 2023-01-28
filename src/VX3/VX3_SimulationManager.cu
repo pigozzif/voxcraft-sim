@@ -162,7 +162,6 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
               break;
             }
         }
-        printf("%d,%d,%d\n", d_v3->target_back->ix, d_v3->target_back->iy, d_v3->target_back->iz);
         d_v3->updateCurrentCenterOfMass();
         d_v3->computeFitness(controller);
         printf("%d-%d-%d-fitness_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->fitness_score);
