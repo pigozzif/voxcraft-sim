@@ -155,11 +155,18 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
               break;
             }
         }
+        for (int i = 0; i < d_v3->num_d_voxels; ++i) {
+            if (voxel->matid == 6) {
+              d_v3->target_back = voxel;
+              break;
+            }
+        }
+        printf("%d,%d,%d\n", d_v3->target_back->ix, d_v3->target_back->iy, d_v3->target_back->iz);
         d_v3->updateCurrentCenterOfMass();
         d_v3->computeFitness(controller);
-        //printf("%d-%d-%d-fitness_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->fitness_score);
-        //printf("%d-%d-%d-locomotion_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->locomotion_score);
-        //printf("%d-%d-%d-sensing_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->sensing_score);
+        printf("%d-%d-%d-fitness_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->fitness_score);
+        printf("%d-%d-%d-locomotion_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->locomotion_score);
+        printf("%d-%d-%d-sensing_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->sensing_score);
         //VcudaFree(controller);
         printf(COLORCODE_BLUE "%d) Simulation %d ends: %s Time: %f, angleSampleTimes: %d.\n" COLORCODE_RESET, device_index, thread_index,
                d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);
@@ -510,9 +517,9 @@ void VX3_SimulationManager::collectResults(int num_simulation, int device_index)
     VcudaMemcpy(result_voxelyze_kernel, d_voxelyze_3s[device_index], num_simulation * sizeof(VX3_VoxelyzeKernel), cudaMemcpyDeviceToHost);
     for (int i = 0; i < num_simulation; i++) {
         VX3_VoxelyzeKernel d_v3 = result_voxelyze_kernel[i];
-        printf("%d-%d-%d-fitness_score: %f\n", d_v3.robot_id, d_v3.terrain_id, d_v3.age, d_v3.fitness_score);
-        printf("%d-%d-%d-locomotion_score: %f\n", d_v3.robot_id, d_v3.terrain_id, d_v3.age, d_v3.locomotion_score);
-        printf("%d-%d-%d-sensing_score: %f\n", d_v3.robot_id, d_v3.terrain_id, d_v3.age, d_v3.sensing_score);
+        //printf("%d-%d-%d-fitness_score: %f\n", d_v3.robot_id, d_v3.terrain_id, d_v3.age, d_v3.fitness_score);
+        //printf("%d-%d-%d-locomotion_score: %f\n", d_v3.robot_id, d_v3.terrain_id, d_v3.age, d_v3.locomotion_score);
+        //printf("%d-%d-%d-sensing_score: %f\n", d_v3.robot_id, d_v3.terrain_id, d_v3.age, d_v3.sensing_score);
         VX3_SimulationResult tmp;
         tmp.currentTime = result_voxelyze_kernel[i].currentTime;
         tmp.fitness_score = result_voxelyze_kernel[i].fitness_score;
