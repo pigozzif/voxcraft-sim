@@ -576,7 +576,7 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
       locomotion_score = currentCenterOfMass.Dist(target->pos);
     }
     else {
-      locomotion_score = currentCenterOfMass.Dist(target->pos_back);
+      locomotion_score = currentCenterOfMass.Dist(target_back->pos);
     }
     if (locomotion_score > 5.0) {
       locomotion_score = 5.0;
