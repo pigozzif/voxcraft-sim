@@ -109,7 +109,6 @@ void VX3_VoxelyzeKernel::cleanup() {
     // The reason not use ~VX3_VoxelyzeKernel is that will be automatically call
     // multiple times after we use memcpy to clone objects.
     target = NULL;
-    target_back = NULL;
     MycudaFree(d_linkMats);
     MycudaFree(d_voxels);
     MycudaFree(d_links);
@@ -570,15 +569,7 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
       fitness_score = locomotion_score + sensing_score;
       return;
     }
-    if (is_passable == 1) {
-      locomotion_score = currentCenterOfMass.Dist(target->pos);
-    }
-    else if (!controller->firstRightContact && !controller->firstLeftContact) {
-      locomotion_score = currentCenterOfMass.Dist(target->pos);
-    }
-    else {
-      locomotion_score = currentCenterOfMass.Dist(target_back->pos);
-    }
+    locomotion_score = currentCenterOfMass.Dist(target->pos);
     if (locomotion_score > 5.0) {
       locomotion_score = 5.0;
     }
