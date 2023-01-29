@@ -155,18 +155,12 @@ __global__ void CUDA_Simulation(VX3_VoxelyzeKernel *d_voxelyze_3, int num_simula
               break;
             }
         }
-        for (int i = 0; i < d_v3->num_d_voxels; ++i) {
-            VX3_Voxel* voxel = d_v3->d_voxels + i;
-            if (voxel->matid == 6) {
-              d_v3->target_back = voxel;
-              break;
-            }
-        }
         d_v3->updateCurrentCenterOfMass();
         d_v3->computeFitness(controller);
         printf("%d-%d-%d-fitness_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->fitness_score);
         printf("%d-%d-%d-locomotion_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->locomotion_score);
         printf("%d-%d-%d-sensing_score: %f\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, d_v3->sensing_score);
+        printf("%d-%d-%d-touched: %d\n", d_v3->robot_id, d_v3->terrain_id, d_v3->age, 1 ? (controller->firstRightContact || controller->firstLeftContact) : 0);
         //VcudaFree(controller);
         printf(COLORCODE_BLUE "%d) Simulation %d ends: %s Time: %f, angleSampleTimes: %d.\n" COLORCODE_RESET, device_index, thread_index,
                d_v3->vxa_filename, d_v3->currentTime, d_v3->angleSampleTimes);
