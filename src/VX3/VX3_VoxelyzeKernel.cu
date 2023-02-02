@@ -572,6 +572,7 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
     if (is_passable == 1) {
       locomotion_score = currentCenterOfMass.Dist(target->pos);
     }
+    {
     else if (!controller->firstRightContact && !controller->firstLeftContact) {
       locomotion_score = currentCenterOfMass.Dist(target->pos);
     }
