@@ -185,7 +185,6 @@ class VX3_VoxelyzeKernel {
     double* weights_y;
   
     VX3_Voxel* target = NULL;
-    VX3_Voxel* target_back = NULL;
 };
 
 #endif // VX3_VOXELYZE_KERNEL_H
