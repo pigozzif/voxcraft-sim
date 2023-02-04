@@ -101,7 +101,7 @@ __device__ void VX3_DistributedNeuralController::printVotes(VX3_VoxelyzeKernel* 
   printf("%ld:", kernel->CurStepCount);
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     if (kernel->d_voxels[i].matid == 4) {
-      printf("%f,%d,%d,%d,%d/", kernel->d_voxels[i].vote.v, kernel->d_voxels[i].vote.x, kernel->d_voxels[i].vote.y, kernel->d_voxels[i].vote.z, kernel->d_voxels[i].vote.is_touching);
+      printf("%f,%d,%d,%d,%d/", kernel->d_voxels[i].vote, kernel->d_voxels[i].ix, kernel->d_voxels[i].iy, kernel->d_voxels[i].iz, (kernel->d_voxels[i]->inputs[1] > 0.0) ? 1 : 0);
     }
   }
   printf("\n");
