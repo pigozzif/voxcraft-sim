@@ -15,6 +15,14 @@
 class VX3_Collision;
 class VX3_VoxelyzeKernel;
 
+struct Vote {
+  double v;
+  int x;
+  int y;
+  int z;
+  int is_touching;
+};
+
 class VX3_Voxel {
   public:
     VX3_Voxel() = default;
@@ -318,6 +326,7 @@ class VX3_Voxel {
     bool removed = false;
     bool isMeasured = true;
   
+    Vote vote = NULL;
     double* inputs = NULL;
     double* outputs = NULL;
     double* hidden = NULL;
