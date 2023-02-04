@@ -233,7 +233,7 @@ __device__ void VX3_VoxelyzeKernel::updateTemperature(VX3_DistributedNeuralContr
     // updates the temperatures For Actuation!
     // different temperatures in different objs are not support for now.
     if (VaryTempEnabled) {
-        controller->vote();
+        controller->vote(this);
         if (TempPeriod > 0) {
             int blockSize = 512;
             int minGridSize;
@@ -573,22 +573,12 @@ __device__ void VX3_VoxelyzeKernel::computeFitness(VX3_DistributedNeuralControll
     if (locomotion_score > 5.0) {
       locomotion_score = 5.0;
     }
-    for (int i = 0; i < controller->votes->size(); ++i) {
-      /*if (controller->votes->get(i) == is_passable) {
-        sensing_score += 1;
-      }
-      else if (controller->votes->get(i) == -1) {
-        sensing_score += 0.5;
-      }*/
-      /*if (is_passable == 1) {
-        sensing_score += controller->votes->get(i) / 17.0;
-      }
-      else {
-        sensing_score += (17.0 - controller->votes->get(i)) / 17.0;
-      }*/
-      sensing_score += (controller->votes->get(i) == is_passable) ? 1.0 : 0.0;
+    if (is_passable == 1) {
+      sensing_score = controller->numPos / voteStepCount;
     }
-    sensing_score /= voteStepCount;
+    else {
+      sensing_score = (voteStepCount - controller->numPos) / voteStepCount;
+    }
     fitness_score = locomotion_score + sensing_score;
 }
 
