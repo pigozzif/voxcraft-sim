@@ -71,8 +71,6 @@ __device__ VX3_DistributedNeuralController::VX3_DistributedNeuralController(VX3_
       voxel->currSignals[i] = 0.0;
     }
   }
-  votes = new VX3_dVector<int>();
-  tempVotes = new VX3_dVector<Vote>();
   firstRightContact = false;
   firstLeftContact = false;
 }
@@ -94,36 +92,30 @@ __device__ double VX3_DistributedNeuralController::updateVoxelTemp(VX3_Voxel* vo
     voxel->currSignals[new_dir + 1] = voxel->outputs[1];
   }
   if (firstRightContact || firstLeftContact) {
-    tempVotes->push_back({voxel->outputs[1], voxel->ix, voxel->iy, voxel->iz, (voxel->inputs[1] > 0.0) ? 1 : 0});
+    voxel->vote = {voxel->outputs[1], voxel->ix, voxel->iy, voxel->iz, (voxel->inputs[1] > 0.0) ? 1 : 0};
   }
   return voxel->outputs[0];
 }
 
 __device__ void VX3_DistributedNeuralController::printVotes(VX3_VoxelyzeKernel* kernel) {
   printf("%ld:", kernel->CurStepCount);
-  for (int i = 0; i < tempVotes->size(); ++i) {
-    printf("%f,%d,%d,%d,%d/", tempVotes->get(i).v, tempVotes->get(i).x, tempVotes->get(i).y, tempVotes->get(i).z, tempVotes->get(i).is_touching);
+  for (int i = 0; i < kernel->num_d_voxels; ++i) {
+    if (kernel->d_voxels[i].matid == 4) {
+      printf("%f,%d,%d,%d,%d/", kernel->d_voxels[i].vote.v, kernel->d_voxels[i].vote.x, kernel->d_voxels[i].vote.y, kernel->d_voxels[i].vote.z, kernel->d_voxels[i].vote.is_touching);
+    }
   }
   printf("\n");
 }
 
-__device__ void VX3_DistributedNeuralController::vote(void) {
+__device__ void VX3_DistributedNeuralController::vote(VX3_VoxelyzeKernel* kernel) {
   if (!firstLeftContact && !firstRightContact) {
     return;
   }
-  int numPos = 0;
-  int numNeg = 0;
-  for (int i = 0; i < tempVotes->size(); ++i) {
-    if (tempVotes->get(i).v > 0.0) {
+  for (int i = 0; i < kernel->num_d_voxels; ++i) {
+    if (kernel->d_voxels[i].matid == 4 && kernel->d_voxels[i].vote.v > 0.0) {
       numPos += 1;
     }
-    else {
-      numNeg += 1;
-    }
   }
-  //votes->push_back(numPos);
-  votes->push_back((numPos >= numNeg) ? 1 : 0);
-  tempVotes->clear();
 }
 
 __device__ void VX3_DistributedNeuralController::updateLastSignals(VX3_VoxelyzeKernel* kernel) {
