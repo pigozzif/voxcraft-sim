@@ -43,7 +43,7 @@ public:
   VX3_MLP* mlp;
   bool firstRightContact;
   bool firstLeftContact;
-  double numPos = 0;
+  double numPos = 0.0;
 };
 
 #endif //VX3_DISTRIBUTED_H
