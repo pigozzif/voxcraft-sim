@@ -10,14 +10,6 @@
 
 class VX3_VoxelyzeKernel;
 
-struct Vote {
-  double v;
-  int x;
-  int y;
-  int z;
-  int is_touching;
-};
-
 class VX3_MLP
 {
 public:
@@ -43,16 +35,15 @@ public:
   __device__ void getLastSignals(VX3_Voxel* voxel) const;
   __device__ void sense(VX3_Voxel* voxel, VX3_VoxelyzeKernel* kernel);
   __device__ bool has(int* values, int value, int n);
-  __device__ void vote(void);
+  __device__ void vote(VX3_VoxelyzeKernel* kernel);
   __device__ void printVotes(VX3_VoxelyzeKernel* kernel);
   
   __device__ VX3_Vec3D<float>* getOffset(const linkDirection dir) const;
 
   VX3_MLP* mlp;
-  VX3_dVector<int>* votes;
-  VX3_dVector<Vote>* tempVotes;
   bool firstRightContact;
   bool firstLeftContact;
+  int numPos = 0;
 };
 
 #endif //VX3_DISTRIBUTED_H
