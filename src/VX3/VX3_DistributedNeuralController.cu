@@ -113,7 +113,7 @@ __device__ void VX3_DistributedNeuralController::vote(VX3_VoxelyzeKernel* kernel
   }
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     if (kernel->d_voxels[i].matid == 4 && kernel->d_voxels[i].vote.v > 0.0) {
-      numPos += 1;
+      numPos += 1.0;
     }
   }
 }
