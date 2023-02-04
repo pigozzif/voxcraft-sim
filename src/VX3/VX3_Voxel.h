@@ -318,7 +318,6 @@ class VX3_Voxel {
     bool removed = false;
     bool isMeasured = true;
   
-    double vote;
     double* inputs = NULL;
     double* outputs = NULL;
     double* hidden = NULL;
