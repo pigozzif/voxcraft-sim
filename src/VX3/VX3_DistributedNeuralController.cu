@@ -101,7 +101,7 @@ __device__ void VX3_DistributedNeuralController::printVotes(VX3_VoxelyzeKernel* 
   printf("%ld:", kernel->CurStepCount);
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
     if (kernel->d_voxels[i].matid == 4) {
-      printf("%f,%d,%d,%d,%d/", kernel->d_voxels[i]->outputs[1], kernel->d_voxels[i].ix, kernel->d_voxels[i].iy, kernel->d_voxels[i].iz, (kernel->d_voxels[i]->inputs[1] > 0.0) ? 1 : 0);
+      printf("%f,%d,%d,%d,%d/", kernel->d_voxels[i].outputs[1], kernel->d_voxels[i].ix, kernel->d_voxels[i].iy, kernel->d_voxels[i].iz, (kernel->d_voxels[i].inputs[1] > 0.0) ? 1 : 0);
     }
   }
   printf("\n");
@@ -112,7 +112,7 @@ __device__ void VX3_DistributedNeuralController::vote(VX3_VoxelyzeKernel* kernel
     return;
   }
   for (int i = 0; i < kernel->num_d_voxels; ++i) {
-    if (kernel->d_voxels[i].matid == 4 && kernel->d_voxels[i]->outputs[1] > 0.0) {
+    if (kernel->d_voxels[i].matid == 4 && kernel->d_voxels[i].outputs[1] > 0.0) {
       numPos += 1.0;
     }
   }
